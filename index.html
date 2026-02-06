@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studio Emsé — Architecture d'intérieur & Design</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preload" as="video" href="hero-video.mp4">
+  <style>
+    :root {
+      --brand: #3F0305;
+      --ink: #1A1615;
+      --ink-70: #4A4340;
+      --ink-40: #8A827E;
+      --cream: #F6F2EE;
+      --cream-warm: #EDE6DF;
+      --white: #FDFBF9;
+      --font: 'Manrope', system-ui, -apple-system, sans-serif;
+      --gap: clamp(12px, 1.6vw, 24px);
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      --pad: clamp(24px, 5vw, 64px);
+      --max: 1200px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body { font-family: var(--font); color: var(--ink); background: var(--white); overflow-x: hidden; line-height: 1.6; font-weight: 400; cursor: default; }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    button { border: none; background: none; cursor: pointer; font: inherit; }
+
+    .wrap {
+      max-width: var(--max); margin: 0 auto;
+      padding-left: var(--pad); padding-right: var(--pad);
+    }
+    .label {
+      font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--brand);
+    }
+
+    .skip-link {
+      position: absolute; top: -100%; left: 50%;
+      transform: translateX(-50%);
+      background: var(--brand); color: #fff;
+      padding: 0.6rem 1.4rem; font-size: 0.8rem; font-weight: 600;
+      z-index: 200; transition: top 0.2s;
+    }
+    .skip-link:focus { top: 1rem; }
+
+    /* Focus styles */
+    *:focus-visible {
+      outline: 2px solid var(--brand);
+      outline-offset: 3px;
+    }
+    .nav__link--cta:focus-visible,
+    .btn-cta:focus-visible,
+    .projects__arrow:focus-visible {
+      outline-color: #fff;
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .hero__video { animation: none; }
+      .r, .rs > * { opacity: 1; transform: none; }
+    }
+
+    /* ═══════════════════════════════════════════
+       CUSTOM CURSOR
+    ═══════════════════════════════════════════ */
+    .cursor-dot {
+      position: fixed; z-index: 9999;
+      pointer-events: none;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--brand);
+      opacity: 0;
+      will-change: transform;
+    }
+    .cursor-label {
+      position: fixed; z-index: 9998;
+      pointer-events: none;
+      font-family: var(--font);
+      font-size: 0.68rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--ink);
+      white-space: nowrap;
+      opacity: 0;
+      background: rgba(253,251,249,0.92);
+      padding: 0.35rem 0.75rem;
+      border: 1px solid rgba(26,22,21,0.08);
+      will-change: transform, opacity;
+    }
+    body:hover .cursor-dot { opacity: 1; }
+    .cursor-dot.active {
+      width: 8px; height: 8px;
+      background: #fff;
+      mix-blend-mode: difference;
+    }
+    .cursor-label.visible { opacity: 1; }
+
+    /* ═══════════════════════════════════════════
+       NAV
+    ═══════════════════════════════════════════ */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.25rem 0;
+      mix-blend-mode: difference;
+      transition: all 0.5s var(--ease);
+    }
+    .nav.scrolled {
+      mix-blend-mode: normal;
+      background: rgba(253,251,249,0.95);
+      padding: 0.75rem 0;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+    }
+    .nav__inner {
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: var(--max); margin: 0 auto; padding: 0 var(--pad);
+    }
+    .nav__logo img { height: 30px; width: auto; transition: filter 0.3s; filter: brightness(10); }
+    .nav.scrolled .nav__logo img { filter: none; }
+    .nav__links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+    .nav__link {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: #fff; transition: opacity 0.3s;
+    }
+    .nav.scrolled .nav__link { color: var(--ink); }
+    .nav__link:hover { opacity: 0.55; }
+    .nav__link--cta {
+      background: var(--brand); color: #fff !important;
+      padding: 0.75rem 1.5rem; font-weight: 700; transition: opacity 0.3s;
+    }
+    .nav__link--cta:hover { opacity: 0.8; }
+    .nav.scrolled .nav__link--cta { color: #fff !important; }
+
+    .nav__toggle { display: none; width: 24px; height: 16px; position: relative; z-index: 110; }
+    .nav__toggle span {
+      display: block; width: 100%; height: 1.5px; background: #fff;
+      position: absolute; left: 0; transition: all 0.35s var(--ease);
+    }
+    .nav.scrolled .nav__toggle span { background: var(--ink); }
+    .nav__toggle span:nth-child(1) { top: 0; }
+    .nav__toggle span:nth-child(2) { top: 50%; transform: translateY(-50%); }
+    .nav__toggle span:nth-child(3) { bottom: 0; }
+    .nav__toggle.open span { background: var(--ink) !important; }
+    .nav__toggle.open span:nth-child(1) { top: 50%; transform: translateY(-50%) rotate(45deg); }
+    .nav__toggle.open span:nth-child(2) { opacity: 0; }
+    .nav__toggle.open span:nth-child(3) { bottom: 50%; transform: translateY(50%) rotate(-45deg); }
+
+    /* ═══════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════ */
+    .hero {
+      position: relative; height: 100vh; min-height: 600px;
+      overflow: hidden; background: var(--ink);
+    }
+    .hero__video {
+      position: absolute; inset: 0;
+      object-fit: cover; width: 100%; height: 100%;
+    }
+    .hero__overlay {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.5);
+    }
+    .hero__content {
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 2;
+      max-width: var(--max); margin: 0 auto;
+      padding: 0 var(--pad);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+    }
+    .hero__title {
+      font-size: clamp(3.5rem, 10vw, 9rem);
+      font-weight: 300; line-height: 0.9;
+      letter-spacing: -0.04em; color: rgba(255,255,255,0.6);
+    }
+    .hero__title span {
+      display: block; font-weight: 500;
+      letter-spacing: -0.02em; color: #fff;
+    }
+    .hero__right { max-width: 500px; margin-top: 2rem; }
+    .hero__sub {
+      font-size: 1.15rem; font-weight: 400;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.7; margin-bottom: 1rem;
+    }
+    .hero__loc {
+      font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      margin-top: 1.5rem;
+    }
+    .hero__cta {
+      display: inline-flex; align-items: center; gap: 0.75rem;
+      margin-top: 2rem;
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--brand);
+      background: #fff;
+      border: none;
+      padding: 1rem 2rem;
+      transition: all 0.4s var(--ease);
+    }
+    .hero__cta:hover { background: var(--cream); transform: translateY(-2px); }
+    .hero__cta svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2; fill: none; }
+    .hero__scroll {
+      position: absolute; bottom: 2rem; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      color: rgba(255,255,255,0.5);
+      font-size: 0.65rem; font-weight: 600;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      animation: scrollBounce 2s ease-in-out infinite;
+    }
+    .hero__scroll svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 1.5; fill: none; }
+    @keyframes scrollBounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ═══════════════════════════════════════════
+       MARQUEE
+    ═══════════════════════════════════════════ */
+    .marquee {
+      background: var(--brand); padding: 0.75rem 0;
+      overflow: hidden; white-space: nowrap;
+    }
+    .marquee__track {
+      display: inline-flex; gap: 2.5rem;
+      animation: mq 28s linear infinite;
+    }
+    .marquee__item {
+      font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      display: inline-flex; align-items: center; gap: 2.5rem;
+    }
+    .marquee__item::after { content: '◆'; font-size: 0.3rem; opacity: 0.35; }
+    @keyframes mq { to { transform: translateX(-50%); } }
+
+    /* ═══════════════════════════════════════════
+       TRUST BAR
+    ═══════════════════════════════════════════ */
+    .trust-bar {
+      display: flex; justify-content: center; gap: 0;
+      padding: 2.5rem var(--pad);
+      border-bottom: 1px solid var(--cream-warm);
+    }
+    .trust-bar__item {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 0.25rem;
+      padding: 0 3rem;
+    }
+    .trust-bar__item + .trust-bar__item {
+      border-left: 1px solid var(--cream-warm);
+    }
+    .trust-bar__num {
+      font-size: 1.75rem; font-weight: 600;
+      color: var(--brand); line-height: 1;
+    }
+    .trust-bar__label {
+      font-size: 0.65rem; font-weight: 600;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--ink-40);
+    }
+
+    /* ═══════════════════════════════════════════
+       MANIFESTO
+    ═══════════════════════════════════════════ */
+    .manifesto { padding: clamp(6rem, 10vh, 10rem) 0; }
+    .manifesto__grid {
+      display: grid; grid-template-columns: repeat(12, 1fr);
+      gap: var(--gap); align-items: start;
+    }
+    .manifesto__text { grid-column: 1 / 6; padding-top: 2rem; padding-right: 2rem; }
+    .manifesto__h {
+      font-size: clamp(1.8rem, 2.8vw, 2.5rem);
+      font-weight: 500; line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-top: 1rem; margin-bottom: 1.5rem;
+    }
+    .manifesto__h em { font-style: normal; font-weight: 300; color: var(--brand); }
+    .manifesto__body {
+      font-size: 0.9rem; line-height: 1.7;
+      color: var(--ink-70); max-width: 400px;
+    }
+    .manifesto__vals {
+      display: flex; gap: 2rem; margin-top: 2rem;
+      padding-top: 1.5rem; border-top: 1px solid var(--cream-warm);
+    }
+    .manifesto__v-title { font-size: 0.9rem; font-weight: 600; display: block; }
+    .manifesto__v-sub { font-size: 0.78rem; font-weight: 400; color: var(--brand); }
+    .manifesto__imgs { grid-column: 7 / 13; position: relative; }
+    .manifesto__img-main { width: 100%; aspect-ratio: 3/4; object-fit: cover; }
+    .manifesto__img-float {
+      position: absolute; bottom: -3rem; left: -4rem;
+      width: 50%; aspect-ratio: 4/3; object-fit: cover;
+    }
+
+    /* ═══════════════════════════════════════════
+       IMAGE TRIO — 3 cols: image / text / image
+    ═══════════════════════════════════════════ */
+    .img-trio {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: 0;
+      min-height: 500px;
+    }
+    .img-trio__img {
+      overflow: hidden; position: relative;
+    }
+    .img-trio__img img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.6s var(--ease);
+      will-change: transform;
+    }
+    .img-trio__img:hover img { transform: scale(1.03); }
+    .img-trio__center {
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      padding: 3rem 2rem;
+      background: var(--cream);
+      text-align: center;
+    }
+    .img-trio__quote {
+      font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+      font-weight: 500; line-height: 1.45;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+    }
+    .img-trio__attr {
+      font-size: 0.65rem; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: #6B635E;
+    }
+
+    /* ═══════════════════════════════════════════
+       PROJECTS — HORIZONTAL SLIDER
+    ═══════════════════════════════════════════ */
+    .projects {
+      padding: clamp(6rem, 10vh, 10rem) 0;
+    }
+    .projects__header {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: clamp(2.5rem, 4vh, 4rem);
+    }
+    .projects__title {
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 500; line-height: 0.95;
+      letter-spacing: -0.03em;
+    }
+    .projects__title em { font-style: normal; font-weight: 300; color: var(--brand); }
+    .projects__nav { display: flex; align-items: center; gap: 0.75rem; }
+    .projects__arrow {
+      width: 44px; height: 44px;
+      border: 1.5px solid var(--ink);
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.3s var(--ease);
+    }
+    .projects__arrow:hover { background: var(--brand); border-color: var(--brand); }
+    .projects__arrow:hover svg { stroke: #fff; }
+    .projects__arrow svg { width: 18px; height: 18px; stroke: var(--ink); stroke-width: 1.5; fill: none; }
+
+    .projects__slider-wrap {
+      overflow: visible;
+      margin: 0 calc(var(--pad) * -1); padding: 0 var(--pad);
+    }
+    .projects__slider {
+      display: flex; gap: 1.5rem;
+      overflow-x: auto; scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding: 1rem 0 2rem;
+      scroll-padding-left: var(--pad);
+    }
+    .projects__slider::-webkit-scrollbar { display: none; }
+
+    .pc {
+      flex: 0 0 320px;
+      scroll-snap-align: start;
+      position: relative; overflow: hidden;
+      border-radius: 4px;
+    }
+    .pc__img {
+      width: 100%; aspect-ratio: 3/4; object-fit: cover;
+      transition: transform 0.5s var(--ease);
+      will-change: transform;
+    }
+    .pc:hover .pc__img { transform: scale(1.03); }
+    .pc__ov {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(26,22,21,0.8) 0%, transparent 50%);
+      transition: background 0.5s var(--ease);
+    }
+    .pc:hover .pc__ov {
+      background: linear-gradient(to top, var(--brand) 0%, transparent 60%);
+    }
+    .pc__info {
+      position: absolute; bottom: 1.5rem; left: 1.5rem; right: 1.5rem;
+    }
+    .pc__name { font-size: 1.1rem; font-weight: 600; color: #fff; }
+    .pc__meta {
+      font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: rgba(255,255,255,0.7); margin-top: 0.35rem;
+    }
+
+    .inline-cta {
+      display: flex; justify-content: center; align-items: center;
+      padding: 1.5rem var(--pad);
+      border-top: 1px solid var(--cream-warm);
+      border-bottom: 1px solid var(--cream-warm);
+      margin-top: -1rem;
+    }
+    .inline-cta__link {
+      display: inline-flex; align-items: center; gap: 0.75rem;
+      font-size: 0.82rem; font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--brand);
+      transition: gap 0.4s var(--ease);
+    }
+    .inline-cta__link:hover { gap: 1.25rem; }
+    .inline-cta__link svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 1.5; fill: none; }
+
+    /* ═══════════════════════════════════════════
+       FULL BLEED IMAGE
+    ═══════════════════════════════════════════ */
+    .full-img {
+      position: relative; overflow: hidden;
+      height: clamp(350px, 55vh, 650px);
+    }
+    .full-img img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+
+    /* ═══════════════════════════════════════════
+       SERVICES
+    ═══════════════════════════════════════════ */
+    .services {
+      padding: clamp(6rem, 10vh, 10rem) 0;
+      background: var(--brand); color: #fff;
+      position: relative; overflow: hidden;
+    }
+    .services__inner {
+      max-width: var(--max); margin: 0 auto; padding: 0 var(--pad);
+    }
+    .services__header { margin-bottom: clamp(3rem, 5vh, 4.5rem); }
+    .services__label { color: rgba(255,255,255,0.7); }
+    .services__title {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 500; line-height: 1;
+      letter-spacing: -0.03em; margin-top: 1rem; color: #fff;
+    }
+    .services__title em { font-style: normal; font-weight: 300; color: rgba(255,255,255,0.7); }
+    .services__intro {
+      font-size: 1rem; font-weight: 400;
+      color: rgba(255,255,255,0.8);
+      max-width: 480px; margin-top: 1.25rem; line-height: 1.7;
+    }
+    .services__grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 2px; background: rgba(255,255,255,0.1);
+    }
+    .sv {
+      padding: 2.5rem 2rem; background: var(--brand);
+      transition: background 0.4s var(--ease);
+    }
+    .sv:hover { background: rgba(255,255,255,0.08); }
+    .sv:nth-child(2) { transform: translateY(2.5rem); }
+    .sv:nth-child(5) { transform: translateY(2.5rem); }
+    .sv__img {
+      width: 100%; aspect-ratio: 3/2; object-fit: cover;
+      margin-bottom: 1.5rem;
+      filter: brightness(0.75) saturate(0.9);
+      transition: filter 0.4s var(--ease);
+    }
+    .sv:hover .sv__img { filter: brightness(1) saturate(1); }
+    .sv__num {
+      font-size: 2.8rem; font-weight: 600; line-height: 1;
+      color: rgba(255,255,255,0.15); margin-bottom: 0.5rem;
+    }
+    .sv__title {
+      font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: #fff; margin-bottom: 0.75rem;
+    }
+    .sv__text {
+      font-size: 0.88rem; line-height: 1.7;
+      color: rgba(255,255,255,0.75); font-weight: 400;
+    }
+
+    /* ═══════════════════════════════════════════
+       IMAGE DUO — 2 cols, offset
+    ═══════════════════════════════════════════ */
+    .img-duo-wrap { padding-top: clamp(3rem, 5vh, 5rem); padding-bottom: clamp(3rem, 5vh, 5rem); }
+    .img-duo {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: var(--gap);
+      padding: 0;
+    }
+    .img-duo__item { overflow: hidden; position: relative; }
+    .img-duo__item:nth-child(2) { margin-top: 3rem; }
+    .img-duo__item img {
+      width: 100%; aspect-ratio: 4/5; object-fit: cover;
+      transition: transform 0.5s var(--ease);
+      will-change: transform;
+    }
+    .img-duo__item:hover img { transform: scale(1.02); }
+
+    /* ═══════════════════════════════════════════
+       STUDIO
+    ═══════════════════════════════════════════ */
+    .studio { padding: clamp(6rem, 10vh, 10rem) 0; }
+    .studio__grid {
+      display: grid; grid-template-columns: repeat(12, 1fr);
+      gap: var(--gap); align-items: center;
+    }
+    .studio__img-col { grid-column: 1 / 7; }
+    .studio__img { width: 100%; aspect-ratio: 4/5; object-fit: cover; }
+    .studio__content { grid-column: 8 / 13; padding-left: 1.5rem; }
+    .studio__title {
+      font-size: clamp(1.8rem, 2.8vw, 2.5rem);
+      font-weight: 500; line-height: 1.1;
+      letter-spacing: -0.02em; margin-top: 1rem; margin-bottom: 1.5rem;
+    }
+    .studio__title em { font-style: normal; font-weight: 300; color: var(--brand); }
+    .studio__text {
+      font-size: 0.88rem; line-height: 1.7;
+      color: var(--ink-70); margin-bottom: 1rem;
+    }
+
+    .testimonial-wrap { background: var(--cream); }
+    .testimonial {
+      padding: clamp(4rem, 7vh, 6rem) var(--pad);
+      max-width: var(--max); margin: 0 auto;
+      text-align: center;
+      position: relative;
+    }
+    .testimonial__rating {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 0.5rem; margin-bottom: 2rem;
+    }
+    .testimonial__stars {
+      font-size: 1.5rem; color: #f5a623; letter-spacing: 0.1em;
+    }
+    .testimonial__score {
+      font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--ink-40);
+    }
+    .testimonial__slider {
+      position: relative; min-height: 180px;
+    }
+    .testimonial__slide {
+      position: absolute; inset: 0;
+      opacity: 0; transform: translateX(60px);
+      transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+      pointer-events: none;
+    }
+    .testimonial__slide.active {
+      opacity: 1; transform: translateX(0);
+      pointer-events: auto;
+    }
+    .testimonial__slide.prev {
+      opacity: 0; transform: translateX(-60px);
+    }
+    .testimonial__quote {
+      font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+      font-weight: 400; line-height: 1.7;
+      color: var(--ink-70);
+      max-width: 600px; margin: 0 auto 1.5rem;
+    }
+    .testimonial__quote::before { content: '« '; }
+    .testimonial__quote::after { content: ' »'; }
+    .testimonial__attr {
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--brand);
+    }
+    .testimonial__detail {
+      font-size: 0.75rem; font-weight: 400;
+      color: var(--ink-40); margin-top: 0.35rem;
+    }
+    .testimonial__controls {
+      display: flex; justify-content: center; align-items: center;
+      gap: 1.5rem; margin-top: 2rem;
+    }
+    .testimonial__arrow {
+      width: 40px; height: 40px;
+      border: 1.5px solid var(--ink-40);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.3s var(--ease);
+      cursor: pointer; background: transparent;
+    }
+    .testimonial__arrow:hover {
+      border-color: var(--brand); background: var(--brand);
+    }
+    .testimonial__arrow:hover svg { stroke: #fff; }
+    .testimonial__arrow svg {
+      width: 16px; height: 16px;
+      stroke: var(--ink-40); stroke-width: 1.5; fill: none;
+    }
+    .testimonial__nav {
+      display: flex; justify-content: center; gap: 0.5rem;
+    }
+    .testimonial__dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--ink-40); opacity: 0.3;
+      transition: all 0.3s var(--ease);
+      cursor: pointer;
+    }
+    .testimonial__dot:hover { opacity: 0.6; }
+    .testimonial__dot.active {
+      opacity: 1; background: var(--brand);
+      width: 24px; border-radius: 4px;
+    }
+
+    /* ═══════════════════════════════════════════
+       CTA
+    ═══════════════════════════════════════════ */
+    .cta {
+      background: var(--brand); color: #fff;
+      padding: clamp(6rem, 10vh, 10rem) 0;
+      position: relative; overflow: hidden;
+    }
+    .cta__bg {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: clamp(7rem, 17vw, 20rem);
+      font-weight: 500; letter-spacing: -0.06em;
+      color: rgba(255,255,255,0.03);
+      white-space: nowrap; pointer-events: none; user-select: none;
+    }
+    .cta__inner {
+      display: grid; grid-template-columns: repeat(12, 1fr);
+      gap: var(--gap); align-items: end;
+      position: relative; z-index: 1;
+      max-width: var(--max); margin: 0 auto; padding: 0 var(--pad);
+    }
+    .cta__left { grid-column: 1 / 8; }
+    .cta__label { color: rgba(255,255,255,0.5); }
+    .cta__title {
+      font-size: clamp(2.2rem, 4.5vw, 4rem);
+      font-weight: 500; line-height: 0.95;
+      letter-spacing: -0.03em; margin-top: 1rem; color: #fff;
+    }
+    .cta__title em { font-style: normal; font-weight: 300; }
+    .cta__body {
+      font-size: 0.9rem; font-weight: 300;
+      color: rgba(255,255,255,0.5);
+      max-width: 420px; margin-top: 1.5rem; line-height: 1.7;
+    }
+    .cta__right {
+      grid-column: 9 / 13;
+      display: flex; flex-direction: column; align-items: flex-end;
+      gap: 1.5rem;
+    }
+    .cta__or {
+      font-size: 0.65rem; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+    }
+    .cta__free {
+      font-size: 0.72rem; font-weight: 500;
+      color: rgba(255,255,255,0.5);
+      margin-top: 1rem;
+    }
+    .cta__phone {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.82rem; font-weight: 500;
+      color: rgba(255,255,255,0.5);
+      transition: color 0.3s;
+    }
+    .cta__phone:hover { color: #fff; }
+    .cta__phone svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 1.5; fill: none; }
+    .btn-cta {
+      display: inline-flex; align-items: center; gap: 0.75rem;
+      font-size: 0.68rem; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: #fff; border: 1.5px solid rgba(255,255,255,0.5);
+      padding: 1rem 2rem; transition: all 0.4s var(--ease);
+    }
+    .btn-cta:hover { background: #fff; color: var(--brand); border-color: #fff; }
+    .btn-cta svg { width: 15px; height: 15px; }
+
+    /* ═══════════════════════════════════════════
+       FULL IMAGE — END
+    ═══════════════════════════════════════════ */
+    .full-end {
+      position: relative; overflow: hidden;
+      height: clamp(400px, 65vh, 750px);
+    }
+    .full-end img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+
+    /* ═══════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════ */
+    .footer {
+      background: var(--ink); color: rgba(255,255,255,0.45);
+      padding: clamp(4rem, 7vh, 6rem) 0 2rem;
+    }
+    .footer__inner {
+      max-width: var(--max); margin: 0 auto; padding: 0 var(--pad);
+    }
+    .footer__top {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem; padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .footer__brand-text {
+      font-size: 0.85rem; font-weight: 300;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.7; margin-top: 1rem; max-width: 260px;
+    }
+    .footer__heading {
+      font-size: 0.6rem; font-weight: 600;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: rgba(255,255,255,0.5); margin-bottom: 1rem;
+    }
+    .footer__link {
+      display: block; font-size: 0.82rem; font-weight: 400;
+      color: rgba(255,255,255,0.5); margin-bottom: 0.75rem;
+      transition: color 0.3s;
+    }
+    .footer__link:hover { color: #fff; }
+    .footer__link--static { cursor: default; }
+    .footer__link--static:hover { color: rgba(255,255,255,0.5); }
+    .footer__bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 1.5rem; font-size: 0.7rem; color: rgba(255,255,255,0.5);
+    }
+    .footer__logo img {
+      height: 22px; width: auto; filter: brightness(10); opacity: 0.35;
+    }
+
+    /* ═══════════════════════════════════════════
+       REVEAL ANIMATIONS
+    ═══════════════════════════════════════════ */
+    .r {
+      opacity: 0; transform: translateY(40px);
+      transition: opacity 1s var(--ease), transform 1s var(--ease);
+    }
+    .r.v { opacity: 1; transform: translateY(0); }
+    .r-d2 { transition-delay: 0.15s; }
+    .r-d3 { transition-delay: 0.3s; }
+
+    /* Fade up (default) */
+    .rs > * {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+    }
+    .rs:not(.v) > * { opacity: 0; transform: translateY(30px); }
+    .rs.v > *:nth-child(1) { transition-delay: 0s; }
+    .rs.v > *:nth-child(2) { transition-delay: 0.1s; }
+    .rs.v > *:nth-child(3) { transition-delay: 0.2s; }
+    .rs.v > *:nth-child(4) { transition-delay: 0.3s; }
+    .rs.v > *:nth-child(5) { transition-delay: 0.4s; }
+    .rs.v > *:nth-child(6) { transition-delay: 0.5s; }
+    .rs.v > * { opacity: 1; transform: translateY(0); }
+
+
+    /* Scale up */
+    .r-scale {
+      opacity: 0; transform: scale(0.9);
+      transition: opacity 1s var(--ease), transform 1s var(--ease);
+    }
+    .r-scale.v { opacity: 1; transform: scale(1); }
+
+    /* Parallax images */
+    [data-parallax] {
+      overflow: hidden;
+    }
+    [data-parallax] img {
+      transform: scale(1.15);
+      will-change: transform;
+    }
+
+    /* Blur in */
+    .r-blur {
+      opacity: 0; filter: blur(10px);
+      transition: opacity 1s var(--ease), filter 1s var(--ease);
+    }
+    .r-blur.v { opacity: 1; filter: blur(0); }
+
+    /* Counter animation */
+    .r-count { transition: all 0.8s var(--ease); }
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════ */
+    @media (max-width: 1024px) {
+      .manifesto__text { grid-column: 1 / 7; }
+      .manifesto__imgs { grid-column: 7 / 13; }
+      .manifesto__img-float { left: -2rem; bottom: -2rem; width: 45%; }
+      .services__grid { grid-template-columns: repeat(2, 1fr); }
+      .sv:nth-child(2), .sv:nth-child(5) { transform: none; }
+      .studio__content { grid-column: 7 / 13; }
+      .pc { flex: 0 0 280px; }
+    }
+    @media (max-width: 768px) {
+      .cursor-dot, .cursor-label { display: none; }
+      .nav__links { display: none; }
+      .nav__toggle { display: block; }
+      .nav__links.open {
+        display: flex; flex-direction: column;
+        position: fixed; inset: 0; background: var(--white);
+        justify-content: center; align-items: center; gap: 2rem; z-index: 105;
+      }
+      .nav__links.open .nav__link { font-size: 0.95rem; color: var(--ink) !important; }
+      .hero__right { max-width: 90%; }
+      .hero__title { font-size: clamp(2.8rem, 12vw, 5rem); }
+      .manifesto__grid { display: flex; flex-direction: column; gap: 2.5rem; }
+      .manifesto__text { padding-top: 0; padding-right: 0; }
+      .manifesto__img-float { position: relative; bottom: auto; left: auto; width: 60%; margin-top: -2rem; }
+      .manifesto__vals { flex-direction: column; gap: 1rem; }
+      .projects__header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .pc { flex: 0 0 85vw; max-width: 320px; }
+      .img-trio { grid-template-columns: 1fr; }
+      .img-trio__center { padding: 2.5rem 2rem; }
+      .img-duo { grid-template-columns: 1fr; }
+      .img-duo__item:nth-child(2) { margin-top: 0; }
+      .services__grid { grid-template-columns: 1fr; }
+      .studio__grid { display: flex; flex-direction: column; gap: 2.5rem; }
+      .studio__content { padding-left: 0; }
+      .cta__inner { grid-template-columns: 1fr; gap: 2rem; }
+      .cta__left, .cta__right { grid-column: 1 / -1; }
+      .cta__right { align-items: flex-start; }
+      .footer__top { grid-template-columns: 1fr; gap: 2rem; }
+      .footer__bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
+      .trust-bar { flex-direction: row; gap: 0; padding: 2rem var(--pad); }
+      .trust-bar__item { padding: 0 1.5rem; }
+      .trust-bar__item + .trust-bar__item { border-left: 1px solid var(--cream-warm); }
+      .sv:nth-child(2), .sv:nth-child(5) { transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SKIP NAV -->
+  <a href="#main" class="skip-link">Aller au contenu</a>
+
+  <!-- CUSTOM CURSOR -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-label" id="cursorLabel"></div>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav" aria-label="Navigation principale">
+    <div class="nav__inner">
+      <a href="/" class="nav__logo" aria-label="Studio Emsé — Accueil">
+        <img src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/df36bfbd-4d33-427e-a978-1f641d66ebae/Logo_Emse%CC%81+%281%29.png?format=300w" alt="Studio Emsé">
+      </a>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="#projets" class="nav__link">Projets</a></li>
+        <li><a href="#approche" class="nav__link">Compétences</a></li>
+        <li><a href="#studio" class="nav__link">Le studio</a></li>
+        <li><a href="#contact" class="nav__link nav__link--cta">Nous écrire</a></li>
+      </ul>
+      <button class="nav__toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main">
+
+  <!-- HERO -->
+  <header class="hero">
+    <video class="hero__video" autoplay muted loop playsinline>
+      <source src="Video_Generation_With_Specific_Adjustments.mp4" type="video/mp4">
+    </video>
+    <div class="hero__overlay"></div>
+    <div class="hero__content">
+      <div>
+        <h1 class="hero__title">Studio<br><span>Emsé</span></h1>
+        <p class="hero__loc">Architecte d'intérieur — Paris & ailleurs</p>
+      </div>
+      <div class="hero__right">
+        <p class="hero__sub">Notre cabinet d'architecture rénove des lieux chargés d'histoires ordinaires ou extraordinaires.</p>
+        <a href="#projets" class="hero__cta">
+          Découvrir nos projets
+          <svg viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+    <a href="#marquee" class="hero__scroll">
+      <span>Scroll</span>
+      <svg viewBox="0 0 24 24"><path d="M12 5v14m-6-6 6 6 6-6"/></svg>
+    </a>
+  </header>
+
+  <!-- MARQUEE -->
+  <div class="marquee" id="marquee" aria-hidden="true">
+    <div class="marquee__track">
+      <span class="marquee__item">Patrimoine & audace</span>
+      <span class="marquee__item">Modestie & couleurs</span>
+      <span class="marquee__item">Artisanat & technologie</span>
+      <span class="marquee__item">Particuliers & professionnels</span>
+      <span class="marquee__item">Paris & ailleurs</span>
+      <span class="marquee__item">Patrimoine & audace</span>
+      <span class="marquee__item">Modestie & couleurs</span>
+      <span class="marquee__item">Artisanat & technologie</span>
+      <span class="marquee__item">Particuliers & professionnels</span>
+      <span class="marquee__item">Paris & ailleurs</span>
+    </div>
+  </div>
+
+  <!-- TRUST BAR -->
+  <div class="trust-bar rs">
+    <div class="trust-bar__item">
+      <span class="trust-bar__num">40+</span>
+      <span class="trust-bar__label">Projets livrés</span>
+    </div>
+    <div class="trust-bar__item">
+      <span class="trust-bar__num">6</span>
+      <span class="trust-bar__label">Ans d'expérience</span>
+    </div>
+    <div class="trust-bar__item">
+      <span class="trust-bar__num">100%</span>
+      <span class="trust-bar__label">Sur mesure</span>
+    </div>
+  </div>
+
+  <!-- MANIFESTO -->
+  <section class="manifesto wrap">
+    <div class="manifesto__grid">
+      <div class="manifesto__text r">
+        <span class="label">Notre approche</span>
+        <h2 class="manifesto__h">Adapter des espaces complexes à la <em>simplicité</em> des besoins du quotidien.</h2>
+        <p class="manifesto__body">Notre identité mêle patrimoine et audace, modestie et couleurs, artisanat et technologie. Nous travaillons avec les particuliers et les professionnels pour transformer chaque lieu avec justesse et cohérence.</p>
+        <div class="manifesto__vals">
+          <div><span class="manifesto__v-title">Patrimoine</span><span class="manifesto__v-sub">& audace</span></div>
+          <div><span class="manifesto__v-title">Modestie</span><span class="manifesto__v-sub">& couleurs</span></div>
+          <div><span class="manifesto__v-title">Artisanat</span><span class="manifesto__v-sub">& technologie</span></div>
+        </div>
+      </div>
+      <div class="manifesto__imgs r r-d2">
+        <div data-cursor-text="Magenta — 2024"><img class="manifesto__img-main" src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/fd95f088-9b7a-47ff-9e8d-f60ca9eebb49/DSCF0192-Modifier-Modifier-web+1.png" alt="Projet Magenta" loading="lazy"></div>
+        <div data-cursor-text="Papillotes — 2023"><img class="manifesto__img-float" src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/a02f7856-df4e-4114-b18d-775bfcbfe1a8/DSC01148.JPG" alt="Projet Papillotes" loading="lazy"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMAGE TRIO: image / text / image -->
+  <section class="img-trio">
+    <div class="img-trio__img" data-cursor-text="Boulogne — 2024" data-parallax>
+      <img src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/704f31f8-9244-4086-af86-4999ad74793c/DSCF2472-Modifier-web-2.jpg" alt="Projet Boulogne" loading="lazy">
+    </div>
+    <div class="img-trio__center r">
+      <p class="img-trio__quote">Chaque lieu a une histoire. Nous la prolongeons avec justesse, créativité et cohérence.</p>
+      <span class="img-trio__attr">Studio Emsé</span>
+    </div>
+    <div class="img-trio__img" data-cursor-text="Goncourt — 2025" data-parallax>
+      <img src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/5eea1e66-9532-4862-b133-1fcaba4aacf2/DSCF1440-HDR-Modifier-low+def.jpg" alt="Projet Goncourt" loading="lazy">
+    </div>
+  </section>
+
+  <!-- PROJECTS SLIDER -->
+  <section class="projects" id="projets">
+    <div class="wrap">
+      <div class="projects__header r r-d2">
+        <h2 class="projects__title">Nos<br><em>réalisations</em></h2>
+        <div class="projects__nav">
+          <button class="projects__arrow" id="sliderPrev" aria-label="Précédent"><svg viewBox="0 0 24 24"><path d="M19 12H5m6 6-6-6 6-6"/></svg></button>
+          <button class="projects__arrow" id="sliderNext" aria-label="Suivant"><svg viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
+        </div>
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="projects__slider-wrap">
+        <div class="projects__slider" id="slider" role="region" aria-label="Slider de projets" tabindex="0">
+          <a class="pc" href="/nosprojets/project-one-ephnc-fw6kz" data-cursor-text="Goncourt">
+            <img class="pc__img" src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/ab014663-ad9b-476d-986c-f56cfcdd9dd9/DSCF1563-instagram.jpg" alt="Projet Goncourt" loading="lazy">
+            <div class="pc__ov"></div>
+            <div class="pc__info"><h3 class="pc__name">Goncourt</h3><span class="pc__meta">Paris — 2025</span></div>
+          </a>
+          <a class="pc" href="/nosprojets/project-five-jkmzy-5y5lb-5d37a" data-cursor-text="Vavin">
+            <img class="pc__img" src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/c98be0e5-51cc-4e42-bd66-d06b4323ea8d/Passage.png" alt="Projet Vavin" loading="lazy">
+            <div class="pc__ov"></div>
+            <div class="pc__info"><h3 class="pc__name">Vavin</h3><span class="pc__meta">Paris — 2025</span></div>
+          </a>
+          <a class="pc" href="/nosprojets/project-five-jkmzy-5y5lb" data-cursor-text="Bonne Nouvelle">
+            <img class="pc__img" src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/919ec344-a7a6-4b8a-ae1b-db6fc0bbe360/%C3%89CHIQUIER+SALON-75.jpg" alt="Projet Bonne Nouvelle" loading="lazy">
+            <div class="pc__ov"></div>
+            <div class="pc__info"><h3 class="pc__name">Bonne Nouvelle</h3><span class="pc__meta">Paris — 2025</span></div>
+          </a>
+          <a class="pc" href="/nosprojets/project-two-llrgk-gc8bk" data-cursor-text="Papillotes">
+            <img class="pc__img" src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/2bbbcc90-cac9-44ba-bf18-2e4442d436d3/DSC01061.JPG" alt="Projet Papillotes" loading="lazy">
+            <div class="pc__ov"></div>
+            <div class="pc__info"><h3 class="pc__name">Papillotes</h3><span class="pc__meta">Paris — 2023</span></div>
+          </a>
+          <a class="pc" href="/nosprojets/project-three-8zgh7-yn52c" data-cursor-text="Magenta">
+            <img class="pc__img" src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/eb171048-9601-4a32-98a0-3c720284034c/DSCF0157-Modifier-2-low+def.jpg" alt="Projet Magenta" loading="lazy">
+            <div class="pc__ov"></div>
+            <div class="pc__info"><h3 class="pc__name">Magenta</h3><span class="pc__meta">Paris — 2024</span></div>
+          </a>
+          <a class="pc" href="/nosprojets/project-four-yjynj-nbdw4" data-cursor-text="Villiers">
+            <img class="pc__img" src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/2992f7bc-f789-40b3-a6f8-7c88d653ebb5/DSCF1282-HDR-Modifier-low+def.jpg" alt="Projet Villiers" loading="lazy">
+            <div class="pc__ov"></div>
+            <div class="pc__info"><h3 class="pc__name">Villiers</h3><span class="pc__meta">Paris — 2023</span></div>
+          </a>
+          <a class="pc" href="/nosprojets/boulogne" data-cursor-text="Boulogne">
+            <img class="pc__img" src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/dd2a0c93-b3a0-4b92-be9b-919eef30a5da/DSCF2495-web-2.jpg" alt="Projet Boulogne" loading="lazy">
+            <div class="pc__ov"></div>
+            <div class="pc__info"><h3 class="pc__name">Boulogne</h3><span class="pc__meta">Boulogne-Billancourt — 2024</span></div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MID-PAGE CTA -->
+  <div class="inline-cta r r-d2">
+    <a href="#contact" class="inline-cta__link">
+      Un projet similaire ? Parlons-en
+      <svg viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+    </a>
+  </div>
+
+  <!-- FULL BLEED IMAGE -->
+  <div class="full-img" data-cursor-text="Bonne Nouvelle — 2025" data-parallax>
+    <img src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/ae9266bd-383b-4a69-9577-5d5d95e81750/BG-Hero.png" alt="Projet Bonne Nouvelle" loading="lazy">
+  </div>
+
+  <!-- SERVICES -->
+  <section class="services" id="approche">
+    <div class="services__inner">
+      <div class="services__header r r-d2">
+        <span class="label services__label">Nos compétences</span>
+        <h2 class="services__title">L'<em>approche</em></h2>
+        <p class="services__intro">Chaque mission est pensée sur mesure, de l'esquisse à la livraison.</p>
+      </div>
+      <div class="services__grid rs">
+        <div class="sv">
+          <img class="sv__img" src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/c82c5e8a-85d0-4b57-9e36-6fbc287e5433/WhatsApp+Image+2025-11-10+at+14.21.57+%281%29.jpeg" alt="Étude de faisabilité" loading="lazy">
+          <span class="sv__num" aria-hidden="true">01</span><h3 class="sv__title">Étude de faisabilité</h3>
+          <p class="sv__text">Achetez ou lancez votre rénovation en toute sérénité. Nous vérifions la faisabilité technique, les démarches et le budget en amont.</p>
+        </div>
+        <div class="sv">
+          <img class="sv__img" src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/8d3d5ffa-3a57-4b97-9e55-6d739b5afc46/PORTRAITS++MARUE+CAMILLE+%26+HUGO-3.jpg" alt="Visite-conseil" loading="lazy">
+          <span class="sv__num" aria-hidden="true">02</span><h3 class="sv__title">Visite-conseil</h3>
+          <p class="sv__text">Visitez votre futur bien avec un œil expert à vos côtés. Vous repartez avec un premier avis et les enjeux techniques identifiés.</p>
+        </div>
+        <div class="sv">
+          <img class="sv__img" src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/bc9bae3f-fc9d-4686-9c1c-85c89f88c2a0/WhatsApp+Image+2025-11-10+at+13.51.44.jpeg" alt="Conception" loading="lazy">
+          <span class="sv__num" aria-hidden="true">03</span><h3 class="sv__title">Conception</h3>
+          <p class="sv__text">Visualisez votre futur intérieur avant le premier coup de marteau. Plans, 3D, matériaux : chaque choix est validé ensemble.</p>
+        </div>
+        <div class="sv">
+          <img class="sv__img" src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/a0c1ad7d-05fa-48ed-83c7-38ad4ad4bf57/Frame+2330.png" alt="Décoration" loading="lazy">
+          <span class="sv__num" aria-hidden="true">04</span><h3 class="sv__title">Décoration</h3>
+          <p class="sv__text">Un intérieur qui vous ressemble jusque dans les détails. Nous sourceons rideaux, tapis, meubles et objets pour créer une ambiance cohérente.</p>
+        </div>
+        <div class="sv">
+          <img class="sv__img" src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/89fce39a-7bbb-4684-ac28-bef3c7fbfe77/Frame+2328.png" alt="Chantier" loading="lazy">
+          <span class="sv__num" aria-hidden="true">05</span><h3 class="sv__title">Maîtrise d'œuvre</h3>
+          <p class="sv__text">Votre chantier avance sans stress. Nos artisans de confiance, un planning clair, et un suivi quotidien pour un résultat sans surprise.</p>
+        </div>
+        <div class="sv">
+          <img class="sv__img" src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/e25b497e-9e8a-42b8-bed7-dc3cb6280708/ÉCHIQUIER+SALON-30.jpg" alt="Design sur-mesure" loading="lazy">
+          <span class="sv__num" aria-hidden="true">06</span><h3 class="sv__title">Design sur-mesure</h3>
+          <p class="sv__text">Du mobilier unique, pensé pour votre espace. Cuisine, bibliothèque, dressing — chaque centimètre est optimisé pour vous.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMAGE DUO — offset -->
+  <div class="img-duo-wrap wrap">
+    <div class="img-duo">
+      <div class="img-duo__item r" data-cursor-text="Échiquier — 2024">
+        <img src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/5262dc6e-2945-41b5-8ed5-321d67ccccdf/E%E2%95%A0%C3%BCCHIQUIER+SALON-61.jpg" alt="Projet Échiquier" loading="lazy">
+      </div>
+      <div class="img-duo__item r r-d2" data-cursor-text="Boulogne — 2024">
+        <img src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/4d0066db-9979-4a91-aacb-c8c28ec62d8f/DSCF2560-web.jpg" alt="Projet Boulogne" loading="lazy">
+      </div>
+    </div>
+  </div>
+
+  <!-- STUDIO -->
+  <section class="studio wrap" id="studio">
+    <div class="studio__grid">
+      <div class="studio__img-col r" data-cursor-text="Goncourt — 2025">
+        <img class="studio__img" src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/9af4dbc4-6877-4cac-a86f-38f1ce509a6b/DSCF1633-HDR-Modifier-low+def.jpg" alt="Projet Goncourt" loading="lazy">
+      </div>
+      <div class="studio__content r r-d2">
+        <span class="label">Le studio</span>
+        <h2 class="studio__title">Basés à Paris,<br>présents <em>partout.</em></h2>
+        <p class="studio__text">Basés à Paris, nous intervenons en région parisienne, en France ou ailleurs. Les projets de conception sans suivi de travaux peuvent être envisagés sans limite géographique.</p>
+        <p class="studio__text">Chaque projet commence par une envie : optimiser un espace, révéler un volume, retrouver du confort ou avoir un intérieur qui vous ressemble davantage.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <div class="testimonial-wrap">
+    <div class="testimonial r">
+      <div class="testimonial__rating">
+        <span class="testimonial__stars">★★★★★</span>
+        <span class="testimonial__score">5/5 sur Google</span>
+      </div>
+      <div class="testimonial__slider" id="testimonialSlider">
+        <div class="testimonial__slide active">
+          <p class="testimonial__quote">Nous avons fait appel à Marie-Camille pour la rénovation lourde de notre maison ancienne à Rennes et nous en sommes pleinement satisfaits.</p>
+          <span class="testimonial__attr">Maxime Jegou</span>
+          <p class="testimonial__detail">Rénovation maison ancienne — Rennes</p>
+        </div>
+        <div class="testimonial__slide">
+          <p class="testimonial__quote">Architecte passionnée, créative et à l'écoute. Je recommande les yeux fermés pour une rénovation à Paris !</p>
+          <span class="testimonial__attr">Julie Martin</span>
+          <p class="testimonial__detail">Rénovation — Paris</p>
+        </div>
+        <div class="testimonial__slide">
+          <p class="testimonial__quote">Très beau studio pour lequel j'ai eu la chance de travailler. C'était un vrai plaisir de collaborer avec Marie-Camille, une consœur architecte rigoureuse, créative et esthète.</p>
+          <span class="testimonial__attr">Hugo Juraver-Geslin</span>
+          <p class="testimonial__detail">Architecte collaborateur</p>
+        </div>
+        <div class="testimonial__slide">
+          <p class="testimonial__quote">Marie-Camille est très pro et c'est un vrai plaisir de faire un projet avec elle, une personnalité très sympathique avec des idées et des conseils précieux.</p>
+          <span class="testimonial__attr">Pauline B.</span>
+          <p class="testimonial__detail">Projet résidentiel — Paris</p>
+        </div>
+        <div class="testimonial__slide">
+          <p class="testimonial__quote">Je recommande Studio Emsé Paris. L'architecte d'intérieur derrière ce studio est vraiment sympa et a de très bonnes idées. Top !</p>
+          <span class="testimonial__attr">Lothaire</span>
+          <p class="testimonial__detail">Client — Paris</p>
+        </div>
+        <div class="testimonial__slide">
+          <p class="testimonial__quote">J'ai rencontré Marie-Camille à l'occasion de mon projet d'ouverture de coffee shop à Paris dans le 9ème. Ça a été une expérience très enrichissante.</p>
+          <span class="testimonial__attr">Elise Servan Schreiber</span>
+          <p class="testimonial__detail">Coffee shop — Paris 9e</p>
+        </div>
+      </div>
+      <div class="testimonial__controls">
+        <button class="testimonial__arrow testimonial__arrow--prev" id="testimonialPrev" aria-label="Précédent">
+          <svg viewBox="0 0 24 24"><path d="M19 12H5m6 6-6-6 6-6"/></svg>
+        </button>
+        <div class="testimonial__nav">
+          <button class="testimonial__dot active" data-slide="0"></button>
+          <button class="testimonial__dot" data-slide="1"></button>
+          <button class="testimonial__dot" data-slide="2"></button>
+          <button class="testimonial__dot" data-slide="3"></button>
+          <button class="testimonial__dot" data-slide="4"></button>
+          <button class="testimonial__dot" data-slide="5"></button>
+        </div>
+        <button class="testimonial__arrow testimonial__arrow--next" id="testimonialNext" aria-label="Suivant">
+          <svg viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <section class="cta" id="contact">
+    <span class="cta__bg" aria-hidden="true">Emsé</span>
+    <div class="cta__inner r r-d2">
+      <div class="cta__left">
+        <span class="label cta__label">Contact</span>
+        <h2 class="cta__title">Parlons de<br><em>votre projet</em></h2>
+        <p class="cta__body">Racontez-nous votre besoin. Nous ferons en sorte que votre espace fonctionne mieux pour vous, avec justesse, créativité et cohérence.</p>
+        <p class="cta__free">Premier échange gratuit et sans engagement.</p>
+      </div>
+      <div class="cta__right">
+        <a href="mailto:contact@studioemse.com" class="btn-cta">
+          Nous écrire
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+        </a>
+        <span class="cta__or">ou</span>
+        <a href="tel:+33618288530" class="cta__phone">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          +33 (0) 6 18 28 85 30
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FULL END IMAGE -->
+  <div class="full-end" data-cursor-text="Bonne Nouvelle — 2025" data-parallax>
+    <img src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/8084609f-9115-483d-9f1c-92555d931241/ÉCHIQUIER+SALON-84.jpg" alt="Projet Bonne Nouvelle" loading="lazy">
+  </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__top">
+        <div>
+          <a href="/" class="footer__logo" aria-label="Studio Emsé">
+            <img src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/df36bfbd-4d33-427e-a978-1f641d66ebae/Logo_Emse%CC%81+%281%29.png?format=300w" alt="Studio Emsé">
+          </a>
+          <p class="footer__brand-text">Architecture d'intérieur & design. Patrimoine et audace, modestie et couleurs.</p>
+        </div>
+        <div>
+          <h3 class="footer__heading">Navigation</h3>
+          <a href="#projets" class="footer__link">Nos projets</a>
+          <a href="#approche" class="footer__link">Compétences</a>
+          <a href="#studio" class="footer__link">Le studio</a>
+          <a href="#contact" class="footer__link">Contact</a>
+        </div>
+        <div>
+          <h3 class="footer__heading">Localisation</h3>
+          <p class="footer__link footer__link--static">60 rue Raymond Losserand</p>
+          <p class="footer__link footer__link--static">75014 Paris</p>
+        </div>
+        <div>
+          <h3 class="footer__heading">Contact</h3>
+          <a href="mailto:contact@studioemse.com" class="footer__link">contact@studioemse.com</a>
+          <a href="tel:+33618288530" class="footer__link">+33 (0) 6 18 28 85 30</a>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2025 Studio Emsé — Tous droits réservés</span>
+        <span>Architecte d'intérieur</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ── NAV ──
+    const nav = document.getElementById('nav');
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => { nav.classList.toggle('scrolled', scrollY > 80); ticking = false; });
+        ticking = true;
+      }
+    }, { passive: true });
+    const tog = document.getElementById('navToggle'), lnk = document.getElementById('navLinks');
+    tog.addEventListener('click', () => {
+      const o = lnk.classList.toggle('open'); tog.classList.toggle('open');
+      tog.setAttribute('aria-expanded', o); document.body.style.overflow = o ? 'hidden' : '';
+    });
+    lnk.querySelectorAll('.nav__link').forEach(a => a.addEventListener('click', () => {
+      lnk.classList.remove('open'); tog.classList.remove('open');
+      tog.setAttribute('aria-expanded', 'false'); document.body.style.overflow = '';
+    }));
+
+    // ── SLIDER ──
+    const slider = document.getElementById('slider');
+    const scrollAmt = () => { const c = slider.querySelector('.pc'); return c ? c.offsetWidth + 19 : 300; };
+    document.getElementById('sliderPrev').addEventListener('click', () => slider.scrollBy({ left: -scrollAmt(), behavior: 'smooth' }));
+    document.getElementById('sliderNext').addEventListener('click', () => slider.scrollBy({ left: scrollAmt(), behavior: 'smooth' }));
+
+    // ── CUSTOM CURSOR ──
+    const dot = document.getElementById('cursorDot');
+    const label = document.getElementById('cursorLabel');
+    let mx = 0, my = 0, dx = 0, dy = 0;
+
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
+
+    (function loop() {
+      dx += (mx - dx) * 0.18;
+      dy += (my - dy) * 0.18;
+      dot.style.transform = `translate(${dx - 5}px, ${dy - 5}px)`;
+      label.style.transform = `translate(${dx + 16}px, ${dy - 10}px)`;
+      requestAnimationFrame(loop);
+    })();
+
+    // Show label on hover of [data-cursor-text] elements
+    document.querySelectorAll('[data-cursor-text]').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        label.textContent = el.dataset.cursorText;
+        label.classList.add('visible');
+        dot.classList.add('active');
+      });
+      el.addEventListener('mouseleave', () => {
+        label.classList.remove('visible');
+        dot.classList.remove('active');
+      });
+    });
+
+    // ── REVEAL ──
+    const obs = new IntersectionObserver(e => {
+      e.forEach(x => { if (x.isIntersecting) { x.target.classList.add('v'); obs.unobserve(x.target); } });
+    }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+    document.querySelectorAll('.r,.rs,.r-scale,.r-blur').forEach(el => obs.observe(el));
+
+    // ── PARALLAX ──
+    const parallaxElements = document.querySelectorAll('[data-parallax]');
+
+    function updateParallax() {
+      parallaxElements.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        const viewHeight = window.innerHeight;
+
+        if (rect.top < viewHeight && rect.bottom > 0) {
+          const scrolled = (viewHeight - rect.top) / (viewHeight + rect.height);
+          const yOffset = (scrolled - 0.5) * 50;
+          const img = el.querySelector('img');
+          if (img) {
+            img.style.transform = `scale(1.15) translateY(${yOffset}px)`;
+          }
+        }
+      });
+    }
+
+    window.addEventListener('scroll', updateParallax, { passive: true });
+    updateParallax();
+
+    // ── TESTIMONIALS SLIDER ──
+    const testimonialSlides = document.querySelectorAll('.testimonial__slide');
+    const testimonialDots = document.querySelectorAll('.testimonial__dot');
+    let currentSlide = 0;
+    let testimonialInterval;
+    let slideDirection = 1; // 1 = next, -1 = prev
+
+    function showSlide(index, direction = 1) {
+      if (index < 0) index = testimonialSlides.length - 1;
+      if (index >= testimonialSlides.length) index = 0;
+
+      testimonialSlides.forEach((s, i) => {
+        s.classList.remove('active', 'prev');
+        if (i === index) {
+          s.classList.add('active');
+        } else if (i === currentSlide) {
+          if (direction > 0) {
+            s.classList.add('prev');
+          }
+        }
+      });
+      testimonialDots.forEach((d, i) => d.classList.toggle('active', i === index));
+      currentSlide = index;
+    }
+
+    function nextSlide() {
+      showSlide(currentSlide + 1, 1);
+    }
+
+    function prevSlide() {
+      showSlide(currentSlide - 1, -1);
+    }
+
+    function resetInterval() {
+      clearInterval(testimonialInterval);
+      testimonialInterval = setInterval(nextSlide, 5000);
+    }
+
+    testimonialDots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        showSlide(parseInt(dot.dataset.slide));
+        resetInterval();
+      });
+    });
+
+    document.getElementById('testimonialNext').addEventListener('click', () => {
+      nextSlide();
+      resetInterval();
+    });
+
+    document.getElementById('testimonialPrev').addEventListener('click', () => {
+      prevSlide();
+      resetInterval();
+    });
+
+    testimonialInterval = setInterval(nextSlide, 5000);
+
+  </script>
+</body>
+</html>
