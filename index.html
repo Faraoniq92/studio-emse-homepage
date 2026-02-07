@@ -3,11 +3,90 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Studio Emsé — Architecture d'intérieur & Design</title>
+  <title>Studio Emsé — Architecture d'intérieur & Design à Paris</title>
+  <meta name="description" content="Studio Emsé, cabinet d'architecture d'intérieur à Paris. Rénovation, conception et décoration d'espaces résidentiels et professionnels. 40+ projets livrés, 6 ans d'expérience.">
+  <meta name="keywords" content="architecture intérieur, design intérieur, rénovation Paris, architecte intérieur Paris, décoration, Studio Emsé, conception espace, maîtrise d'œuvre">
+  <meta name="author" content="Studio Emsé">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#3F0305">
+  <link rel="canonical" href="https://www.studioemse.com/">
+  <link rel="alternate" hreflang="fr" href="https://www.studioemse.com/">
+  <link rel="alternate" hreflang="x-default" href="https://www.studioemse.com/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Studio Emsé — Architecture d'intérieur & Design à Paris">
+  <meta property="og:description" content="Cabinet d'architecture d'intérieur à Paris. Rénovation, conception et décoration d'espaces résidentiels et professionnels. Patrimoine & audace, modestie & couleurs.">
+  <meta property="og:url" content="https://www.studioemse.com/">
+  <meta property="og:site_name" content="Studio Emsé">
+  <meta property="og:image" content="https://www.studioemse.com/images/magenta-main.webp">
+  <meta property="og:image:alt" content="Studio Emsé — Projet d'architecture d'intérieur à Paris">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="fr_FR">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Studio Emsé — Architecture d'intérieur & Design à Paris">
+  <meta name="twitter:description" content="Cabinet d'architecture d'intérieur à Paris. Rénovation, conception et décoration sur mesure.">
+  <meta name="twitter:image" content="https://www.studioemse.com/images/magenta-main.webp">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="studioemse-favicon.svg">
+  <link rel="apple-touch-icon" href="studioemse-favicon.svg">
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Studio Emsé",
+    "description": "Cabinet d'architecture d'intérieur à Paris. Rénovation, conception et décoration d'espaces résidentiels et professionnels.",
+    "url": "https://www.studioemse.com",
+    "telephone": "+33618288530",
+    "email": "contact@studioemse.com",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "60 rue Raymond Losserand",
+      "addressLocality": "Paris",
+      "postalCode": "75014",
+      "addressCountry": "FR"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 48.8333,
+      "longitude": 2.3167
+    },
+    "image": "https://www.studioemse.com/images/magenta-main.webp",
+    "priceRange": "€€€",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "ratingCount": "6",
+      "bestRating": "5"
+    },
+    "sameAs": [
+      "https://www.instagram.com/studio.emse/",
+      "https://www.facebook.com/mariecamille.studioemse",
+      "https://www.linkedin.com/in/mariecamillefourtane/"
+    ],
+    "openingHours": "Mo-Fr 09:00-19:00",
+    "areaServed": {
+      "@type": "Place",
+      "name": "Paris et Île-de-France"
+    },
+    "knowsAbout": ["Architecture d'intérieur", "Rénovation", "Décoration", "Design sur-mesure", "Maîtrise d'œuvre"]
+  }
+  </script>
+
+  <!-- Calendly -->
+  <link rel="dns-prefetch" href="https://assets.calendly.com">
+  <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="preload" as="video" href="hero-video.mp4">
+  <link rel="preload" as="video" href="Video_Generation_With_Specific_Adjustments.mp4">
   <style>
     :root {
       --brand: #3F0305;
@@ -27,7 +106,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
     body { font-family: var(--font); color: var(--ink); background: var(--white); overflow-x: hidden; line-height: 1.6; font-weight: 400; cursor: default; }
-    img { max-width: 100%; display: block; }
+    img { max-width: 100%; height: auto; display: block; }
     a { text-decoration: none; color: inherit; }
     button { border: none; background: none; cursor: pointer; font: inherit; }
 
@@ -233,20 +312,21 @@
     ═══════════════════════════════════════════ */
     .marquee {
       background: var(--brand); padding: 0.75rem 0;
-      overflow: hidden; white-space: nowrap;
+      overflow: hidden;
     }
     .marquee__track {
-      display: inline-flex; gap: 2.5rem;
-      animation: mq 28s linear infinite;
+      display: flex; justify-content: center; flex-wrap: wrap;
+      gap: 2.5rem; padding: 0.25rem 1rem;
     }
     .marquee__item {
       font-size: 0.72rem; font-weight: 500;
       letter-spacing: 0.1em; text-transform: uppercase;
       color: rgba(255,255,255,0.6);
       display: inline-flex; align-items: center; gap: 2.5rem;
+      white-space: nowrap;
     }
     .marquee__item::after { content: '◆'; font-size: 0.3rem; opacity: 0.35; }
-    @keyframes mq { to { transform: translateX(-50%); } }
+    .marquee__item:last-child::after { display: none; }
 
     /* ═══════════════════════════════════════════
        TRUST BAR
@@ -403,7 +483,7 @@
       transition: background 0.5s var(--ease);
     }
     .pc:hover .pc__ov {
-      background: linear-gradient(to top, var(--brand) 0%, transparent 60%);
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%);
     }
     .pc__info {
       position: absolute; bottom: 1.5rem; left: 1.5rem; right: 1.5rem;
@@ -819,7 +899,11 @@
         position: fixed; inset: 0; background: var(--white);
         justify-content: center; align-items: center; gap: 2rem; z-index: 105;
       }
-      .nav__links.open .nav__link { font-size: 0.95rem; color: var(--ink) !important; }
+      .nav__links.open .nav__link {
+        font-size: 0.95rem; color: var(--ink) !important;
+        min-height: 48px; display: flex; align-items: center;
+        padding: 0.5rem 1rem;
+      }
       .hero__right { max-width: 90%; }
       .hero__title { font-size: clamp(2.8rem, 12vw, 5rem); }
       .manifesto__grid { display: flex; flex-direction: column; gap: 2.5rem; }
@@ -844,6 +928,30 @@
       .trust-bar__item { padding: 0 1.5rem; }
       .trust-bar__item + .trust-bar__item { border-left: 1px solid var(--cream-warm); }
       .sv:nth-child(2), .sv:nth-child(5) { transform: none; }
+      .testimonial__dot { width: 12px; height: 12px; }
+      .testimonial__dot.active { width: 28px; }
+    }
+    @media (max-width: 480px) {
+      .trust-bar {
+        flex-direction: column; align-items: center; gap: 0;
+      }
+      .trust-bar__item {
+        padding: 0.75rem 0; width: 100%; justify-content: center;
+      }
+      .trust-bar__item + .trust-bar__item {
+        border-left: none; border-top: 1px solid var(--cream-warm);
+      }
+      .hero__sub { font-size: 1rem; }
+      .marquee__track { gap: 1.5rem; }
+      .marquee__item { font-size: 0.62rem; gap: 1.5rem; }
+      .sv { padding: 2rem 1.5rem; }
+      .cta__right { align-items: center; text-align: center; }
+      .btn-cta { width: 100%; justify-content: center; }
+      .cta__phone { justify-content: center; }
+      .footer__top { gap: 1.5rem; }
+      .pc { flex: 0 0 85vw; max-width: 280px; }
+      .pc__name { font-size: 1rem; }
+      .pc__meta { font-size: 0.65rem; }
     }
   </style>
 </head>
@@ -860,13 +968,13 @@
   <nav class="nav" id="nav" aria-label="Navigation principale">
     <div class="nav__inner">
       <a href="/" class="nav__logo" aria-label="Studio Emsé — Accueil">
-        <img src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/df36bfbd-4d33-427e-a978-1f641d66ebae/Logo_Emse%CC%81+%281%29.png?format=300w" alt="Studio Emsé">
+        <img src="images/logo.webp" alt="Studio Emsé" width="300" height="108">
       </a>
       <ul class="nav__links" id="navLinks">
         <li><a href="#projets" class="nav__link">Projets</a></li>
         <li><a href="#approche" class="nav__link">Compétences</a></li>
         <li><a href="#studio" class="nav__link">Le studio</a></li>
-        <li><a href="#contact" class="nav__link nav__link--cta">Nous écrire</a></li>
+        <li><a href="" onclick="Calendly.initPopupWidget({url: 'https://calendly.com/farouk-tahri-graphiste/visite-appartement'});return false;" class="nav__link nav__link--cta">Réserver un appel</a></li>
       </ul>
       <button class="nav__toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
         <span></span><span></span><span></span>
@@ -878,7 +986,7 @@
 
   <!-- HERO -->
   <header class="hero">
-    <video class="hero__video" autoplay muted loop playsinline>
+    <video class="hero__video" autoplay muted loop playsinline poster="images/magenta-main.webp">
       <source src="Video_Generation_With_Specific_Adjustments.mp4" type="video/mp4">
     </video>
     <div class="hero__overlay"></div>
@@ -904,11 +1012,6 @@
   <!-- MARQUEE -->
   <div class="marquee" id="marquee" aria-hidden="true">
     <div class="marquee__track">
-      <span class="marquee__item">Patrimoine & audace</span>
-      <span class="marquee__item">Modestie & couleurs</span>
-      <span class="marquee__item">Artisanat & technologie</span>
-      <span class="marquee__item">Particuliers & professionnels</span>
-      <span class="marquee__item">Paris & ailleurs</span>
       <span class="marquee__item">Patrimoine & audace</span>
       <span class="marquee__item">Modestie & couleurs</span>
       <span class="marquee__item">Artisanat & technologie</span>
@@ -947,8 +1050,8 @@
         </div>
       </div>
       <div class="manifesto__imgs r r-d2">
-        <div data-cursor-text="Magenta — 2024"><img class="manifesto__img-main" src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/fd95f088-9b7a-47ff-9e8d-f60ca9eebb49/DSCF0192-Modifier-Modifier-web+1.png" alt="Projet Magenta" loading="lazy"></div>
-        <div data-cursor-text="Papillotes — 2023"><img class="manifesto__img-float" src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/a02f7856-df4e-4114-b18d-775bfcbfe1a8/DSC01148.JPG" alt="Projet Papillotes" loading="lazy"></div>
+        <div data-cursor-text="Magenta — 2024"><img class="manifesto__img-main" src="images/magenta-main.webp" alt="Projet Magenta" loading="lazy" width="2417" height="2795"></div>
+        <div data-cursor-text="Papillotes — 2023"><img class="manifesto__img-float" src="images/papillotes-float.webp" alt="Projet Papillotes" loading="lazy" width="2457" height="3685"></div>
       </div>
     </div>
   </section>
@@ -956,14 +1059,14 @@
   <!-- IMAGE TRIO: image / text / image -->
   <section class="img-trio">
     <div class="img-trio__img" data-cursor-text="Boulogne — 2024" data-parallax>
-      <img src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/704f31f8-9244-4086-af86-4999ad74793c/DSCF2472-Modifier-web-2.jpg" alt="Projet Boulogne" loading="lazy">
+      <img src="images/boulogne-trio.webp" alt="Projet Boulogne" loading="lazy" width="2500" height="1667">
     </div>
     <div class="img-trio__center r">
       <p class="img-trio__quote">Chaque lieu a une histoire. Nous la prolongeons avec justesse, créativité et cohérence.</p>
       <span class="img-trio__attr">Studio Emsé</span>
     </div>
     <div class="img-trio__img" data-cursor-text="Goncourt — 2025" data-parallax>
-      <img src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/5eea1e66-9532-4862-b133-1fcaba4aacf2/DSCF1440-HDR-Modifier-low+def.jpg" alt="Projet Goncourt" loading="lazy">
+      <img src="images/goncourt-trio.webp" alt="Projet Goncourt" loading="lazy" width="1222" height="1527">
     </div>
   </section>
 
@@ -981,38 +1084,38 @@
     <div class="wrap">
       <div class="projects__slider-wrap">
         <div class="projects__slider" id="slider" role="region" aria-label="Slider de projets" tabindex="0">
-          <a class="pc" href="/nosprojets/project-one-ephnc-fw6kz" data-cursor-text="Goncourt">
-            <img class="pc__img" src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/ab014663-ad9b-476d-986c-f56cfcdd9dd9/DSCF1563-instagram.jpg" alt="Projet Goncourt" loading="lazy">
+          <a class="pc" href="nosprojets/goncourt.html" data-cursor-text="Goncourt">
+            <img class="pc__img" src="images/goncourt-slider.webp" alt="Projet Goncourt" loading="lazy" width="1080" height="1350">
             <div class="pc__ov"></div>
             <div class="pc__info"><h3 class="pc__name">Goncourt</h3><span class="pc__meta">Paris — 2025</span></div>
           </a>
-          <a class="pc" href="/nosprojets/project-five-jkmzy-5y5lb-5d37a" data-cursor-text="Vavin">
-            <img class="pc__img" src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/c98be0e5-51cc-4e42-bd66-d06b4323ea8d/Passage.png" alt="Projet Vavin" loading="lazy">
+          <a class="pc" href="nosprojets/vavin.html" data-cursor-text="Vavin">
+            <img class="pc__img" src="images/vavin-slider.webp" alt="Projet Vavin" loading="lazy" width="1537" height="2160">
             <div class="pc__ov"></div>
             <div class="pc__info"><h3 class="pc__name">Vavin</h3><span class="pc__meta">Paris — 2025</span></div>
           </a>
-          <a class="pc" href="/nosprojets/project-five-jkmzy-5y5lb" data-cursor-text="Bonne Nouvelle">
-            <img class="pc__img" src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/919ec344-a7a6-4b8a-ae1b-db6fc0bbe360/%C3%89CHIQUIER+SALON-75.jpg" alt="Projet Bonne Nouvelle" loading="lazy">
+          <a class="pc" href="nosprojets/bonne-nouvelle.html" data-cursor-text="Bonne Nouvelle">
+            <img class="pc__img" src="images/bonne-nouvelle-slider.webp" alt="Projet Bonne Nouvelle" loading="lazy" width="2500" height="3747">
             <div class="pc__ov"></div>
             <div class="pc__info"><h3 class="pc__name">Bonne Nouvelle</h3><span class="pc__meta">Paris — 2025</span></div>
           </a>
-          <a class="pc" href="/nosprojets/project-two-llrgk-gc8bk" data-cursor-text="Papillotes">
-            <img class="pc__img" src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/2bbbcc90-cac9-44ba-bf18-2e4442d436d3/DSC01061.JPG" alt="Projet Papillotes" loading="lazy">
+          <a class="pc" href="nosprojets/papillotes.html" data-cursor-text="Papillotes">
+            <img class="pc__img" src="images/papillotes-slider.webp" alt="Projet Papillotes" loading="lazy" width="2500" height="3750">
             <div class="pc__ov"></div>
             <div class="pc__info"><h3 class="pc__name">Papillotes</h3><span class="pc__meta">Paris — 2023</span></div>
           </a>
-          <a class="pc" href="/nosprojets/project-three-8zgh7-yn52c" data-cursor-text="Magenta">
-            <img class="pc__img" src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/eb171048-9601-4a32-98a0-3c720284034c/DSCF0157-Modifier-2-low+def.jpg" alt="Projet Magenta" loading="lazy">
+          <a class="pc" href="nosprojets/magenta.html" data-cursor-text="Magenta">
+            <img class="pc__img" src="images/magenta-slider.webp" alt="Projet Magenta" loading="lazy" width="1233" height="1541">
             <div class="pc__ov"></div>
             <div class="pc__info"><h3 class="pc__name">Magenta</h3><span class="pc__meta">Paris — 2024</span></div>
           </a>
-          <a class="pc" href="/nosprojets/project-four-yjynj-nbdw4" data-cursor-text="Villiers">
-            <img class="pc__img" src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/2992f7bc-f789-40b3-a6f8-7c88d653ebb5/DSCF1282-HDR-Modifier-low+def.jpg" alt="Projet Villiers" loading="lazy">
+          <a class="pc" href="nosprojets/villiers.html" data-cursor-text="Villiers">
+            <img class="pc__img" src="images/villiers-slider.webp" alt="Projet Villiers" loading="lazy" width="1229" height="1536">
             <div class="pc__ov"></div>
             <div class="pc__info"><h3 class="pc__name">Villiers</h3><span class="pc__meta">Paris — 2023</span></div>
           </a>
-          <a class="pc" href="/nosprojets/boulogne" data-cursor-text="Boulogne">
-            <img class="pc__img" src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/dd2a0c93-b3a0-4b92-be9b-919eef30a5da/DSCF2495-web-2.jpg" alt="Projet Boulogne" loading="lazy">
+          <a class="pc" href="nosprojets/boulogne.html" data-cursor-text="Boulogne">
+            <img class="pc__img" src="images/boulogne-slider.webp" alt="Projet Boulogne" loading="lazy" width="1913" height="2869">
             <div class="pc__ov"></div>
             <div class="pc__info"><h3 class="pc__name">Boulogne</h3><span class="pc__meta">Boulogne-Billancourt — 2024</span></div>
           </a>
@@ -1031,7 +1134,7 @@
 
   <!-- FULL BLEED IMAGE -->
   <div class="full-img" data-cursor-text="Bonne Nouvelle — 2025" data-parallax>
-    <img src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/ae9266bd-383b-4a69-9577-5d5d95e81750/BG-Hero.png" alt="Projet Bonne Nouvelle" loading="lazy">
+    <img src="images/bonne-nouvelle-hero.webp" alt="Projet Bonne Nouvelle" loading="lazy" width="1440" height="898">
   </div>
 
   <!-- SERVICES -->
@@ -1044,32 +1147,32 @@
       </div>
       <div class="services__grid rs">
         <div class="sv">
-          <img class="sv__img" src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/c82c5e8a-85d0-4b57-9e36-6fbc287e5433/WhatsApp+Image+2025-11-10+at+14.21.57+%281%29.jpeg" alt="Étude de faisabilité" loading="lazy">
+          <img class="sv__img" src="images/service-faisabilite.webp" alt="Étude de faisabilité" loading="lazy" width="2500" height="3333">
           <span class="sv__num" aria-hidden="true">01</span><h3 class="sv__title">Étude de faisabilité</h3>
           <p class="sv__text">Achetez ou lancez votre rénovation en toute sérénité. Nous vérifions la faisabilité technique, les démarches et le budget en amont.</p>
         </div>
         <div class="sv">
-          <img class="sv__img" src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/8d3d5ffa-3a57-4b97-9e55-6d739b5afc46/PORTRAITS++MARUE+CAMILLE+%26+HUGO-3.jpg" alt="Visite-conseil" loading="lazy">
+          <img class="sv__img" src="images/service-visite.webp" alt="Visite-conseil" loading="lazy" width="2500" height="3747">
           <span class="sv__num" aria-hidden="true">02</span><h3 class="sv__title">Visite-conseil</h3>
           <p class="sv__text">Visitez votre futur bien avec un œil expert à vos côtés. Vous repartez avec un premier avis et les enjeux techniques identifiés.</p>
         </div>
         <div class="sv">
-          <img class="sv__img" src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/bc9bae3f-fc9d-4686-9c1c-85c89f88c2a0/WhatsApp+Image+2025-11-10+at+13.51.44.jpeg" alt="Conception" loading="lazy">
+          <img class="sv__img" src="images/service-conception.webp" alt="Conception" loading="lazy" width="2500" height="3333">
           <span class="sv__num" aria-hidden="true">03</span><h3 class="sv__title">Conception</h3>
           <p class="sv__text">Visualisez votre futur intérieur avant le premier coup de marteau. Plans, 3D, matériaux : chaque choix est validé ensemble.</p>
         </div>
         <div class="sv">
-          <img class="sv__img" src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/a0c1ad7d-05fa-48ed-83c7-38ad4ad4bf57/Frame+2330.png" alt="Décoration" loading="lazy">
+          <img class="sv__img" src="images/service-decoration.webp" alt="Décoration" loading="lazy" width="1504" height="1505">
           <span class="sv__num" aria-hidden="true">04</span><h3 class="sv__title">Décoration</h3>
           <p class="sv__text">Un intérieur qui vous ressemble jusque dans les détails. Nous sourceons rideaux, tapis, meubles et objets pour créer une ambiance cohérente.</p>
         </div>
         <div class="sv">
-          <img class="sv__img" src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/89fce39a-7bbb-4684-ac28-bef3c7fbfe77/Frame+2328.png" alt="Chantier" loading="lazy">
+          <img class="sv__img" src="images/service-chantier.webp" alt="Chantier" loading="lazy" width="1516" height="1505">
           <span class="sv__num" aria-hidden="true">05</span><h3 class="sv__title">Maîtrise d'œuvre</h3>
           <p class="sv__text">Votre chantier avance sans stress. Nos artisans de confiance, un planning clair, et un suivi quotidien pour un résultat sans surprise.</p>
         </div>
         <div class="sv">
-          <img class="sv__img" src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/e25b497e-9e8a-42b8-bed7-dc3cb6280708/ÉCHIQUIER+SALON-30.jpg" alt="Design sur-mesure" loading="lazy">
+          <img class="sv__img" src="images/service-design.webp" alt="Design sur-mesure" loading="lazy" width="2500" height="1668">
           <span class="sv__num" aria-hidden="true">06</span><h3 class="sv__title">Design sur-mesure</h3>
           <p class="sv__text">Du mobilier unique, pensé pour votre espace. Cuisine, bibliothèque, dressing — chaque centimètre est optimisé pour vous.</p>
         </div>
@@ -1081,10 +1184,10 @@
   <div class="img-duo-wrap wrap">
     <div class="img-duo">
       <div class="img-duo__item r" data-cursor-text="Échiquier — 2024">
-        <img src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/5262dc6e-2945-41b5-8ed5-321d67ccccdf/E%E2%95%A0%C3%BCCHIQUIER+SALON-61.jpg" alt="Projet Échiquier" loading="lazy">
+        <img src="images/echiquier-duo-left.webp" alt="Projet Échiquier" loading="lazy" width="2500" height="3747">
       </div>
       <div class="img-duo__item r r-d2" data-cursor-text="Boulogne — 2024">
-        <img src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/4d0066db-9979-4a91-aacb-c8c28ec62d8f/DSCF2560-web.jpg" alt="Projet Boulogne" loading="lazy">
+        <img src="images/boulogne-duo.webp" alt="Projet Boulogne" loading="lazy" width="2080" height="3120">
       </div>
     </div>
   </div>
@@ -1093,7 +1196,7 @@
   <section class="studio wrap" id="studio">
     <div class="studio__grid">
       <div class="studio__img-col r" data-cursor-text="Goncourt — 2025">
-        <img class="studio__img" src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/9af4dbc4-6877-4cac-a86f-38f1ce509a6b/DSCF1633-HDR-Modifier-low+def.jpg" alt="Projet Goncourt" loading="lazy">
+        <img class="studio__img" src="images/goncourt-studio.webp" alt="Projet Goncourt" loading="lazy" width="1129" height="1411">
       </div>
       <div class="studio__content r r-d2">
         <span class="label">Le studio</span>
@@ -1111,7 +1214,7 @@
         <span class="testimonial__stars">★★★★★</span>
         <span class="testimonial__score">5/5 sur Google</span>
       </div>
-      <div class="testimonial__slider" id="testimonialSlider">
+      <div class="testimonial__slider" id="testimonialSlider" aria-live="polite">
         <div class="testimonial__slide active">
           <p class="testimonial__quote">Nous avons fait appel à Marie-Camille pour la rénovation lourde de notre maison ancienne à Rennes et nous en sommes pleinement satisfaits.</p>
           <span class="testimonial__attr">Maxime Jegou</span>
@@ -1148,12 +1251,12 @@
           <svg viewBox="0 0 24 24"><path d="M19 12H5m6 6-6-6 6-6"/></svg>
         </button>
         <div class="testimonial__nav">
-          <button class="testimonial__dot active" data-slide="0"></button>
-          <button class="testimonial__dot" data-slide="1"></button>
-          <button class="testimonial__dot" data-slide="2"></button>
-          <button class="testimonial__dot" data-slide="3"></button>
-          <button class="testimonial__dot" data-slide="4"></button>
-          <button class="testimonial__dot" data-slide="5"></button>
+          <button class="testimonial__dot active" data-slide="0" aria-label="Avis 1"></button>
+          <button class="testimonial__dot" data-slide="1" aria-label="Avis 2"></button>
+          <button class="testimonial__dot" data-slide="2" aria-label="Avis 3"></button>
+          <button class="testimonial__dot" data-slide="3" aria-label="Avis 4"></button>
+          <button class="testimonial__dot" data-slide="4" aria-label="Avis 5"></button>
+          <button class="testimonial__dot" data-slide="5" aria-label="Avis 6"></button>
         </div>
         <button class="testimonial__arrow testimonial__arrow--next" id="testimonialNext" aria-label="Suivant">
           <svg viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
@@ -1173,8 +1276,8 @@
         <p class="cta__free">Premier échange gratuit et sans engagement.</p>
       </div>
       <div class="cta__right">
-        <a href="mailto:contact@studioemse.com" class="btn-cta">
-          Nous écrire
+        <a href="" onclick="Calendly.initPopupWidget({url: 'https://calendly.com/farouk-tahri-graphiste/visite-appartement'});return false;" class="btn-cta">
+          Réserver un appel
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
         </a>
         <span class="cta__or">ou</span>
@@ -1188,7 +1291,7 @@
 
   <!-- FULL END IMAGE -->
   <div class="full-end" data-cursor-text="Bonne Nouvelle — 2025" data-parallax>
-    <img src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/8084609f-9115-483d-9f1c-92555d931241/ÉCHIQUIER+SALON-84.jpg" alt="Projet Bonne Nouvelle" loading="lazy">
+    <img src="images/echiquier-full-end.webp" alt="Projet Bonne Nouvelle" loading="lazy" width="2500" height="1668">
   </div>
 
   </main>
@@ -1199,7 +1302,7 @@
       <div class="footer__top">
         <div>
           <a href="/" class="footer__logo" aria-label="Studio Emsé">
-            <img src="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/df36bfbd-4d33-427e-a978-1f641d66ebae/Logo_Emse%CC%81+%281%29.png?format=300w" alt="Studio Emsé">
+            <img src="images/logo.webp" alt="Studio Emsé" width="300" height="108">
           </a>
           <p class="footer__brand-text">Architecture d'intérieur & design. Patrimoine et audace, modestie et couleurs.</p>
         </div>
@@ -1222,12 +1325,13 @@
         </div>
       </div>
       <div class="footer__bottom">
-        <span>&copy; 2025 Studio Emsé — Tous droits réservés</span>
+        <span>&copy; 2026 Studio Emsé — Tous droits réservés</span>
         <span>Architecte d'intérieur</span>
       </div>
     </div>
   </footer>
 
+  <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
   <script>
     // ── NAV ──
     const nav = document.getElementById('nav');

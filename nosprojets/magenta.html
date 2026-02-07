@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Magenta — Studio Emsé</title>
+  <meta name="description" content="Projet Magenta par Studio Emsé : rénovation d'un appartement de 100m² à Paris. Fenêtre sur courses — codes bistrot et brocante, cuisine repensée et mezzanines sur-mesure.">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#3F0305">
+  <link rel="canonical" href="https://www.studioemse.com/nosprojets/magenta.html">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Magenta — Studio Emsé">
+  <meta property="og:description" content="Rénovation d'un appartement de 100m² à Paris. Fenêtre sur courses — codes bistrot et brocante, cuisine repensée et mezzanines sur-mesure.">
+  <meta property="og:url" content="https://www.studioemse.com/nosprojets/magenta.html">
+  <meta property="og:site_name" content="Studio Emsé">
+  <meta property="og:image" content="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/1d770870-5536-4943-ae64-cce21cf686ba/DSCF0148-Modifier-Modifier-web.jpg">
+  <meta property="og:image:alt" content="Projet Magenta — Rénovation appartement à Paris par Studio Emsé">
+  <meta property="og:locale" content="fr_FR">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Magenta — Studio Emsé">
+  <meta name="twitter:description" content="Rénovation d'un appartement de 100m² à Paris. Fenêtre sur courses — codes bistrot et brocante.">
+  <meta name="twitter:image" content="https://images.squarespace-cdn.com/content/v1/68ac7e27a131341181fec407/1d770870-5536-4943-ae64-cce21cf686ba/DSCF0148-Modifier-Modifier-web.jpg">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../studioemse-favicon.svg">
+  <link rel="apple-touch-icon" href="../studioemse-favicon.svg">
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  [{
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    "name": "Magenta — Fenêtre sur courses",
+    "description": "Rénovation d'un appartement à Paris. Fenêtre sur courses — un intérieur lumineux et fonctionnel.",
+    "image": "https://www.studioemse.com/nosprojets/images/magenta/DSCF0148.jpg",
+    "datePublished": "2024-01-01",
+    "author": {
+      "@type": "Organization",
+      "name": "Studio Emsé",
+      "url": "https://www.studioemse.com"
+    },
+    "provider": {
+      "@type": "Organization",
+      "name": "Studio Emsé"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.studioemse.com/" },
+      { "@type": "ListItem", "position": 2, "name": "Nos projets", "item": "https://www.studioemse.com/#projets" },
+      { "@type": "ListItem", "position": 3, "name": "Magenta", "item": "https://www.studioemse.com/nosprojets/magenta.html" }
+    ]
+  }]
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand: #3F0305;
+      --ink: #1A1615;
+      --ink-70: #4A4340;
+      --ink-40: #8A827E;
+      --cream: #F6F2EE;
+      --cream-warm: #EDE6DF;
+      --white: #FDFBF9;
+      --font: 'Manrope', system-ui, -apple-system, sans-serif;
+      --gap: clamp(12px, 1.6vw, 24px);
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      --pad: clamp(24px, 5vw, 64px);
+      --max: 1200px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body { font-family: var(--font); color: var(--ink); background: var(--white); overflow-x: hidden; line-height: 1.6; font-weight: 400; cursor: default; }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    button { border: none; background: none; cursor: pointer; font: inherit; }
+
+    .wrap {
+      max-width: var(--max); margin: 0 auto;
+      padding-left: var(--pad); padding-right: var(--pad);
+    }
+    .label {
+      font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--brand);
+    }
+
+    .skip-link {
+      position: absolute; top: -100%; left: 50%;
+      transform: translateX(-50%);
+      background: var(--brand); color: #fff;
+      padding: 0.6rem 1.4rem; font-size: 0.8rem; font-weight: 600;
+      z-index: 200; transition: top 0.2s;
+    }
+    .skip-link:focus { top: 1rem; }
+
+    *:focus-visible {
+      outline: 2px solid var(--brand);
+      outline-offset: 3px;
+    }
+    .nav__link--cta:focus-visible { outline-color: #fff; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .r, .rs > * { opacity: 1; transform: none; }
+    }
+
+    /* ═══════════════════════════════════════════
+       NAV
+    ═══════════════════════════════════════════ */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.25rem 0;
+      mix-blend-mode: difference;
+      transition: all 0.5s var(--ease);
+    }
+    .nav.scrolled {
+      mix-blend-mode: normal;
+      background: rgba(253,251,249,0.95);
+      padding: 0.75rem 0;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+    }
+    .nav__inner {
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: var(--max); margin: 0 auto; padding: 0 var(--pad);
+    }
+    .nav__logo img { height: 30px; width: auto; transition: filter 0.3s; filter: brightness(10); }
+    .nav.scrolled .nav__logo img { filter: none; }
+    .nav__links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+    .nav__link {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: #fff; transition: opacity 0.3s;
+    }
+    .nav.scrolled .nav__link { color: var(--ink); }
+    .nav__link:hover { opacity: 0.55; }
+    .nav__link--cta {
+      background: var(--brand); color: #fff !important;
+      padding: 0.75rem 1.5rem; font-weight: 700; transition: opacity 0.3s;
+    }
+    .nav__link--cta:hover { opacity: 0.8; }
+    .nav.scrolled .nav__link--cta { color: #fff !important; }
+
+    .nav__toggle { display: none; width: 24px; height: 16px; position: relative; z-index: 110; }
+    .nav__toggle span {
+      display: block; width: 100%; height: 1.5px; background: #fff;
+      position: absolute; left: 0; transition: all 0.35s var(--ease);
+    }
+    .nav.scrolled .nav__toggle span { background: var(--ink); }
+    .nav__toggle span:nth-child(1) { top: 0; }
+    .nav__toggle span:nth-child(2) { top: 50%; transform: translateY(-50%); }
+    .nav__toggle span:nth-child(3) { bottom: 0; }
+    .nav__toggle.open span { background: var(--ink) !important; }
+    .nav__toggle.open span:nth-child(1) { top: 50%; transform: translateY(-50%) rotate(45deg); }
+    .nav__toggle.open span:nth-child(2) { opacity: 0; }
+    .nav__toggle.open span:nth-child(3) { bottom: 50%; transform: translateY(50%) rotate(-45deg); }
+
+    /* ═══════════════════════════════════════════
+       PROJECT HERO
+    ═══════════════════════════════════════════ */
+    .project-hero {
+      position: relative; height: 80vh; min-height: 500px;
+      overflow: hidden; background: var(--ink);
+    }
+    .project-hero__img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .project-hero__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.25) 100%);
+    }
+    .project-hero__content {
+      position: absolute; bottom: 0; left: 0; right: 0; z-index: 2;
+      max-width: var(--max); margin: 0 auto;
+      padding: 0 var(--pad) clamp(3rem, 6vh, 5rem);
+    }
+    .project-hero__back {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.65rem; font-weight: 600;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 2rem;
+      transition: color 0.3s;
+    }
+    .project-hero__back:hover { color: #fff; }
+    .project-hero__back svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 1.5; fill: none; }
+    .project-hero__title {
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 500; line-height: 0.95;
+      letter-spacing: -0.03em; color: #fff;
+    }
+    .project-hero__subtitle {
+      font-size: clamp(1rem, 1.8vw, 1.3rem);
+      font-weight: 300;
+      color: rgba(255,255,255,0.7);
+      margin-top: 0.75rem;
+    }
+
+    /* ═══════════════════════════════════════════
+       PROJECT INFO BAR
+    ═══════════════════════════════════════════ */
+    .project-info {
+      display: flex; justify-content: center; gap: 0;
+      padding: 2rem var(--pad);
+      border-bottom: 1px solid var(--cream-warm);
+      flex-wrap: wrap;
+    }
+    .project-info__item {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 0.2rem; padding: 0 2.5rem;
+    }
+    .project-info__item + .project-info__item {
+      border-left: 1px solid var(--cream-warm);
+    }
+    .project-info__value {
+      font-size: 0.85rem; font-weight: 600;
+      color: var(--ink); line-height: 1.2;
+    }
+    .project-info__label {
+      font-size: 0.6rem; font-weight: 600;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--ink-40);
+    }
+
+    /* ═══════════════════════════════════════════
+       PROJECT DESCRIPTION
+    ═══════════════════════════════════════════ */
+    .project-desc {
+      padding: clamp(4rem, 7vh, 6rem) 0;
+    }
+    .project-desc__inner {
+      max-width: 680px; margin: 0 auto;
+      text-align: center;
+    }
+    .project-desc__text {
+      font-size: clamp(1rem, 1.4vw, 1.15rem);
+      line-height: 1.8; color: var(--ink-70);
+      font-weight: 400;
+    }
+
+    /* ═══════════════════════════════════════════
+       GALLERY
+    ═══════════════════════════════════════════ */
+    .gallery {
+      padding: 0 0 clamp(4rem, 7vh, 6rem);
+    }
+    .gallery__grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--gap);
+    }
+    .gallery__item {
+      overflow: hidden;
+    }
+    .gallery__item--full {
+      grid-column: 1 / -1;
+    }
+    .gallery__item img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.6s var(--ease);
+      will-change: transform;
+    }
+    .gallery__item:hover img {
+      transform: scale(1.02);
+    }
+    .gallery__item--portrait img {
+      aspect-ratio: 3/4;
+    }
+    .gallery__item--landscape img {
+      aspect-ratio: 4/3;
+    }
+    .gallery__item--full img {
+      aspect-ratio: 16/9;
+    }
+
+    /* ═══════════════════════════════════════════
+       PHOTO CREDIT
+    ═══════════════════════════════════════════ */
+    .photo-credit {
+      text-align: center;
+      padding: 2rem var(--pad) clamp(4rem, 6vh, 5rem);
+    }
+    .photo-credit__text {
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--ink-40);
+    }
+
+    /* ═══════════════════════════════════════════
+       PROJECT NAV
+    ═══════════════════════════════════════════ */
+    .project-nav {
+      display: flex; border-top: 1px solid var(--cream-warm);
+    }
+    .project-nav__link {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: clamp(2.5rem, 4vh, 4rem) var(--pad);
+      transition: background 0.4s var(--ease);
+    }
+    .project-nav__link:hover { background: var(--cream); }
+    .project-nav__link + .project-nav__link {
+      border-left: 1px solid var(--cream-warm);
+    }
+    .project-nav__dir {
+      font-size: 0.6rem; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--ink-40); margin-bottom: 0.5rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .project-nav__dir svg {
+      width: 14px; height: 14px; stroke: currentColor; stroke-width: 1.5; fill: none;
+    }
+    .project-nav__name {
+      font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+      font-weight: 500; letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+
+    /* ═══════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════ */
+    .footer {
+      background: var(--ink); color: rgba(255,255,255,0.45);
+      padding: clamp(4rem, 7vh, 6rem) 0 2rem;
+    }
+    .footer__inner {
+      max-width: var(--max); margin: 0 auto; padding: 0 var(--pad);
+    }
+    .footer__top {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem; padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .footer__brand-text {
+      font-size: 0.85rem; font-weight: 300;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.7; margin-top: 1rem; max-width: 260px;
+    }
+    .footer__heading {
+      font-size: 0.6rem; font-weight: 600;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: rgba(255,255,255,0.5); margin-bottom: 1rem;
+    }
+    .footer__link {
+      display: block; font-size: 0.82rem; font-weight: 400;
+      color: rgba(255,255,255,0.5); margin-bottom: 0.75rem;
+      transition: color 0.3s;
+    }
+    .footer__link:hover { color: #fff; }
+    .footer__link--static { cursor: default; }
+    .footer__link--static:hover { color: rgba(255,255,255,0.5); }
+    .footer__bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 1.5rem; font-size: 0.7rem; color: rgba(255,255,255,0.5);
+    }
+    .footer__logo img {
+      height: 22px; width: auto; filter: brightness(10); opacity: 0.35;
+    }
+
+    /* ═══════════════════════════════════════════
+       REVEAL ANIMATIONS
+    ═══════════════════════════════════════════ */
+    .r {
+      opacity: 0; transform: translateY(40px);
+      transition: opacity 1s var(--ease), transform 1s var(--ease);
+    }
+    .r.v { opacity: 1; transform: translateY(0); }
+    .r-d2 { transition-delay: 0.15s; }
+    .r-d3 { transition-delay: 0.3s; }
+
+    .rs > * {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+    }
+    .rs:not(.v) > * { opacity: 0; transform: translateY(30px); }
+    .rs.v > *:nth-child(1) { transition-delay: 0s; }
+    .rs.v > *:nth-child(2) { transition-delay: 0.1s; }
+    .rs.v > *:nth-child(3) { transition-delay: 0.15s; }
+    .rs.v > *:nth-child(4) { transition-delay: 0.2s; }
+    .rs.v > *:nth-child(5) { transition-delay: 0.25s; }
+    .rs.v > *:nth-child(6) { transition-delay: 0.3s; }
+    .rs.v > * { opacity: 1; transform: translateY(0); }
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════ */
+    @media (max-width: 768px) {
+      .nav__links { display: none; }
+      .nav__toggle { display: block; }
+      .nav__links.open {
+        display: flex; flex-direction: column;
+        position: fixed; inset: 0; background: var(--white);
+        justify-content: center; align-items: center; gap: 2rem; z-index: 105;
+      }
+      .nav__links.open .nav__link { font-size: 0.95rem; color: var(--ink) !important; }
+      .project-hero { height: 60vh; min-height: 400px; }
+      .project-hero__title { font-size: clamp(2.5rem, 10vw, 4rem); }
+      .project-info { flex-direction: row; gap: 0; }
+      .project-info__item { padding: 0 1.2rem; }
+      .project-info__item + .project-info__item { border-left: 1px solid var(--cream-warm); }
+      .gallery__grid { grid-template-columns: 1fr; }
+      .gallery__item--full { grid-column: 1; }
+      .project-nav { flex-direction: column; }
+      .project-nav__link + .project-nav__link {
+        border-left: none; border-top: 1px solid var(--cream-warm);
+      }
+      .footer__top { grid-template-columns: 1fr; gap: 2rem; }
+      .footer__bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SKIP NAV -->
+  <a href="#main" class="skip-link">Aller au contenu</a>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav" aria-label="Navigation principale">
+    <div class="nav__inner">
+      <a href="../" class="nav__logo" aria-label="Studio Emsé — Accueil">
+        <img src="../images/logo.webp" alt="Studio Emsé" width="300" height="108">
+      </a>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="../#projets" class="nav__link">Projets</a></li>
+        <li><a href="../#approche" class="nav__link">Compétences</a></li>
+        <li><a href="../#studio" class="nav__link">Le studio</a></li>
+        <li><a href="mailto:contact@studioemse.com" class="nav__link nav__link--cta">Nous écrire</a></li>
+      </ul>
+      <button class="nav__toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main">
+
+  <!-- PROJECT HERO -->
+  <header class="project-hero">
+    <img class="project-hero__img" src="images/magenta/DSCF0148.jpg" alt="Projet Magenta — Cuisine" width="2062" height="3093">
+    <div class="project-hero__overlay"></div>
+    <div class="project-hero__content">
+      <a href="../" class="project-hero__back">
+        <svg viewBox="0 0 24 24"><path d="M19 12H5m6 6-6-6 6-6"/></svg>
+        Tous les projets
+      </a>
+      <h1 class="project-hero__title">Magenta</h1>
+      <p class="project-hero__subtitle">Fenêtre sur courses</p>
+    </div>
+  </header>
+
+  <!-- PROJECT INFO -->
+  <div class="project-info rs">
+    <div class="project-info__item">
+      <span class="project-info__value">Appartement</span>
+      <span class="project-info__label">Type</span>
+    </div>
+    <div class="project-info__item">
+      <span class="project-info__value">100 m²</span>
+      <span class="project-info__label">Surface</span>
+    </div>
+    <div class="project-info__item">
+      <span class="project-info__value">HSP 2.7 m</span>
+      <span class="project-info__label">Hauteur</span>
+    </div>
+    <div class="project-info__item">
+      <span class="project-info__value">Paris</span>
+      <span class="project-info__label">Localisation</span>
+    </div>
+  </div>
+
+  <!-- PROJECT DESCRIPTION -->
+  <section class="project-desc wrap r">
+    <div class="project-desc__inner">
+      <p class="project-desc__text">Les clientes voulaient sortir leur cuisine de sa 'grotte', très sombre et peu fonctionnelle, ainsi que créer deux espaces nuits agréables pour leurs filles avec une mezzanine. Les codes bistrot et brocante collaient parfaitement à l'esprit du lieu et des habitantes.</p>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="gallery wrap">
+    <div class="gallery__grid">
+
+      <!-- Row 1: full width -->
+      <div class="gallery__item gallery__item--full r">
+        <img src="images/magenta/DSCF0148.jpg" alt="Vue d'ensemble" loading="lazy" width="2062" height="3093">
+      </div>
+
+      <!-- Row 2: 2 portraits -->
+      <div class="gallery__item gallery__item--portrait r">
+        <img src="images/magenta/DSCF0176.jpg" alt="Détail intérieur" loading="lazy" width="2056" height="3083">
+      </div>
+      <div class="gallery__item gallery__item--portrait r r-d2">
+        <img src="images/magenta/DSCF0171.jpg" alt="Espace cuisine" loading="lazy" width="2500" height="1667">
+      </div>
+
+      <!-- Row 3: full width -->
+      <div class="gallery__item gallery__item--full r">
+        <img src="images/magenta/DSCF0253.jpg" alt="Panorama pièce de vie" loading="lazy" width="2080" height="3120">
+      </div>
+
+      <!-- Row 4: 2 portraits -->
+      <div class="gallery__item gallery__item--portrait r">
+        <img src="images/magenta/DSCF0213.jpg" alt="Détail aménagement" loading="lazy" width="2041" height="3062">
+      </div>
+      <div class="gallery__item gallery__item--portrait r r-d2">
+        <img src="images/magenta/DSCF0232.jpg" alt="Espace nuit" loading="lazy" width="2080" height="3120">
+      </div>
+
+      <!-- Row 5: full width -->
+      <div class="gallery__item gallery__item--full r">
+        <img src="images/magenta/DSCF0192.jpg" alt="Vue d'ensemble mezzanine" loading="lazy" width="2500" height="1667">
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PHOTO CREDIT -->
+  <div class="photo-credit r">
+    <p class="photo-credit__text">Crédits photo : Floriane Degouy l Pluriel Studio</p>
+  </div>
+
+  <!-- PROJECT NAVIGATION -->
+  <nav class="project-nav" aria-label="Navigation entre projets">
+    <a href="papillotes.html" class="project-nav__link">
+      <span class="project-nav__dir">
+        <svg viewBox="0 0 24 24"><path d="M19 12H5m6 6-6-6 6-6"/></svg>
+        Projet précédent
+      </span>
+      <span class="project-nav__name">Papillotes</span>
+    </a>
+    <a href="villiers.html" class="project-nav__link">
+      <span class="project-nav__dir">
+        Projet suivant
+        <svg viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+      </span>
+      <span class="project-nav__name">Villiers</span>
+    </a>
+  </nav>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__top">
+        <div>
+          <a href="../" class="footer__logo" aria-label="Studio Emsé">
+            <img src="../images/logo.webp" alt="Studio Emsé" width="300" height="108">
+          </a>
+          <p class="footer__brand-text">Architecture d'intérieur & design. Patrimoine et audace, modestie et couleurs.</p>
+        </div>
+        <div>
+          <h3 class="footer__heading">Navigation</h3>
+          <a href="../#projets" class="footer__link">Nos projets</a>
+          <a href="../#approche" class="footer__link">Compétences</a>
+          <a href="../#studio" class="footer__link">Le studio</a>
+          <a href="../#contact" class="footer__link">Contact</a>
+        </div>
+        <div>
+          <h3 class="footer__heading">Localisation</h3>
+          <p class="footer__link footer__link--static">60 rue Raymond Losserand</p>
+          <p class="footer__link footer__link--static">75014 Paris</p>
+        </div>
+        <div>
+          <h3 class="footer__heading">Contact</h3>
+          <a href="mailto:contact@studioemse.com" class="footer__link">contact@studioemse.com</a>
+          <a href="tel:+33618288530" class="footer__link">+33 (0) 6 18 28 85 30</a>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2026 Studio Emsé — Tous droits réservés</span>
+        <span>Architecte d'intérieur</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ── NAV ──
+    const nav = document.getElementById('nav');
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => { nav.classList.toggle('scrolled', scrollY > 80); ticking = false; });
+        ticking = true;
+      }
+    }, { passive: true });
+    const tog = document.getElementById('navToggle'), lnk = document.getElementById('navLinks');
+    tog.addEventListener('click', () => {
+      const o = lnk.classList.toggle('open'); tog.classList.toggle('open');
+      tog.setAttribute('aria-expanded', o); document.body.style.overflow = o ? 'hidden' : '';
+    });
+    lnk.querySelectorAll('.nav__link').forEach(a => a.addEventListener('click', () => {
+      lnk.classList.remove('open'); tog.classList.remove('open');
+      tog.setAttribute('aria-expanded', 'false'); document.body.style.overflow = '';
+    }));
+
+    // ── REVEAL ──
+    const obs = new IntersectionObserver(e => {
+      e.forEach(x => { if (x.isIntersecting) { x.target.classList.add('v'); obs.unobserve(x.target); } });
+    }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+    document.querySelectorAll('.r,.rs').forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>
