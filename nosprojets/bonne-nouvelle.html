@@ -241,7 +241,8 @@
        PROJECT DESCRIPTION
     ═══════════════════════════════════════════ */
     .project-desc {
-      padding: clamp(4rem, 7vh, 6rem) 0;
+      padding-top: clamp(4rem, 7vh, 6rem);
+      padding-bottom: clamp(4rem, 7vh, 6rem);
     }
     .project-desc__inner {
       max-width: 680px; margin: 0 auto;
@@ -257,7 +258,7 @@
        GALLERY
     ═══════════════════════════════════════════ */
     .gallery {
-      padding: 0 0 clamp(4rem, 7vh, 6rem);
+      padding-bottom: clamp(4rem, 7vh, 6rem);
     }
     .gallery__grid {
       display: grid;
@@ -408,12 +409,12 @@
         position: fixed; inset: 0; background: var(--white);
         justify-content: center; align-items: center; gap: 2rem; z-index: 105;
       }
-      .nav__links.open .nav__link { font-size: 0.95rem; color: var(--ink) !important; }
+      .nav__links.open .nav__link { font-size: 0.95rem; color: var(--ink) !important; min-height: 48px; display: flex; align-items: center; padding: 0.5rem 1rem; }
       .project-hero { height: 60vh; min-height: 400px; }
       .project-hero__title { font-size: clamp(2.5rem, 10vw, 4rem); }
-      .project-info { flex-direction: row; gap: 0; }
-      .project-info__item { padding: 0 1.2rem; }
-      .project-info__item + .project-info__item { border-left: 1px solid var(--cream-warm); }
+      .project-info { flex-direction: column; align-items: center; gap: 0; }
+      .project-info__item { padding: 0.75rem 0; width: 100%; }
+      .project-info__item + .project-info__item { border-left: none; border-top: 1px solid var(--cream-warm); }
       .gallery__grid { grid-template-columns: 1fr; }
       .gallery__item--full { grid-column: 1; }
       .project-nav { flex-direction: column; }
@@ -422,6 +423,13 @@
       }
       .footer__top { grid-template-columns: 1fr; gap: 2rem; }
       .footer__bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+    @media (max-width: 480px) {
+      .project-hero { height: 50vh; min-height: 300px; }
+      .project-hero__title { font-size: clamp(2rem, 10vw, 3rem); }
+      .project-desc__text { font-size: 0.95rem; }
+      .project-nav__name { font-size: 1.1rem; }
+      .footer__top { gap: 1.5rem; }
     }
   </style>
 </head>
