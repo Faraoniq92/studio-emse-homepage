@@ -129,6 +129,19 @@ header{display:flex;flex-direction:column;align-items:center;gap:var(--sp-24);pa
 .recap-total-row td{padding:var(--sp-16) var(--sp-12);border-top:2px solid var(--ink);border-bottom:none;font-weight:var(--w-bold)}
 .total-label{text-align:right;color:var(--ink-70);text-transform:uppercase;letter-spacing:var(--ls-caps);font-size:var(--fs-label)}
 .total-value{text-align:right;color:var(--brand);font-size:1.15rem;font-weight:var(--w-bold);letter-spacing:var(--ls-heading)}
+.section-price-toggle{text-align:right;vertical-align:middle}
+.toggle{position:relative;display:inline-flex;align-items:center;gap:var(--sp-8);cursor:pointer;user-select:none}
+.toggle input{position:absolute;opacity:0;width:0;height:0}
+.toggle-track{position:relative;width:32px;height:17px;background:var(--cream-warm);border-radius:17px;transition:background var(--dur-normal) var(--ease);flex-shrink:0}
+.toggle-track::before{content:'';position:absolute;width:13px;height:13px;left:2px;top:2px;background:var(--white);border-radius:50%;transition:transform var(--dur-normal) var(--ease);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.toggle input:checked+.toggle-track{background:var(--brand)}
+.toggle input:checked+.toggle-track::before{transform:translateX(15px)}
+.toggle-text{font-size:var(--fs-tag);font-weight:var(--w-bold);letter-spacing:var(--ls-tag);text-transform:uppercase;color:var(--brand);opacity:.4;transition:opacity var(--dur-fast)}
+.toggle input:checked~.toggle-text{opacity:1}
+.subtotal-input{width:100%;max-width:120px;text-align:right;border:1px solid var(--cream-warm);border-radius:var(--radius-sm);padding:var(--sp-8) var(--sp-12);font-family:var(--font);font-size:var(--fs-small);font-weight:var(--w-bold);color:var(--ink-70);background:var(--cream);outline:none;cursor:default}
+tr.pricing-off .price-cell>*{display:none!important}
+.subtotal-input.editable{background:var(--white);border-color:var(--brand);cursor:text;color:var(--ink)}
+.subtotal-input.editable:focus{box-shadow:0 0 0 3px var(--archi-bg)}
 
 .modal-footer{padding:var(--sp-16) var(--sp-32);border-top:var(--border-divider);display:flex;gap:var(--sp-12);justify-content:flex-end}
 .btn{font-family:var(--font);font-weight:var(--w-semi);font-size:var(--fs-label);letter-spacing:var(--ls-nav);text-transform:uppercase;padding:var(--sp-12) var(--sp-20);border-radius:var(--radius-sm);cursor:pointer;transition:all var(--dur-normal) var(--ease);border:none}
@@ -156,6 +169,10 @@ header{display:flex;flex-direction:column;align-items:center;gap:var(--sp-24);pa
   .price-btn{display:none!important}
   .price-cell:not(.has-price){visibility:hidden}
   .price-input{border:none!important;box-shadow:none!important;padding:0!important;font-weight:700!important;background:transparent!important}
+  .toggle{display:none!important}
+  .subtotal-input{border:none!important;background:transparent!important;padding:0!important;font-weight:700!important}
+  tr.data-row.pricing-off{display:none!important}
+  .subtotal-input{border:none!important;background:transparent!important}
   .recap-table tbody tr.data-row:hover td{background:none!important}
 }
 
@@ -290,12 +307,12 @@ function openRecap(){
     h+='<table class="recap-table"><thead><tr><th>Prestation</th><th class="th-attrib">Attrib.</th><th class="th-price">Prix HT (€)</th></tr></thead><tbody>';
     for(var title in grouped){
       var entries=grouped[title];
-      h+='<tr class="recap-section-row"><td colspan="3">'+title+'</td></tr>';
+      h+='<tr class="recap-section-row"><td colspan="2">'+title+'</td><td class="section-price-toggle"><label class="toggle"><input type="checkbox" checked data-section-toggle="'+si+'"/><span class="toggle-track"></span><span class="toggle-text">Prix</span></label></td></tr>';
       entries.forEach(function(e){
         var tags=e.types.map(function(t){return '<span class="recap-tag '+t+'">'+tl[t]+'</span>';}).join('');
-        h+='<tr class="data-row"><td class="td-label">'+e.label+'</td><td class="td-attrib"><div class="recap-tags">'+tags+'</div></td><td class="td-price"><div class="price-cell has-price" data-section="'+si+'"><input type="text" class="price-input" placeholder="—" inputmode="decimal"/><button type="button" class="price-btn active" title="Retirer le prix">'+iconX+'</button></div></td></tr>';
+        h+='<tr class="data-row" data-section-group="'+si+'"><td class="td-label">'+e.label+'</td><td class="td-attrib"><div class="recap-tags">'+tags+'</div></td><td class="td-price"><div class="price-cell has-price" data-section="'+si+'"><input type="text" class="price-input" placeholder="—" inputmode="decimal"/><button type="button" class="price-btn active" title="Retirer le prix">'+iconX+'</button></div></td></tr>';
       });
-      h+='<tr class="recap-subtotal-row"><td colspan="2" class="subtotal-label">Sous-total</td><td class="subtotal-value" data-subtotal="'+si+'">—</td></tr>';
+      h+='<tr class="recap-subtotal-row" data-section-group="'+si+'"><td colspan="2" class="subtotal-label">Sous-total</td><td class="subtotal-value"><input type="text" class="subtotal-input" data-subtotal="'+si+'" value="\u2014" readonly/></td></tr>';
       si++;
     }
     h+='<tr class="recap-total-row"><td colspan="2" class="total-label">Total HT</td><td class="total-value" id="recapTotal">0,00 €</td></tr></tbody></table>';
@@ -320,6 +337,21 @@ function openRecap(){
       input.addEventListener('input',computeTotal);
       input.addEventListener('focus',function(){this.select();});
     });
+    body.querySelectorAll('[data-section-toggle]').forEach(function(toggle){
+      toggle.addEventListener('change',function(){
+        var g=this.dataset.sectionToggle,on=this.checked;
+        body.querySelectorAll('tr.data-row[data-section-group="'+g+'"]').forEach(function(row){
+          if(on)row.classList.remove('pricing-off');else row.classList.add('pricing-off');
+        });
+        var sub=body.querySelector('.subtotal-input[data-subtotal="'+g+'"]');
+        if(on){sub.readOnly=true;sub.classList.remove('editable');sub.placeholder='';}
+        else{sub.readOnly=false;sub.classList.add('editable');sub.value='';sub.placeholder='Montant HT';}
+        computeTotal();
+      });
+    });
+    body.querySelectorAll('.subtotal-input').forEach(function(input){
+      input.addEventListener('input',computeTotal);
+    });
     computeTotal();
   }
   document.getElementById('modalOverlay').classList.add('active');
@@ -327,20 +359,34 @@ function openRecap(){
 }
 
 function computeTotal(){
-  var total=0,subs={};
+  var total=0,subs={},off={};
+  document.querySelectorAll('[data-section-toggle]').forEach(function(t){if(!t.checked)off[t.dataset.sectionToggle]=true;});
   document.querySelectorAll('.price-cell.has-price .price-input').forEach(function(input){
+    var s=input.closest('.price-cell').dataset.section;
+    if(off[s])return;
     var v=parseFloat(input.value.replace(/\s/g,'').replace(',','.'))||0;
     total+=v;
-    var s=input.closest('.price-cell').dataset.section;
     subs[s]=(subs[s]||0)+v;
   });
-  document.querySelectorAll('[data-subtotal]').forEach(function(el){
-    var v=subs[el.dataset.subtotal]||0;
-    el.textContent=v>0?v.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' €':'—';
+  document.querySelectorAll('.subtotal-input[data-subtotal]').forEach(function(el){
+    var s=el.dataset.subtotal;
+    if(off[s]){
+      var mv=parseFloat(el.value.replace(/\s/g,'').replace(',','.'))||0;
+      total+=mv;
+      return;
+    }
+    var v=subs[s]||0;
+    el.value=v>0?v.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' \u20AC':'\u2014';
   });
-  var hasAny=document.querySelectorAll('.price-cell.has-price').length>0;
+  var hasAny=false;
+  document.querySelectorAll('.price-cell.has-price').forEach(function(c){var s=c.dataset.section;if(!off[s])hasAny=true;});
+  document.querySelectorAll('.subtotal-input.editable').forEach(function(el){
+    var v=parseFloat(el.value.replace(/\s/g,'').replace(',','.'))||0;
+    if(v>0)hasAny=true;
+  });
   document.querySelectorAll('.recap-subtotal-row,.recap-total-row').forEach(function(r){r.style.display=hasAny?'':'none';});
-  if(hasAny)document.getElementById('recapTotal').textContent=total.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
+  if(hasAny)document.getElementById('recapTotal').textContent=total.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' \u20AC';
+  else document.getElementById('recapTotal').textContent='0,00 \u20AC';
 }
 
 function closeRecap(){document.getElementById('modalOverlay').classList.remove('active');document.body.style.overflow='';}
