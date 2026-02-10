@@ -78,6 +78,33 @@ header{display:flex;flex-direction:column;align-items:center;gap:var(--sp-24);pa
 .row-add button{border:none;background:none;font-family:var(--font);font-size:var(--fs-label);font-weight:var(--w-semi);color:var(--ink-40);cursor:pointer;padding:var(--sp-8) var(--sp-12);border-radius:var(--radius-sm);display:flex;align-items:center;gap:var(--sp-8);letter-spacing:var(--ls-nav);transition:all var(--dur-fast) var(--ease)}
 .row-add button:hover{color:var(--brand);background:var(--archi-bg)}
 .row-add button svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none}
+
+.program-bar{display:flex;align-items:center;gap:var(--sp-12);padding:var(--sp-16) 0 var(--sp-24);margin-bottom:var(--sp-8);flex-wrap:wrap}
+.program-name{flex:1;min-width:200px;border:none;border-bottom:1.5px solid var(--cream-warm);padding:var(--sp-8) var(--sp-4);font-family:var(--font);font-size:var(--fs-body);font-weight:var(--w-semi);color:var(--ink);background:transparent;outline:none;letter-spacing:var(--ls-body);transition:border-color var(--dur-fast)}
+.program-name::placeholder{color:var(--ink-40);font-weight:var(--w-regular)}
+.program-name:focus{border-color:var(--brand)}
+.program-actions{display:flex;gap:var(--sp-8);flex-shrink:0}
+.btn-sm{font-family:var(--font);font-weight:var(--w-semi);font-size:var(--fs-label);letter-spacing:var(--ls-nav);text-transform:uppercase;padding:var(--sp-8) var(--sp-16);border-radius:var(--radius-sm);cursor:pointer;transition:all var(--dur-normal) var(--ease);border:1px solid var(--cream-warm);background:var(--white);color:var(--ink-70);display:flex;align-items:center;gap:var(--sp-8)}
+.btn-sm:hover{border-color:var(--ink-40);background:var(--cream)}
+.btn-sm svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none}
+.btn-sm.primary{background:var(--brand);color:var(--white);border-color:var(--brand)}
+.btn-sm.primary:hover{background:#2E0204}
+.load-wrapper{position:relative;display:inline-block}
+.saves-dropdown{position:absolute;top:calc(100% + 6px);right:0;background:var(--white);border:1px solid var(--cream-warm);border-radius:var(--radius-md);box-shadow:var(--shadow-card);min-width:300px;z-index:50;display:none;overflow:hidden}
+.saves-dropdown.active{display:block;animation:slideUp var(--dur-normal) var(--ease)}
+.saves-header{padding:var(--sp-12) var(--sp-16);font-size:var(--fs-label);font-weight:var(--w-bold);text-transform:uppercase;letter-spacing:var(--ls-caps);color:var(--ink-40);border-bottom:1px solid var(--cream-warm)}
+.saves-list{max-height:260px;overflow-y:auto}
+.save-item{display:flex;align-items:center;gap:var(--sp-12);padding:var(--sp-12) var(--sp-16);cursor:pointer;transition:background var(--dur-fast);border-bottom:1px solid var(--cream)}
+.save-item:last-child{border-bottom:none}
+.save-item:hover{background:var(--cream)}
+.save-item-info{flex:1;min-width:0}
+.save-item-name{font-size:var(--fs-body-sm);font-weight:var(--w-semi);color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.save-item-date{font-size:var(--fs-tag);color:var(--ink-40);letter-spacing:var(--ls-nav)}
+.save-item-delete{width:24px;height:24px;border:none;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-sm);opacity:.3;transition:all var(--dur-fast);flex-shrink:0}
+.save-item-delete:hover{opacity:1;background:var(--archi-bg)}
+.save-item-delete svg{width:12px;height:12px;stroke:var(--brand);stroke-width:2;fill:none}
+.saves-empty{padding:var(--sp-24) var(--sp-16);text-align:center;color:var(--ink-40);font-size:var(--fs-body-sm)}
+.save-feedback{color:var(--white)!important;font-size:var(--fs-label)}
 .row-check{display:flex;align-items:center;justify-content:center;padding:var(--sp-12) 0}
 
 .cb{position:relative;width:26px;height:26px;cursor:pointer}
@@ -183,6 +210,8 @@ tr.pricing-off .price-cell>*{display:none!important}
   .toggle{display:none!important}
   .subtotal-input{border:none!important;background:transparent!important;padding:0!important;font-weight:700!important}
   tr.data-row.pricing-off{display:none!important}
+  .program-actions{display:none!important}
+  .program-name{border:none!important}
   .subtotal-input{border:none!important;background:transparent!important}
   .recap-table tbody tr.data-row:hover td{background:none!important}
 }
@@ -218,8 +247,23 @@ tr.pricing-off .price-cell>*{display:none!important}
     </div>
   </header>
 
+  <div class="program-bar">
+    <input type="text" class="program-name" id="programName" placeholder="Nom du programme (ex: Projet Dupont — Rénovation)"/>
+    <div class="program-actions">
+      <button class="btn-sm primary save-btn" onclick="saveProgram()"><svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Sauvegarder</button>
+      <div class="load-wrapper">
+        <button class="btn-sm" onclick="toggleSaves(event)"><svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Charger</button>
+        <div class="saves-dropdown" id="savesDropdown">
+          <div class="saves-header">Programmes sauvegardés</div>
+          <div class="saves-list"></div>
+        </div>
+      </div>
+      <button class="btn-sm" onclick="newProgram()"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>Nouveau</button>
+    </div>
+  </div>
+
   <div class="legend">
-    <div class="legend-item"><div class="legend-dot archi"></div> Architecte</div>
+    <div class="legend-item"><div class="legend-dot archi"></div> Architecte d'intérieur</div>
     <div class="legend-item"><div class="legend-dot mo"></div> Maître d'Ouvrage</div>
     <div class="legend-item"><div class="legend-dot comp"></div> Missions Comp.</div>
   </div>
@@ -265,6 +309,9 @@ var checkSvg='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-
 var chevronSvg='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
 var iconX='<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
 var iconPlus='<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';
+var DEFAULT_DATA=JSON.parse(JSON.stringify(DATA));
+var STORAGE_KEY='emse-programme-saves';
+var saveBtnSvg='<svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>';
 
 function buildSections(){
   var c=document.getElementById('sections'),types=['archi','mo','comp'];
@@ -286,7 +333,7 @@ function buildSections(){
         var cb=document.createElement('label');cb.className='cb '+type;
         var input=document.createElement('input');input.type='checkbox';input.checked=!!item.def[ti];
         input.dataset.section=si;input.dataset.item=ii;input.dataset.type=type;
-        input.addEventListener('change',updateCount);
+        input.addEventListener('change',function(){DATA[+this.dataset.section].items[+this.dataset.item].def[ti]=this.checked?1:0;updateCount();});
         var visual=document.createElement('span');visual.className='cb-visual';visual.innerHTML=checkSvg;
         cb.appendChild(input);cb.appendChild(visual);cell.appendChild(cb);row.appendChild(cell);
       });
@@ -424,7 +471,67 @@ function computeTotal(){
 
 function closeRecap(){document.getElementById('modalOverlay').classList.remove('active');document.body.style.overflow='';}
 document.getElementById('modalOverlay').addEventListener('click',function(e){if(e.target===this)closeRecap();});
-document.addEventListener('keydown',function(e){if(e.key==='Escape')closeRecap();});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeRecap();closeSaves();}});
+document.addEventListener('click',function(e){if(!e.target.closest('.load-wrapper'))closeSaves();});
+
+function getSaves(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||[];}catch(e){return [];}}
+function setSaves(s){localStorage.setItem(STORAGE_KEY,JSON.stringify(s));}
+
+function saveProgram(){
+  var name=document.getElementById('programName').value.trim();
+  if(!name){document.getElementById('programName').focus();document.getElementById('programName').classList.add('shake');setTimeout(function(){document.getElementById('programName').classList.remove('shake');},500);return;}
+  var saves=getSaves();
+  var existing=saves.findIndex(function(s){return s.name===name;});
+  var entry={id:Date.now().toString(),name:name,data:JSON.parse(JSON.stringify(DATA)),timestamp:Date.now()};
+  if(existing>=0)saves[existing]=entry;else saves.push(entry);
+  setSaves(saves);
+  var btn=document.querySelector('.save-btn');btn.innerHTML='<span class="save-feedback">Sauvegardé !</span>';
+  setTimeout(function(){btn.innerHTML=saveBtnSvg+'Sauvegarder';},1500);
+}
+
+function toggleSaves(e){
+  e.stopPropagation();
+  var dd=document.getElementById('savesDropdown');
+  if(dd.classList.contains('active')){dd.classList.remove('active');return;}
+  var saves=getSaves(),list=dd.querySelector('.saves-list');
+  if(!saves.length){list.innerHTML='<div class="saves-empty">Aucun programme sauvegardé</div>';}
+  else{list.innerHTML=saves.map(function(s){
+    var d=new Date(s.timestamp),ds=d.toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'numeric'});
+    return '<div class="save-item" data-id="'+s.id+'"><div class="save-item-info"><div class="save-item-name">'+s.name+'</div><div class="save-item-date">'+ds+'</div></div><button class="save-item-delete" data-id="'+s.id+'" title="Supprimer"><svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>';
+  }).join('');}
+  dd.classList.add('active');
+}
+function closeSaves(){var dd=document.getElementById('savesDropdown');if(dd)dd.classList.remove('active');}
+
+function loadProgram(id){
+  var s=getSaves().find(function(s){return s.id===id;});
+  if(!s)return;
+  DATA=JSON.parse(JSON.stringify(s.data));
+  document.getElementById('programName').value=s.name;
+  document.getElementById('sections').innerHTML='';
+  buildSections();closeSaves();
+}
+
+function deleteSave(id){
+  setSaves(getSaves().filter(function(s){return s.id!==id;}));
+  var dd=document.getElementById('savesDropdown');dd.classList.remove('active');
+  toggleSaves({stopPropagation:function(){}});
+}
+
+function newProgram(){
+  DATA=JSON.parse(JSON.stringify(DEFAULT_DATA));
+  document.getElementById('programName').value='';
+  document.getElementById('sections').innerHTML='';
+  buildSections();
+}
+
+document.getElementById('savesDropdown').addEventListener('click',function(e){
+  var del=e.target.closest('.save-item-delete');
+  if(del){e.stopPropagation();deleteSave(del.dataset.id);return;}
+  var item=e.target.closest('.save-item');
+  if(item)loadProgram(item.dataset.id);
+});
+
 buildSections();
 </script>
 </body>
