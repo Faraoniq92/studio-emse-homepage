@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Programme de Mission — Studio Emsé</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --brand:#3F0305; --ink:#1A1615; --ink-70:#4A4340; --ink-40:#8A827E;
+  --cream:#F6F2EE; --cream-warm:#EDE6DF; --white:#FDFBF9;
+  --font:'Manrope',system-ui,-apple-system,sans-serif;
+  --w-regular:400; --w-medium:500; --w-semi:600; --w-bold:700;
+  --fs-display:clamp(2rem,4vw,3rem); --fs-heading-2:clamp(1.4rem,2.5vw,1.8rem);
+  --fs-body:0.9rem; --fs-body-sm:0.88rem; --fs-small:0.85rem;
+  --fs-label:0.72rem; --fs-label-sm:0.7rem; --fs-tag:0.65rem;
+  --ls-heading:-0.02em; --ls-body:-0.01em; --ls-nav:0.08em; --ls-caps:0.18em; --ls-tag:0.22em;
+  --pad:clamp(24px,5vw,64px); --max:960px;
+  --sp-4:0.25rem; --sp-8:0.5rem; --sp-12:0.75rem; --sp-16:1rem;
+  --sp-20:1.25rem; --sp-24:1.5rem; --sp-32:2rem; --sp-48:3rem;
+  --border-divider:1px solid var(--cream-warm);
+  --radius-sm:4px; --radius-md:12px; --radius-lg:18px;
+  --shadow-card:0 20px 60px rgba(0,0,0,0.2),0 4px 16px rgba(0,0,0,0.1);
+  --ease:cubic-bezier(0.16,1,0.3,1); --dur-fast:0.2s; --dur-normal:0.3s;
+  --archi:var(--brand); --archi-bg:#F5E8E8; --archi-border:#D4A8A8;
+  --mo:#5C4A3A; --mo-bg:#F0E8E0; --mo-border:#C4B09A;
+  --comp:#3A4A5C; --comp-bg:#E4EAF0; --comp-border:#9AABBE;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);background:var(--cream);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+.app{max-width:var(--max);margin:0 auto;padding:var(--sp-32) var(--pad) 120px}
+
+header{display:flex;flex-direction:column;align-items:center;gap:var(--sp-24);padding:var(--sp-48) 0 var(--sp-32);border-bottom:var(--border-divider);margin-bottom:var(--sp-32)}
+.header-top{display:flex;flex-direction:column;align-items:center;gap:var(--sp-8)}
+.header-subtitle{font-size:var(--fs-label);font-weight:var(--w-semi);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--ink-40)}
+.logo svg{height:36px;width:auto}
+.header-text{text-align:center}
+.header-text h1{font-size:var(--fs-display);font-weight:var(--w-bold);line-height:1.1;letter-spacing:var(--ls-heading);margin-bottom:var(--sp-8)}
+.header-text p{font-size:var(--fs-body);color:var(--ink-40);letter-spacing:var(--ls-body);max-width:440px;margin:0 auto}
+
+.legend{display:flex;justify-content:center;gap:var(--sp-24);margin-bottom:var(--sp-24);flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:var(--sp-8);font-size:var(--fs-label);font-weight:var(--w-semi);letter-spacing:var(--ls-nav);text-transform:uppercase;color:var(--ink-70)}
+.legend-dot{width:10px;height:10px;border-radius:3px}
+.legend-dot.archi{background:var(--archi)}.legend-dot.mo{background:var(--mo)}.legend-dot.comp{background:var(--comp)}
+
+.col-headers{display:grid;grid-template-columns:1fr 52px 52px 52px;position:sticky;top:0;z-index:10;background:var(--cream);padding-bottom:var(--sp-8);border-bottom:2px solid var(--cream-warm);margin-bottom:var(--sp-4)}
+.col-headers span{display:flex;align-items:center;justify-content:center;padding:var(--sp-8) 0;font-size:var(--fs-tag);font-weight:var(--w-bold);text-transform:uppercase;letter-spacing:var(--ls-tag)}
+.col-headers span:first-child{justify-content:flex-start;padding-left:var(--sp-20);color:var(--ink-40)}
+.col-headers .h-archi{color:var(--archi)}.col-headers .h-mo{color:var(--mo)}.col-headers .h-comp{color:var(--comp)}
+
+.section{margin-bottom:var(--sp-20);opacity:0;transform:translateY(20px);animation:revealSection .5s var(--ease) forwards}
+.section:nth-child(1){animation-delay:.03s}.section:nth-child(2){animation-delay:.06s}.section:nth-child(3){animation-delay:.09s}
+.section:nth-child(4){animation-delay:.12s}.section:nth-child(5){animation-delay:.15s}.section:nth-child(6){animation-delay:.18s}
+.section:nth-child(7){animation-delay:.21s}.section:nth-child(8){animation-delay:.24s}.section:nth-child(9){animation-delay:.27s}
+@keyframes revealSection{to{opacity:1;transform:translateY(0)}}
+.section-header{display:flex;align-items:center;gap:var(--sp-12);padding:var(--sp-12) var(--sp-20);background:var(--brand);color:var(--white);border-radius:var(--radius-md) var(--radius-md) 0 0;cursor:pointer;user-select:none;transition:background var(--dur-normal) var(--ease)}
+.section-header:hover{background:#2E0204}
+.section-number{font-size:1.1rem;font-weight:var(--w-bold);opacity:.4;min-width:24px}
+.section-title{font-weight:var(--w-bold);font-size:var(--fs-body-sm);letter-spacing:var(--ls-body);flex:1}
+.section-count{font-size:var(--fs-tag);font-weight:var(--w-medium);opacity:.4;letter-spacing:var(--ls-nav);text-transform:uppercase}
+.section-toggle{width:20px;height:20px;display:flex;align-items:center;justify-content:center;transition:transform var(--dur-normal) var(--ease)}
+.section-toggle svg{width:14px;height:14px;stroke:var(--white);opacity:.5}
+.section.collapsed .section-toggle{transform:rotate(-90deg)}
+.section.collapsed .section-body{display:none}
+.section-body{background:var(--white);border:1px solid var(--cream-warm);border-top:none;border-radius:0 0 var(--radius-md) var(--radius-md);overflow:hidden}
+
+.row{display:grid;grid-template-columns:1fr 52px 52px 52px;align-items:center;border-bottom:1px solid var(--cream);transition:background var(--dur-fast)}
+.row:last-child{border-bottom:none}.row:hover{background:var(--cream)}
+.row-label{padding:var(--sp-12) var(--sp-20);font-size:var(--fs-body-sm);line-height:1.4;letter-spacing:var(--ls-body)}
+.row-check{display:flex;align-items:center;justify-content:center;padding:var(--sp-12) 0}
+
+.cb{position:relative;width:26px;height:26px;cursor:pointer}
+.cb input{position:absolute;opacity:0;width:100%;height:100%;cursor:pointer;z-index:2;margin:0}
+.cb-visual{position:absolute;inset:0;border-radius:var(--radius-sm);border:1.5px solid var(--cream-warm);background:var(--white);transition:all var(--dur-fast) var(--ease);display:flex;align-items:center;justify-content:center}
+.cb-visual svg{width:13px;height:13px;opacity:0;transform:scale(.5);transition:all var(--dur-fast) var(--ease)}
+.cb input:checked+.cb-visual svg{opacity:1;transform:scale(1)}
+.cb.archi .cb-visual{border-color:var(--archi-border)}.cb.archi input:checked+.cb-visual{background:var(--archi);border-color:var(--archi)}.cb.archi .cb-visual svg{stroke:#fff}
+.cb.mo .cb-visual{border-color:var(--mo-border)}.cb.mo input:checked+.cb-visual{background:var(--mo);border-color:var(--mo)}.cb.mo .cb-visual svg{stroke:#fff}
+.cb.comp .cb-visual{border-color:var(--comp-border)}.cb.comp input:checked+.cb-visual{background:var(--comp);border-color:var(--comp)}.cb.comp .cb-visual svg{stroke:#fff}
+
+.fab{position:fixed;bottom:28px;right:28px;background:var(--brand);color:var(--white);border:none;padding:var(--sp-16) var(--sp-24);border-radius:60px;font-family:var(--font);font-weight:var(--w-bold);font-size:var(--fs-label);letter-spacing:var(--ls-nav);text-transform:uppercase;cursor:pointer;box-shadow:0 8px 32px rgba(63,3,5,.3);transition:all var(--dur-normal) var(--ease);z-index:100;display:flex;align-items:center;gap:var(--sp-8)}
+.fab:hover{background:#2E0204;transform:translateY(-2px);box-shadow:0 12px 40px rgba(63,3,5,.4)}
+.fab svg{width:16px;height:16px}
+.fab-badge{background:var(--white);color:var(--brand);border-radius:20px;padding:2px 9px;font-size:var(--fs-label-sm);font-weight:var(--w-bold);min-width:22px;text-align:center}
+
+.modal-overlay{position:fixed;inset:0;background:rgba(26,22,21,.5);backdrop-filter:blur(6px);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.active{display:flex;animation:fadeIn var(--dur-fast) var(--ease)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{background:var(--white);border-radius:var(--radius-lg);max-width:780px;width:100%;max-height:88vh;display:flex;flex-direction:column;box-shadow:var(--shadow-card);animation:slideUp var(--dur-normal) var(--ease)}
+@keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-24) var(--sp-32) var(--sp-20);border-bottom:var(--border-divider)}
+.modal-header h2{font-size:var(--fs-heading-2);font-weight:var(--w-bold);letter-spacing:var(--ls-heading)}
+.modal-close{width:36px;height:36px;border:none;background:var(--cream);border-radius:var(--radius-sm);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background var(--dur-fast)}
+.modal-close:hover{background:var(--cream-warm)}
+.modal-close svg{width:16px;height:16px;stroke:var(--ink-40);stroke-width:2}
+.modal-body{padding:var(--sp-24) var(--sp-32);overflow-y:auto;flex:1}
+
+/* ─── Per-row price toggle ─── */
+.price-cell{display:flex;align-items:center;justify-content:flex-end;gap:6px}
+.price-btn{width:26px;height:26px;border:1px solid var(--cream-warm);border-radius:var(--radius-sm);background:var(--white);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all var(--dur-fast) var(--ease);flex-shrink:0}
+.price-btn:hover{border-color:var(--ink-40);background:var(--cream)}
+.price-btn svg{width:12px;height:12px;stroke:var(--ink-40);stroke-width:2;fill:none}
+.price-btn.active{border-color:var(--brand);background:var(--archi-bg)}
+.price-btn.active svg{stroke:var(--brand)}
+.price-cell .price-input{display:none}
+.price-cell.has-price .price-input{display:block}
+
+/* ─── Recap table ─── */
+.recap-empty{text-align:center;padding:var(--sp-48) var(--sp-20);color:var(--ink-40);font-size:var(--fs-body)}
+.recap-table{width:100%;border-collapse:collapse;font-size:var(--fs-body-sm)}
+.recap-table thead th{text-align:left;font-size:var(--fs-tag);font-weight:var(--w-bold);text-transform:uppercase;letter-spacing:var(--ls-tag);color:var(--ink-40);padding:var(--sp-8) var(--sp-12);border-bottom:2px solid var(--cream-warm);white-space:nowrap}
+.recap-table thead th.th-attrib{width:90px;text-align:center}
+.recap-table thead th.th-price{text-align:right;width:130px}
+.recap-section-row td{padding:var(--sp-16) var(--sp-12) var(--sp-8);font-weight:var(--w-bold);font-size:var(--fs-label);text-transform:uppercase;letter-spacing:var(--ls-caps);color:var(--brand);border-bottom:1px solid var(--cream-warm);background:var(--cream)}
+.recap-table tbody tr.data-row td{padding:var(--sp-8) var(--sp-12);border-bottom:1px solid var(--cream);vertical-align:middle}
+.recap-table tbody tr.data-row:hover td{background:var(--cream)}
+.td-label{line-height:1.4;letter-spacing:var(--ls-body)}
+.td-attrib{text-align:center}
+.recap-tags{display:flex;gap:3px;justify-content:center;flex-wrap:wrap}
+.recap-tag{font-size:var(--fs-tag);font-weight:var(--w-bold);padding:2px 6px;border-radius:3px;letter-spacing:var(--ls-nav);text-transform:uppercase;white-space:nowrap}
+.recap-tag.archi{background:var(--archi-bg);color:var(--archi)}.recap-tag.mo{background:var(--mo-bg);color:var(--mo)}.recap-tag.comp{background:var(--comp-bg);color:var(--comp)}
+.td-price{text-align:right;width:130px}
+.price-input{width:100%;max-width:120px;text-align:right;border:1px solid var(--cream-warm);border-radius:var(--radius-sm);padding:var(--sp-8) var(--sp-12);font-family:var(--font);font-size:var(--fs-body-sm);font-weight:var(--w-semi);color:var(--ink);background:var(--white);outline:none;transition:border-color var(--dur-fast),box-shadow var(--dur-fast)}
+.price-input:focus{border-color:var(--brand);box-shadow:0 0 0 3px var(--archi-bg)}
+.price-input::placeholder{color:var(--ink-40);font-weight:var(--w-regular)}
+.recap-subtotal-row td{padding:var(--sp-8) var(--sp-12);border-bottom:2px solid var(--cream-warm)}
+.subtotal-label{text-align:right;font-size:var(--fs-label);font-weight:var(--w-semi);text-transform:uppercase;letter-spacing:var(--ls-nav);color:var(--ink-40)}
+.subtotal-value{text-align:right;font-weight:var(--w-bold);color:var(--ink-70);font-size:var(--fs-small)}
+.recap-total-row td{padding:var(--sp-16) var(--sp-12);border-top:2px solid var(--ink);border-bottom:none;font-weight:var(--w-bold)}
+.total-label{text-align:right;color:var(--ink-70);text-transform:uppercase;letter-spacing:var(--ls-caps);font-size:var(--fs-label)}
+.total-value{text-align:right;color:var(--brand);font-size:1.15rem;font-weight:var(--w-bold);letter-spacing:var(--ls-heading)}
+
+.modal-footer{padding:var(--sp-16) var(--sp-32);border-top:var(--border-divider);display:flex;gap:var(--sp-12);justify-content:flex-end}
+.btn{font-family:var(--font);font-weight:var(--w-semi);font-size:var(--fs-label);letter-spacing:var(--ls-nav);text-transform:uppercase;padding:var(--sp-12) var(--sp-20);border-radius:var(--radius-sm);cursor:pointer;transition:all var(--dur-normal) var(--ease);border:none}
+.btn-secondary{background:var(--cream);color:var(--ink-70)}
+.btn-secondary:hover{background:var(--cream-warm)}
+.btn-primary{background:var(--brand);color:var(--white)}
+.btn-primary:hover{background:#2E0204}
+
+/* ─── PRINT ─── */
+.print-header{display:none}
+@media print{
+  .fab{display:none!important}
+  .app{display:none}
+  body{background:white}
+  .modal-overlay{position:static!important;display:block!important;background:none!important;backdrop-filter:none!important;padding:20px!important}
+  .modal{max-height:none!important;box-shadow:none!important;border-radius:0!important;border:none}
+  .modal-footer{display:none!important}
+  .modal-close{display:none!important}
+  .modal-header{display:none!important}
+  .print-header{display:flex!important;align-items:center;gap:var(--sp-16);padding-bottom:var(--sp-16);margin-bottom:var(--sp-8);border-bottom:2px solid var(--ink)}
+  .print-header svg{height:28px;width:auto}
+  .print-header .print-meta{display:flex;flex-direction:column;gap:2px}
+  .print-header .print-meta span:first-child{font-size:0.6rem;font-weight:var(--w-semi);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--ink-40)}
+  .print-header .print-meta span:last-child{font-size:var(--fs-small);font-weight:var(--w-bold);letter-spacing:var(--ls-nav);text-transform:uppercase;color:var(--ink-70)}
+  .price-btn{display:none!important}
+  .price-cell:not(.has-price){visibility:hidden}
+  .price-input{border:none!important;box-shadow:none!important;padding:0!important;font-weight:700!important;background:transparent!important}
+  .recap-table tbody tr.data-row:hover td{background:none!important}
+}
+
+@media(max-width:600px){
+  header h1{font-size:1.6rem}
+  .row{grid-template-columns:1fr 42px 42px 42px}
+  .col-headers{grid-template-columns:1fr 42px 42px 42px}
+  .row-label{padding:10px 14px;font-size:0.82rem}
+  .cb{width:24px;height:24px}
+  .cb-visual svg{width:12px;height:12px}
+  .fab{bottom:20px;right:16px;padding:14px 20px}
+  .modal-body{padding:20px 16px}
+  .modal-header{padding:20px 16px}
+  .modal-footer{padding:14px 16px}
+}
+@media(prefers-reduced-motion:reduce){.section{opacity:1;transform:none;animation:none}}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header>
+    <div class="header-top">
+      <span class="header-subtitle">Architecte d'intérieur</span>
+      <div class="logo">
+        <svg width="238" height="74" viewBox="0 0 238 74" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M28.3299 18.8539C43.3937 18.8539 55.6033 31.0635 55.6033 46.1273C55.6032 49.1802 53.1279 51.6546 50.075 51.6546H13.7723V51.6566H13.1443C13.3445 52.2089 13.576 52.7513 13.8377 53.2816C15.2348 56.1126 17.4402 58.4656 20.1746 60.0433C22.7381 61.5223 25.6586 62.2579 28.6092 62.1732L29.2 62.1458C32.3498 61.9384 34.6435 61.3358 37.1473 59.4134L44.8045 67.9085C40.5148 71.2021 35.3446 73.1498 29.9481 73.5052L29.4412 73.5345C24.3832 73.7734 19.3577 72.6026 14.9256 70.1537L14.4852 69.9046C9.94675 67.2861 6.25843 63.4214 3.85626 58.7728L3.62775 58.3206C1.23416 53.4705 0.333501 48.0191 1.0379 42.6566L1.27228 42.6869C2.96338 29.2476 14.4316 18.854 28.3299 18.8539ZM210.077 18.8499C225.141 18.8499 237.35 31.0596 237.35 46.1234C237.35 49.1763 234.875 51.6507 231.822 51.6507H195.141C195.342 52.2051 195.575 52.7493 195.838 53.2816C197.235 56.1126 199.44 58.4656 202.175 60.0433C204.738 61.5223 207.659 62.2579 210.609 62.1732L211.2 62.1458C214.35 61.9384 216.643 61.3358 219.147 59.4134L226.805 67.9085C222.515 71.2021 217.345 73.1498 211.948 73.5052L211.441 73.5345C206.383 73.7734 201.358 72.6026 196.926 70.1537L196.485 69.9046C191.947 67.2861 188.258 63.4214 185.856 58.7728L185.628 58.3206C183.758 54.5316 182.799 50.3759 182.805 46.182V46.1234C182.805 45.9836 182.807 45.8438 182.809 45.7044C182.81 45.682 182.81 45.6595 182.81 45.6371C183.07 30.7977 195.176 18.85 210.077 18.8499ZM138.855 20.8871C143.852 18.8174 149.35 18.2753 154.655 19.3304C159.96 20.3856 164.262 22.4464 168.087 26.2708L160.487 34.7386C158.395 32.6461 155.869 31.2902 153.011 30.6214L152.434 30.4964C149.338 29.8806 146.128 30.1966 143.212 31.4046L142.67 31.641C139.986 32.8707 137.693 34.8229 136.049 37.2835L135.729 37.7816C135.189 38.6593 134.738 39.5847 134.379 40.5423H171.028C174.09 40.5424 176.572 43.0243 176.572 46.0863C176.572 46.108 176.571 46.13 176.571 46.1517H176.667C176.667 51.5603 175.063 56.848 172.058 61.3451L171.772 61.763C168.785 66.0591 164.626 69.4112 159.785 71.4164C154.944 73.4214 149.633 73.9923 144.483 73.0667L143.985 72.973C138.68 71.9178 134.294 69.7301 130.47 65.9056L138.033 57.4388C140.265 59.671 143.11 61.1911 146.206 61.807C149.109 62.3844 152.111 62.1426 154.879 61.1146L155.429 60.8988C158.163 59.7662 160.525 57.8972 162.255 55.5052L162.592 55.0199C163.302 53.9573 163.877 52.819 164.311 51.6312H127.741C124.679 51.6311 122.016 49.2274 122.016 46.1654C122.016 46.1608 122.016 46.1563 122.016 46.1517H121.973C121.973 40.7431 123.577 35.4554 126.582 30.9583C129.493 26.602 133.592 23.1769 138.388 21.0853L138.855 20.8871ZM84.0213 43.9779L106.43 19.0013L112.491 18.9818L115.973 19.0521V73.4974H104.917V37.9828L87.9266 55.9281C86.8662 57.0487 85.3785 57.6776 83.8358 57.6576C82.2929 57.6375 80.825 56.9684 79.7947 55.8226L54.2918 27.5453L61.9168 18.974L84.0213 43.9779ZM28.3299 29.9095C21.3141 29.9097 15.3412 34.3636 13.0809 40.598H13.7723V40.599H43.5809C41.3209 34.3638 35.3463 29.9095 28.3299 29.9095ZM210.077 29.9056C203.061 29.9057 197.087 34.3595 194.827 40.5941H194.958V40.5951H225.328C223.068 34.3599 217.093 29.9056 210.077 29.9056ZM220.148 9.07358L196.892 9.0726V0.164398H228.11L220.148 9.07358Z" fill="#6D0000"/></svg>
+      </div>
+    </div>
+    <div class="header-text">
+      <h1>Programme de Mission</h1>
+      <p>Cochez les prestations souhaitées pour chaque intervenant, puis générez le récapitulatif.</p>
+    </div>
+  </header>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot archi"></div> Architecte</div>
+    <div class="legend-item"><div class="legend-dot mo"></div> Maître d'Ouvrage</div>
+    <div class="legend-item"><div class="legend-dot comp"></div> Missions Comp.</div>
+  </div>
+
+  <div class="col-headers">
+    <span>Prestation</span>
+    <span class="h-archi">Arch</span>
+    <span class="h-mo">MO</span>
+    <span class="h-comp">Comp</span>
+  </div>
+
+  <div id="sections"></div>
+</div>
+
+<button class="fab" onclick="openRecap()">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+  Récapitulatif
+  <span class="fab-badge" id="fabCount">0</span>
+</button>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Récapitulatif des prestations</h2>
+      <button class="modal-close" onclick="closeRecap()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" id="recapBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeRecap()">Fermer</button>
+      <button class="btn btn-primary" onclick="window.print()">Enregistrer PDF</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var DATA=[{num:"1",title:"Prise de contact",items:[{label:"Enregistrement des informations personnelles",def:[1,0,0]},{label:"Synthèse des attentes",def:[1,0,0]},{label:"Échéancier de l'opération",def:[1,0,0]},{label:"Présentation du bien",def:[0,1,0]},{label:"Assistance à l'élaboration du programme",def:[1,1,0]},{label:"Définition du niveau de prestation",def:[1,1,0]},{label:"Information sur l'enveloppe financière de l'opération",def:[1,0,0]},{label:"Présentation du déroulement des études",def:[1,0,0]}]},{num:"2",title:"Faisabilité",items:[{label:"Visite du terrain / bien",def:[1,1,0]},{label:"Transmission de l'ensemble des données techniques (relevé de géomètre, études antérieures…)",def:[0,1,0]},{label:"Relevé des existants (selon projet)",def:[1,1,0]},{label:"Recherche des réglementations auprès des administrations",def:[0,1,0]},{label:"Analyse du terrain et des réglementations applicables",def:[1,0,0]},{label:"Proposition d'implantation",def:[1,0,0]},{label:"Synthèse des possibilités constructives et vérification compatibilité projet / budget",def:[1,0,0]},{label:"Élaboration de l'étude de faisabilité (croquis à la main)",def:[1,0,0]},{label:"Validation de la faisabilité",def:[0,1,0]},{label:"Mandater la réalisation de toute étude complémentaire (géomètre, sol…)",def:[0,1,0]},{label:"Proposition d'une mission d'Esquisse",def:[1,0,0]}]},{num:"3",title:"Esquisse",items:[{label:"Réalisation de 2 esquisses du projet au 1/200e",def:[1,0,0]},{label:"Insertion dans le site",def:[1,0,0]},{label:"Organisation générale des espaces et principes volumétriques",def:[1,0,0]},{label:"Établissement du coût prévisionnel des travaux au ratio (± 15%)",def:[1,0,0]},{label:"Réunions de mise au point du projet selon attentes du client",def:[1,0,0]},{label:"Validation des surfaces",def:[0,1,0]},{label:"Validation de l'organisation générale",def:[0,1,0]},{label:"Validation définitive du programme",def:[0,1,0]},{label:"Validation de la compatibilité financière",def:[0,1,0]},{label:"Rédaction d'une note descriptive sommaire",def:[1,0,0]},{label:"Réalisation d'une esquisse supplémentaire",def:[0,0,1]},{label:"Réalisation de vues 3D spécifiques",def:[0,0,1]},{label:"Réalisation de vues 3D supplémentaires",def:[0,0,1]}]},{num:"4",title:"Avant-Projet Sommaire (APS)",items:[{label:"Mandater la réalisation de toute étude complémentaire",def:[0,1,0]},{label:"Transmission de l'ensemble des données invariants du projet",def:[0,1,0]},{label:"Organisation générale des espaces et principes volumétriques",def:[1,0,0]},{label:"Réalisation du plan de masse au 1/200e",def:[1,0,0]},{label:"Réalisation des plans de niveaux au 1/100e",def:[1,0,0]},{label:"Réalisation des élévations au 1/100e",def:[1,0,0]},{label:"Réalisation des coupes nécessaires au 1/100e",def:[1,0,0]},{label:"Insertion dans le site",def:[1,0,0]},{label:"Réalisation de vues 3D significatives",def:[1,0,0]},{label:"Rédaction d'une note descriptive et estimative sommaire",def:[1,0,0]},{label:"Validation des dimensions des ouvrages",def:[0,1,0]},{label:"Validation des dimensions des ouvertures",def:[0,1,0]},{label:"Validation du choix des matériaux principaux",def:[0,1,0]},{label:"Justification des solutions techniques retenues",def:[1,0,0]},{label:"Établissement du coût prévisionnel des travaux (± 15%)",def:[1,0,0]},{label:"Réalisation d'une variante du projet validé en esquisse",def:[0,0,1]},{label:"Réalisation de vues 3D spécifiques",def:[0,0,1]},{label:"Réalisation de vues 3D supplémentaires",def:[0,0,1]}]},{num:"5",title:"Avant-Projet Détaillé (APD)",items:[{label:"Mandater la réalisation de toute étude complémentaire",def:[0,1,0]},{label:"Transmission de l'ensemble des données invariants du projet",def:[0,1,0]},{label:"Mise à jour de l'APS suivant remarques du client",def:[1,0,0]},{label:"Proposition d'aménagement de la cuisine",def:[1,0,0]},{label:"Proposition d'aménagement de la salle de bain",def:[1,0,0]},{label:"Proposition de revêtement de sol",def:[1,0,0]},{label:"Réalisation du plan de masse au 1/200e",def:[1,0,0]},{label:"Réalisation des plans de niveaux au 1/100e",def:[1,0,0]},{label:"Réalisation des élévations au 1/100e",def:[1,0,0]},{label:"Réalisation des coupes nécessaires au 1/100e",def:[1,0,0]},{label:"Détails techniques au 1/50e (selon nécessité)",def:[1,0,0]},{label:"Rédaction du Descriptif technique détaillé par corps d'état",def:[1,0,0]},{label:"Validation des dimensions des ouvrages",def:[0,1,0]},{label:"Validation des dimensions des ouvertures",def:[0,1,0]},{label:"Validation du choix des matériaux principaux",def:[0,1,0]},{label:"Justification des solutions techniques retenues",def:[1,0,0]},{label:"Établissement du coût prévisionnel des travaux (± 10%)",def:[1,0,0]},{label:"Réalisation d'une variante du projet réalisé en APS",def:[0,0,1]},{label:"Réalisation de vues 3D spécifiques",def:[0,0,1]},{label:"Réalisation de vues 3D supplémentaires",def:[0,0,1]}]},{num:"5b",title:"Demande d'autorisation (Permis, Déclarations)",items:[{label:"Établissement des documents techniques",def:[1,0,0]},{label:"Établissement des documents graphiques sur la base d'un Avant-Projet validé",def:[1,0,0]},{label:"Rédaction de la notice architecturale",def:[1,0,0]},{label:"Transmission des pièces administratives nécessaires",def:[0,1,0]},{label:"Mandater la réalisation de l'étude thermique",def:[0,1,0]},{label:"Validation du dossier de Permis de Construire",def:[0,1,0]},{label:"Impression des dossiers de Permis de Construire",def:[0,0,1]},{label:"Assistance pour le dépôt des demandes dématérialisées",def:[1,0,0]},{label:"Dépôt en Mairie du permis de construire",def:[0,1,0]},{label:"Assistance lors de l'instruction du permis",def:[1,0,0]},{label:"Établissement des pièces complémentaires",def:[1,0,0]},{label:"Transmission de l'arrêté et ses annexes",def:[0,1,0]},{label:"Réalisation du panneau de permis de construire",def:[0,1,1]},{label:"Affichage réglementaire sur le terrain",def:[0,1,0]},{label:"Mandater un huissier pour constat",def:[0,1,1]}]},{num:"6",title:"Projet — Conception détaillée",items:[{label:"Proposition des différents équipements du projet",def:[1,0,0]},{label:"Proposition d'agencement de la cuisine et des salles d'eau",def:[1,0,0]},{label:"CUISINE : aide au choix, visite matériaux…",def:[0,0,1]},{label:"MOBILIER : aide choix du mobilier et décoration…",def:[0,0,1]},{label:"Commande mobilier et cuisine, livraison, installation",def:[0,0,1]},{label:"Validation des équipements et installations",def:[0,1,0]},{label:"Choix définitif des revêtements de sol",def:[1,1,0]},{label:"Réalisation du plan de masse au 1/100e",def:[1,0,0]},{label:"Réalisation des plans de niveaux au 1/50e",def:[1,0,0]},{label:"Réalisation des élévations au 1/50e",def:[1,0,0]},{label:"Réalisation des coupes nécessaires au 1/50e",def:[1,0,0]},{label:"Détails techniques au 1/20e",def:[1,0,0]},{label:"Réalisation de plans électriques (en filaire)",def:[1,0,0]},{label:"Réalisation des plans de plomberie (en filaire)",def:[1,0,0]},{label:"Réalisation des plans de chauffage / ventilation",def:[1,0,0]},{label:"Réalisation des plans de repérage des sols, murs et plafonds",def:[1,0,0]},{label:"Rédaction du Descriptif technique détaillé (CCTP)",def:[1,0,0]},{label:"Représentation de l'ensemble des éléments nécessaires",def:[1,0,0]},{label:"Élaboration du planning prévisionnel",def:[1,0,0]},{label:"Validation du dossier et de l'enveloppe travaux",def:[0,1,0]},{label:"Établissement du coût prévisionnel des travaux (± 7%)",def:[1,0,0]}]},{num:"7",title:"Appel d'offre",items:[{label:"Établissement du DCE comportant pièces techniques",def:[1,0,0]},{label:"Rédaction des clauses administratives des marchés de travaux",def:[1,1,0]},{label:"Approbation du DCE",def:[0,1,0]},{label:"Établissement de la liste des entreprises à consulter",def:[1,1,0]},{label:"Prise de contact avec les entreprises",def:[1,0,0]},{label:"Transmission du dossier",def:[1,0,0]},{label:"Visite des lieux avec les entreprises",def:[1,0,0]},{label:"Réception et ouverture des offres",def:[1,0,0]},{label:"Analyse des offres et établissement de la synthèse",def:[1,0,0]},{label:"Négociation des offres",def:[1,1,0]},{label:"Choix des entreprises",def:[1,1,0]},{label:"Mise à jour des plans suivant marchés de travaux",def:[1,0,0]},{label:"Mise au point des marchés de travaux",def:[1,0,0]},{label:"Validation des marchés de travaux",def:[0,1,0]},{label:"Réunions préparatoires et calendrier prévisionnel",def:[1,0,0]},{label:"Contrôle des assurances décennales",def:[1,0,0]},{label:"Signature des contrats de travaux",def:[0,1,0]}]},{num:"8",title:"Le Chantier",items:[{label:"Réunions de démarrage",def:[1,0,0]},{label:"Établissement des ordres de service",def:[1,0,0]},{label:"Signature des ordres de service",def:[0,1,0]},{label:"Envois des ordres de service",def:[1,0,0]},{label:"Réunions spécifiques choix des échantillons, couleurs…",def:[1,1,0]},{label:"Validations des choix couleur, matériaux et équipements",def:[0,1,0]},{label:"Livraisons des équipements techniques hors marchés",def:[0,1,0]},{label:"Modification des prestations sur chantier",def:[0,1,0]},{label:"Coordination des entreprises",def:[1,0,0]},{label:"Transmission de la DROC",def:[0,1,0]},{label:"Ouverture du chantier",def:[1,1,0]},{label:"Organisation et direction des réunions hebdomadaires",def:[1,0,0]},{label:"Vérification de l'avancement des travaux",def:[1,0,0]},{label:"Rédaction des compte-rendu de chantier",def:[1,0,0]},{label:"Diffusion des compte-rendu de chantier",def:[1,0,0]},{label:"Mise à jour des plans (selon nécessité)",def:[1,0,0]},{label:"Surveillance de la réalisation dans les règles de l'art",def:[1,0,0]},{label:"Remarques sur les compte-rendu (sous 8 jours)",def:[0,1,0]},{label:"Signature des avenants aux marchés (si besoin)",def:[0,1,0]},{label:"Application des pénalités de retard",def:[1,0,0]},{label:"Réception, vérification et traitement des situations",def:[1,0,0]},{label:"Transmission au maître d'ouvrage et aux entreprises",def:[1,0,0]},{label:"Réception des ouvrages",def:[1,0,0]},{label:"Assistance à la Réception",def:[0,0,1]},{label:"Rédaction des PV de réception",def:[1,0,0]},{label:"Établissement des listes de réserves",def:[1,0,0]},{label:"Signature des PV de réception",def:[0,1,0]},{label:"Suivi des levées de réserves",def:[1,0,0]},{label:"Levée des réserves",def:[0,1,0]},{label:"Assistance à la levée des réserves",def:[0,0,1]},{label:"Établissement du Décompte général définitif",def:[1,0,0]},{label:"Transmission des règlements aux entreprises",def:[0,1,0]},{label:"Réalisation du Dossier des Ouvrages Exécutés",def:[1,0,0]},{label:"Transmission de la DAACT à la mairie",def:[0,1,0]}]}];
+
+var LOGO_SVG='<svg width="120" height="37" viewBox="0 0 238 74" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M28.3299 18.8539C43.3937 18.8539 55.6033 31.0635 55.6033 46.1273C55.6032 49.1802 53.1279 51.6546 50.075 51.6546H13.7723V51.6566H13.1443C13.3445 52.2089 13.576 52.7513 13.8377 53.2816C15.2348 56.1126 17.4402 58.4656 20.1746 60.0433C22.7381 61.5223 25.6586 62.2579 28.6092 62.1732L29.2 62.1458C32.3498 61.9384 34.6435 61.3358 37.1473 59.4134L44.8045 67.9085C40.5148 71.2021 35.3446 73.1498 29.9481 73.5052L29.4412 73.5345C24.3832 73.7734 19.3577 72.6026 14.9256 70.1537L14.4852 69.9046C9.94675 67.2861 6.25843 63.4214 3.85626 58.7728L3.62775 58.3206C1.23416 53.4705 0.333501 48.0191 1.0379 42.6566L1.27228 42.6869C2.96338 29.2476 14.4316 18.854 28.3299 18.8539ZM210.077 18.8499C225.141 18.8499 237.35 31.0596 237.35 46.1234C237.35 49.1763 234.875 51.6507 231.822 51.6507H195.141C195.342 52.2051 195.575 52.7493 195.838 53.2816C197.235 56.1126 199.44 58.4656 202.175 60.0433C204.738 61.5223 207.659 62.2579 210.609 62.1732L211.2 62.1458C214.35 61.9384 216.643 61.3358 219.147 59.4134L226.805 67.9085C222.515 71.2021 217.345 73.1498 211.948 73.5052L211.441 73.5345C206.383 73.7734 201.358 72.6026 196.926 70.1537L196.485 69.9046C191.947 67.2861 188.258 63.4214 185.856 58.7728L185.628 58.3206C183.758 54.5316 182.799 50.3759 182.805 46.182V46.1234C182.805 45.9836 182.807 45.8438 182.809 45.7044C182.81 45.682 182.81 45.6595 182.81 45.6371C183.07 30.7977 195.176 18.85 210.077 18.8499ZM138.855 20.8871C143.852 18.8174 149.35 18.2753 154.655 19.3304C159.96 20.3856 164.262 22.4464 168.087 26.2708L160.487 34.7386C158.395 32.6461 155.869 31.2902 153.011 30.6214L152.434 30.4964C149.338 29.8806 146.128 30.1966 143.212 31.4046L142.67 31.641C139.986 32.8707 137.693 34.8229 136.049 37.2835L135.729 37.7816C135.189 38.6593 134.738 39.5847 134.379 40.5423H171.028C174.09 40.5424 176.572 43.0243 176.572 46.0863C176.572 46.108 176.571 46.13 176.571 46.1517H176.667C176.667 51.5603 175.063 56.848 172.058 61.3451L171.772 61.763C168.785 66.0591 164.626 69.4112 159.785 71.4164C154.944 73.4214 149.633 73.9923 144.483 73.0667L143.985 72.973C138.68 71.9178 134.294 69.7301 130.47 65.9056L138.033 57.4388C140.265 59.671 143.11 61.1911 146.206 61.807C149.109 62.3844 152.111 62.1426 154.879 61.1146L155.429 60.8988C158.163 59.7662 160.525 57.8972 162.255 55.5052L162.592 55.0199C163.302 53.9573 163.877 52.819 164.311 51.6312H127.741C124.679 51.6311 122.016 49.2274 122.016 46.1654C122.016 46.1608 122.016 46.1563 122.016 46.1517H121.973C121.973 40.7431 123.577 35.4554 126.582 30.9583C129.493 26.602 133.592 23.1769 138.388 21.0853L138.855 20.8871ZM84.0213 43.9779L106.43 19.0013L112.491 18.9818L115.973 19.0521V73.4974H104.917V37.9828L87.9266 55.9281C86.8662 57.0487 85.3785 57.6776 83.8358 57.6576C82.2929 57.6375 80.825 56.9684 79.7947 55.8226L54.2918 27.5453L61.9168 18.974L84.0213 43.9779ZM28.3299 29.9095C21.3141 29.9097 15.3412 34.3636 13.0809 40.598H13.7723V40.599H43.5809C41.3209 34.3638 35.3463 29.9095 28.3299 29.9095ZM210.077 29.9056C203.061 29.9057 197.087 34.3595 194.827 40.5941H194.958V40.5951H225.328C223.068 34.3599 217.093 29.9056 210.077 29.9056ZM220.148 9.07358L196.892 9.0726V0.164398H228.11L220.148 9.07358Z" fill="#6D0000"/></svg>';
+
+var checkSvg='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+var chevronSvg='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+var iconX='<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+var iconPlus='<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';
+
+function buildSections(){
+  var c=document.getElementById('sections'),types=['archi','mo','comp'];
+  DATA.forEach(function(sec,si){
+    var section=document.createElement('div');section.className='section';
+    var header=document.createElement('div');header.className='section-header';
+    header.innerHTML='<span class="section-number">'+sec.num+'</span><span class="section-title">'+sec.title+'</span><span class="section-count">'+sec.items.length+' items</span><span class="section-toggle">'+chevronSvg+'</span>';
+    header.onclick=function(){section.classList.toggle('collapsed');};
+    var body=document.createElement('div');body.className='section-body';
+    sec.items.forEach(function(item,ii){
+      var row=document.createElement('div');row.className='row';
+      var label=document.createElement('div');label.className='row-label';label.textContent=item.label;row.appendChild(label);
+      types.forEach(function(type,ti){
+        var cell=document.createElement('div');cell.className='row-check';
+        var cb=document.createElement('label');cb.className='cb '+type;
+        var input=document.createElement('input');input.type='checkbox';input.checked=!!item.def[ti];
+        input.dataset.section=si;input.dataset.item=ii;input.dataset.type=type;
+        input.addEventListener('change',updateCount);
+        var visual=document.createElement('span');visual.className='cb-visual';visual.innerHTML=checkSvg;
+        cb.appendChild(input);cb.appendChild(visual);cell.appendChild(cb);row.appendChild(cell);
+      });
+      body.appendChild(row);
+    });
+    section.appendChild(header);section.appendChild(body);c.appendChild(section);
+  });
+  updateCount();
+}
+
+function updateCount(){document.getElementById('fabCount').textContent=document.querySelectorAll('.cb input:checked').length;}
+
+function getCheckedItems(){
+  var result=[];
+  document.querySelectorAll('.cb input:checked').forEach(function(input){
+    var si=+input.dataset.section,ii=+input.dataset.item,type=input.dataset.type;
+    var entry=result.find(function(r){return r.section===si&&r.item===ii;});
+    if(!entry){entry={section:si,item:ii,label:DATA[si].items[ii].label,sectionTitle:DATA[si].num+'. '+DATA[si].title,types:[]};result.push(entry);}
+    entry.types.push(type);
+  });
+  return result;
+}
+
+function openRecap(){
+  var items=getCheckedItems(),body=document.getElementById('recapBody');
+  if(!items.length){
+    body.innerHTML='<div class="recap-empty">Aucune prestation cochée pour le moment.</div>';
+  }else{
+    var grouped={};items.forEach(function(i){if(!grouped[i.sectionTitle])grouped[i.sectionTitle]=[];grouped[i.sectionTitle].push(i);});
+    var tl={archi:'Arch',mo:'MO',comp:'Comp'};
+    var si=0;
+    var h='<div class="print-header">'+LOGO_SVG+'<div class="print-meta"><span>Architecte d\'intérieur</span><span>Récapitulatif des prestations</span></div></div>';
+    h+='<table class="recap-table"><thead><tr><th>Prestation</th><th class="th-attrib">Attrib.</th><th class="th-price">Prix HT (€)</th></tr></thead><tbody>';
+    for(var title in grouped){
+      var entries=grouped[title];
+      h+='<tr class="recap-section-row"><td colspan="3">'+title+'</td></tr>';
+      entries.forEach(function(e){
+        var tags=e.types.map(function(t){return '<span class="recap-tag '+t+'">'+tl[t]+'</span>';}).join('');
+        h+='<tr class="data-row"><td class="td-label">'+e.label+'</td><td class="td-attrib"><div class="recap-tags">'+tags+'</div></td><td class="td-price"><div class="price-cell has-price" data-section="'+si+'"><input type="text" class="price-input" placeholder="—" inputmode="decimal"/><button type="button" class="price-btn active" title="Retirer le prix">'+iconX+'</button></div></td></tr>';
+      });
+      h+='<tr class="recap-subtotal-row"><td colspan="2" class="subtotal-label">Sous-total</td><td class="subtotal-value" data-subtotal="'+si+'">—</td></tr>';
+      si++;
+    }
+    h+='<tr class="recap-total-row"><td colspan="2" class="total-label">Total HT</td><td class="total-value" id="recapTotal">0,00 €</td></tr></tbody></table>';
+    body.innerHTML=h;
+
+    body.querySelectorAll('.price-btn').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        var cell=this.closest('.price-cell');
+        var isActive=cell.classList.toggle('has-price');
+        this.classList.toggle('active',isActive);
+        if(isActive){
+          this.innerHTML=iconX;
+          cell.querySelector('.price-input').focus();
+        }else{
+          this.innerHTML=iconPlus;
+          cell.querySelector('.price-input').value='';
+          computeTotal();
+        }
+      });
+    });
+    body.querySelectorAll('.price-input').forEach(function(input){
+      input.addEventListener('input',computeTotal);
+      input.addEventListener('focus',function(){this.select();});
+    });
+    computeTotal();
+  }
+  document.getElementById('modalOverlay').classList.add('active');
+  document.body.style.overflow='hidden';
+}
+
+function computeTotal(){
+  var total=0,subs={};
+  document.querySelectorAll('.price-cell.has-price .price-input').forEach(function(input){
+    var v=parseFloat(input.value.replace(/\s/g,'').replace(',','.'))||0;
+    total+=v;
+    var s=input.closest('.price-cell').dataset.section;
+    subs[s]=(subs[s]||0)+v;
+  });
+  document.querySelectorAll('[data-subtotal]').forEach(function(el){
+    var v=subs[el.dataset.subtotal]||0;
+    el.textContent=v>0?v.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' €':'—';
+  });
+  var hasAny=document.querySelectorAll('.price-cell.has-price').length>0;
+  document.querySelectorAll('.recap-subtotal-row,.recap-total-row').forEach(function(r){r.style.display=hasAny?'':'none';});
+  if(hasAny)document.getElementById('recapTotal').textContent=total.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
+}
+
+function closeRecap(){document.getElementById('modalOverlay').classList.remove('active');document.body.style.overflow='';}
+document.getElementById('modalOverlay').addEventListener('click',function(e){if(e.target===this)closeRecap();});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeRecap();});
+buildSections();
+</script>
+</body>
+</html>
