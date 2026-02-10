@@ -74,6 +74,10 @@ header{display:flex;flex-direction:column;align-items:center;gap:var(--sp-24);pa
 .row:hover .row-delete button{opacity:.4}
 .row-delete button:hover{opacity:1!important;background:var(--archi-bg)}
 .row-delete button svg{width:12px;height:12px;stroke:var(--brand);stroke-width:2;fill:none}
+.row-add{padding:var(--sp-8) var(--sp-20);border-top:1px dashed var(--cream-warm)}
+.row-add button{border:none;background:none;font-family:var(--font);font-size:var(--fs-label);font-weight:var(--w-semi);color:var(--ink-40);cursor:pointer;padding:var(--sp-8) var(--sp-12);border-radius:var(--radius-sm);display:flex;align-items:center;gap:var(--sp-8);letter-spacing:var(--ls-nav);transition:all var(--dur-fast) var(--ease)}
+.row-add button:hover{color:var(--brand);background:var(--archi-bg)}
+.row-add button svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none}
 .row-check{display:flex;align-items:center;justify-content:center;padding:var(--sp-12) 0}
 
 .cb{position:relative;width:26px;height:26px;cursor:pointer}
@@ -297,6 +301,15 @@ function buildSections(){
       row.appendChild(delCell);delCell.appendChild(delBtn);
       body.appendChild(row);
     });
+    var addRow=document.createElement('div');addRow.className='row-add';
+    var addBtn=document.createElement('button');addBtn.type='button';
+    addBtn.innerHTML='<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Ajouter une prestation';
+    (function(secIdx){addBtn.addEventListener('click',function(){
+      DATA[secIdx].items.push({label:'Nouvelle prestation',def:[0,0,0]});
+      document.getElementById('sections').innerHTML='';
+      buildSections();
+    });})(si);
+    addRow.appendChild(addBtn);body.appendChild(addRow);
     section.appendChild(header);section.appendChild(body);c.appendChild(section);
   });
   updateCount();
