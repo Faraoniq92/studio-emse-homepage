@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Programme de Mission — Studio Emsé</title>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
 :root {
   --brand:#3F0305; --ink:#1A1615; --ink-70:#4A4340; --ink-40:#8A827E;
@@ -188,6 +189,15 @@ tr.pricing-off .price-cell>*{display:none!important}
 .btn-primary{background:var(--brand);color:var(--white)}
 .btn-primary:hover{background:#2E0204}
 
+/* ─── PDF generation mode ─── */
+.generating-pdf .print-header{display:flex!important}
+.generating-pdf .toggle{display:none!important}
+.generating-pdf .price-btn{display:none!important}
+.generating-pdf .price-cell:not(.has-price){visibility:hidden}
+.generating-pdf .price-input{border:none!important;box-shadow:none!important;padding:0!important;font-weight:700!important;background:transparent!important}
+.generating-pdf .subtotal-input{border:none!important;background:transparent!important;padding:0!important;font-weight:700!important}
+.generating-pdf .modal-header{display:none!important}
+
 /* ─── PRINT ─── */
 .print-header{display:none}
 @media print{
@@ -295,7 +305,7 @@ tr.pricing-off .price-cell>*{display:none!important}
     <div class="modal-body" id="recapBody"></div>
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="closeRecap()">Fermer</button>
-      <button class="btn btn-primary" onclick="window.print()">Enregistrer PDF</button>
+      <button class="btn btn-primary" onclick="generatePDF()">Enregistrer PDF</button>
     </div>
   </div>
 </div>
@@ -475,6 +485,21 @@ function computeTotal(){
   document.querySelectorAll('.recap-subtotal-row,.recap-total-row').forEach(function(r){r.style.display=hasAny?'':'none';});
   if(hasAny)document.getElementById('recapTotal').textContent=total.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' \u20AC';
   else document.getElementById('recapTotal').textContent='0,00 \u20AC';
+}
+
+function generatePDF(){
+  var body=document.getElementById('recapBody');
+  var name=document.getElementById('programName').value.trim()||'Récapitulatif';
+  body.classList.add('generating-pdf');
+  html2pdf().set({
+    margin:[10,10,10,10],
+    filename:name+'.pdf',
+    image:{type:'jpeg',quality:0.98},
+    html2canvas:{scale:2,useCORS:true},
+    jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}
+  }).from(body).save().then(function(){
+    body.classList.remove('generating-pdf');
+  });
 }
 
 function closeRecap(){document.getElementById('modalOverlay').classList.remove('active');document.body.style.overflow='';}
