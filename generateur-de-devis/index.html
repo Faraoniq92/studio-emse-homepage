@@ -209,7 +209,7 @@ tr.pricing-off .price-cell>*{display:none!important}
   .price-input{border:none!important;box-shadow:none!important;padding:0!important;font-weight:700!important;background:transparent!important}
   .toggle{display:none!important}
   .subtotal-input{border:none!important;background:transparent!important;padding:0!important;font-weight:700!important}
-  tr.data-row.pricing-off{display:none!important}
+  tr.data-row.pricing-off:not(.has-subtotal){display:none!important}
   .program-actions{display:none!important}
   .program-name{border:none!important}
   .subtotal-input{border:none!important;background:transparent!important}
@@ -430,7 +430,15 @@ function openRecap(){
       });
     });
     body.querySelectorAll('.subtotal-input').forEach(function(input){
-      input.addEventListener('input',computeTotal);
+      input.addEventListener('input',function(){
+        var g=this.dataset.subtotal;
+        var v=this.value.replace(/\s/g,'').replace(',','.');
+        var filled=parseFloat(v)>0;
+        body.querySelectorAll('tr.data-row[data-section-group="'+g+'"]').forEach(function(row){
+          if(filled)row.classList.add('has-subtotal');else row.classList.remove('has-subtotal');
+        });
+        computeTotal();
+      });
     });
     computeTotal();
   }
