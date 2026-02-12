@@ -583,21 +583,27 @@ function generatePDF(){
     h+='<tr class="recap-total-row"><td colspan="2" class="total-label">Total HT</td><td class="total-value">'+total.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' \u20AC</td></tr>';
   }
   h+='</tbody></table>';
-  var container=document.createElement('div');
-  container.className='generating-pdf';
-  container.style.cssText='position:fixed;left:0;top:0;width:700px;background:white;padding:20px;z-index:9999';
-  container.innerHTML=h;
-  document.body.appendChild(container);
-  html2pdf().set({
-    margin:[10,10,10,10],
-    filename:name+'.pdf',
-    image:{type:'jpeg',quality:0.98},
-    html2canvas:{scale:2,useCORS:true,scrollY:0},
-    jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
-    pagebreak:{mode:['avoid-all','css']}
-  }).from(container).save().then(function(){
-    document.body.removeChild(container);
-  });
+  var overlay=document.getElementById('modalOverlay');
+  var body=document.getElementById('recapBody');
+  body.innerHTML=h;
+  body.classList.add('generating-pdf');
+  overlay.classList.add('active');
+  document.body.style.overflow='hidden';
+  setTimeout(function(){
+    html2pdf().set({
+      margin:[10,10,10,10],
+      filename:name+'.pdf',
+      image:{type:'jpeg',quality:0.98},
+      html2canvas:{scale:2,useCORS:true,scrollY:0},
+      jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
+      pagebreak:{mode:['avoid-all','css']}
+    }).from(body).save().then(function(){
+      body.classList.remove('generating-pdf');
+      overlay.classList.remove('active');
+      document.body.style.overflow='';
+      body.innerHTML='';
+    });
+  },300);
 }
 
 function closeRecap(){document.getElementById('modalOverlay').classList.remove('active');document.body.style.overflow='';}
