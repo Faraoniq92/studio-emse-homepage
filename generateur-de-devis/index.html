@@ -229,7 +229,34 @@ tr.data-row.comp-only .price-input{color:var(--ink-40)}
   .program-name{border:none!important}
   .subtotal-input{border:none!important;background:transparent!important}
   .recap-table tbody tr.data-row:hover td{background:none!important}
+  .lock-banner{display:none!important}
+  .lock-btn{display:none!important}
+  .recap-table tr{page-break-inside:avoid;break-inside:avoid}
+  .recap-section-row{page-break-after:avoid;break-after:avoid}
+  .recap-subtotal-row{page-break-before:avoid;break-before:avoid}
 }
+
+/* ─── Lock / Consultation mode ─── */
+.lock-banner{display:none;text-align:center;padding:var(--sp-8) var(--sp-16);background:var(--brand);color:var(--white);font-size:var(--fs-label);font-weight:var(--w-semi);letter-spacing:var(--ls-nav);text-transform:uppercase;border-radius:var(--radius-sm);margin-bottom:var(--sp-16)}
+body.locked .lock-banner{display:block}
+body.locked .cb input{pointer-events:none}
+body.locked .row-label{cursor:default}
+body.locked .row-label:hover{background:transparent}
+body.locked .row-delete{display:none}
+body.locked .row-add{display:none}
+body.locked .save-btn{display:none}
+body.locked .load-wrapper{display:none}
+body.locked .new-btn{display:none}
+body.locked .program-name{pointer-events:none;border-color:transparent}
+body.locked .col-headers{grid-template-columns:1fr 52px 52px 52px}
+body.locked .row{grid-template-columns:1fr 52px 52px 52px}
+body.locked .lock-btn{background:var(--brand);color:var(--white);border-color:var(--brand)}
+body.locked .lock-btn:hover{background:#2E0204}
+
+.generating-pdf .lock-banner{display:none!important}
+.generating-pdf .recap-table tr{page-break-inside:avoid;break-inside:avoid}
+.generating-pdf .recap-section-row{page-break-after:avoid;break-after:avoid}
+.generating-pdf .recap-subtotal-row{page-break-before:avoid;break-before:avoid}
 
 @media(max-width:600px){
   header h1{font-size:1.6rem}
@@ -249,6 +276,7 @@ tr.data-row.comp-only .price-input{color:var(--ink-40)}
 <body>
 
 <div class="app">
+  <div class="lock-banner" id="lockBanner">Mode consultation — les modifications sont désactivées</div>
   <header>
     <div class="header-top">
       <span class="header-subtitle">Architecte d'intérieur</span>
@@ -273,7 +301,8 @@ tr.data-row.comp-only .price-input{color:var(--ink-40)}
           <div class="saves-list"></div>
         </div>
       </div>
-      <button class="btn-sm" onclick="newProgram()"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>Nouveau</button>
+      <button class="btn-sm new-btn" onclick="newProgram()"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>Nouveau</button>
+      <button class="btn-sm lock-btn" onclick="toggleLock()"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>Verrouiller</button>
     </div>
   </div>
 
@@ -339,7 +368,7 @@ function buildSections(){
     sec.items.forEach(function(item,ii){
       var row=document.createElement('div');row.className='row';
       var label=document.createElement('div');label.className='row-label';label.textContent=item.label;
-      label.contentEditable='true';label.spellcheck=false;
+      label.contentEditable=document.body.classList.contains('locked')?'false':'true';label.spellcheck=false;
       label.addEventListener('blur',function(){DATA[si].items[ii].label=this.textContent.trim();});
       label.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();this.blur();}});
       row.appendChild(label);
@@ -511,8 +540,9 @@ function generatePDF(){
     margin:[10,10,10,10],
     filename:name+'.pdf',
     image:{type:'jpeg',quality:0.98},
-    html2canvas:{scale:2,useCORS:true},
-    jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}
+    html2canvas:{scale:2,useCORS:true,scrollY:0},
+    jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
+    pagebreak:{mode:['avoid-all','css']}
   }).from(body).save().then(function(){
     body.classList.remove('generating-pdf');
   });
@@ -571,6 +601,7 @@ function newProgram(){
   DATA=JSON.parse(JSON.stringify(DEFAULT_DATA));
   document.getElementById('programName').value='';
   document.getElementById('sections').innerHTML='';
+  setLockState(false);
   buildSections();
 }
 
@@ -581,7 +612,21 @@ document.getElementById('savesDropdown').addEventListener('click',function(e){
   if(item)loadProgram(item.dataset.id);
 });
 
+var lockOpenSvg='<svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>';
+var lockClosedSvg='<svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>';
+
+function setLockState(locked){
+  if(locked)document.body.classList.add('locked');else document.body.classList.remove('locked');
+  var btn=document.querySelector('.lock-btn');
+  if(btn)btn.innerHTML=(locked?lockClosedSvg:lockOpenSvg)+(locked?'D\u00e9verrouiller':'Verrouiller');
+  document.querySelectorAll('.row-label').forEach(function(el){el.contentEditable=locked?'false':'true';});
+  localStorage.setItem('emse-programme-locked',locked?'1':'0');
+}
+function toggleLock(){setLockState(!document.body.classList.contains('locked'));}
+
+if(localStorage.getItem('emse-programme-locked')==='1')document.body.classList.add('locked');
 buildSections();
+if(document.body.classList.contains('locked')){var lb=document.querySelector('.lock-btn');if(lb)lb.innerHTML=lockClosedSvg+'D\u00e9verrouiller';}
 </script>
 </body>
 </html>
