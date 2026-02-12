@@ -334,7 +334,7 @@ body.locked .lock-btn:hover{background:#2E0204}
   <div id="sections"></div>
 </div>
 
-<button class="fab" onclick="generatePDF()">
+<button class="fab" onclick="previewPDF()">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
   G&eacute;n&eacute;rer PDF
   <span class="fab-badge" id="fabCount">0</span>
@@ -343,15 +343,15 @@ body.locked .lock-btn:hover{background:#2E0204}
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
     <div class="modal-header">
-      <h2>Récapitulatif des prestations</h2>
-      <button class="modal-close" onclick="closeRecap()">
+      <h2>Aper&ccedil;u avant export</h2>
+      <button class="modal-close" onclick="closePreview()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
     <div class="modal-body" id="recapBody"></div>
     <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeRecap()">Fermer</button>
-      <button class="btn btn-primary" onclick="generatePDF()">Enregistrer PDF</button>
+      <button class="btn btn-secondary" onclick="closePreview()">Fermer</button>
+      <button class="btn btn-primary" onclick="generatePDF()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;vertical-align:-2px;margin-right:6px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>T&eacute;l&eacute;charger PDF</button>
     </div>
   </div>
 </div>
@@ -557,14 +557,14 @@ function computeTotal(){
   else document.getElementById('recapTotal').textContent='0,00 \u20AC';
 }
 
-function generatePDF(){
+function buildRecapHTML(){
   var items=getCheckedItems();
-  if(!items.length){alert('Aucune prestation coch\u00e9e.');return;}
+  if(!items.length)return '';
   var name=document.getElementById('programName').value.trim()||'Programme de Mission';
   var grouped={};items.forEach(function(i){if(!grouped[i.sectionTitle])grouped[i.sectionTitle]=[];grouped[i.sectionTitle].push(i);});
   var tl={archi:'Arch',mo:'MOA',comp:'Comp'};
   var total=0,hasPrice=false;
-  var h='<div class="print-header">'+LOGO_SVG+'<div class="print-meta"><span>Architecte d\'int\u00e9rieur</span></div><div class="print-meta"><span>'+name.replace(/\x3c/g,'&lt;')+'</span></div></div>';
+  var h='<div class="print-header">'+LOGO_SVG+'<div class="print-meta"><span>Architecte d\'int\u00e9rieur</span></div><div class="print-meta"><span>'+name+'</span></div></div>';
   h+='<table class="recap-table"><thead><tr><th>Prestation</th><th class="th-attrib">Attrib.</th><th class="th-price">Prix HT (\u20AC)</th></tr></thead><tbody>';
   for(var title in grouped){
     var entries=grouped[title],secTotal=0;
@@ -587,28 +587,36 @@ function generatePDF(){
     h+='<tr class="recap-total-row"><td colspan="2" class="total-label">Total HT</td><td class="total-value">'+total.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' \u20AC</td></tr>';
   }
   h+='</tbody></table>';
-  var el=document.createElement('div');
-  el.className='generating-pdf';
-  el.style.cssText='position:fixed;inset:0;background:white;z-index:9999;padding:30px 40px;overflow:auto';
-  el.innerHTML=h;
-  document.body.appendChild(el);
-  setTimeout(function(){
-    html2pdf().set({
-      margin:[10,10,10,10],
-      filename:name+'.pdf',
-      image:{type:'jpeg',quality:0.98},
-      html2canvas:{scale:2,useCORS:true,scrollY:0},
-      jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
-      pagebreak:{mode:['avoid-all','css']}
-    }).from(el).save().then(function(){
-      document.body.removeChild(el);
-    });
-  },300);
+  return h;
 }
 
-function closeRecap(){document.getElementById('modalOverlay').classList.remove('active');document.body.style.overflow='';}
-document.getElementById('modalOverlay').addEventListener('click',function(e){if(e.target===this)closeRecap();});
-document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeRecap();closeSaves();}});
+function previewPDF(){
+  var h=buildRecapHTML();
+  if(!h){alert('Aucune prestation coch\u00e9e.');return;}
+  document.getElementById('recapBody').innerHTML=h;
+  document.getElementById('modalOverlay').classList.add('active');
+  document.body.style.overflow='hidden';
+}
+
+function generatePDF(){
+  var body=document.getElementById('recapBody');
+  var name=document.getElementById('programName').value.trim()||'Programme de Mission';
+  body.classList.add('generating-pdf');
+  html2pdf().set({
+    margin:[10,10,10,10],
+    filename:name+'.pdf',
+    image:{type:'jpeg',quality:0.98},
+    html2canvas:{scale:2,useCORS:true,scrollY:0},
+    jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
+    pagebreak:{mode:['avoid-all','css']}
+  }).from(body).save().then(function(){
+    body.classList.remove('generating-pdf');
+  });
+}
+
+function closePreview(){document.getElementById('modalOverlay').classList.remove('active');document.body.style.overflow='';document.getElementById('recapBody').innerHTML='';}
+document.getElementById('modalOverlay').addEventListener('click',function(e){if(e.target===this)closePreview();});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closePreview();closeSaves();}});
 document.addEventListener('click',function(e){if(!e.target.closest('.load-wrapper'))closeSaves();});
 
 function getSaves(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||[];}catch(e){return [];}}
