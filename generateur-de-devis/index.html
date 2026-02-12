@@ -236,18 +236,12 @@ tr.data-row.comp-only .price-input{color:var(--ink-40)}
   .recap-subtotal-row{page-break-before:avoid;break-before:avoid}
 }
 
-/* ─── Lock / Consultation mode ─── */
+/* ─── Lock / Template mode ─── */
 .lock-banner{display:none;text-align:center;padding:var(--sp-8) var(--sp-16);background:var(--brand);color:var(--white);font-size:var(--fs-label);font-weight:var(--w-semi);letter-spacing:var(--ls-nav);text-transform:uppercase;border-radius:var(--radius-sm);margin-bottom:var(--sp-16)}
-body.locked .lock-banner{display:block}
-body.locked .cb input{pointer-events:none}
 body.locked .row-label{cursor:default}
 body.locked .row-label:hover{background:transparent}
 body.locked .row-delete{display:none}
 body.locked .row-add{display:none}
-body.locked .save-btn{display:none}
-body.locked .load-wrapper{display:none}
-body.locked .new-btn{display:none}
-body.locked .program-name{pointer-events:none;border-color:transparent}
 body.locked .col-headers{grid-template-columns:1fr 52px 52px 52px}
 body.locked .row{grid-template-columns:1fr 52px 52px 52px}
 body.locked .lock-btn{background:var(--brand);color:var(--white);border-color:var(--brand)}
@@ -276,7 +270,7 @@ body.locked .lock-btn:hover{background:#2E0204}
 <body>
 
 <div class="app">
-  <div class="lock-banner" id="lockBanner">Mode consultation — les modifications sont désactivées</div>
+  <div class="lock-banner" id="lockBanner">Édition du modèle — les modifications seront appliquées aux nouveaux programmes</div>
   <header>
     <div class="header-top">
       <span class="header-subtitle">Architecte d'intérieur</span>
@@ -598,10 +592,9 @@ function deleteSave(id){
 }
 
 function newProgram(){
-  DATA=JSON.parse(JSON.stringify(DEFAULT_DATA));
+  DATA=JSON.parse(JSON.stringify(getTemplate()));
   document.getElementById('programName').value='';
   document.getElementById('sections').innerHTML='';
-  setLockState(false);
   buildSections();
 }
 
@@ -614,19 +607,36 @@ document.getElementById('savesDropdown').addEventListener('click',function(e){
 
 var lockOpenSvg='<svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>';
 var lockClosedSvg='<svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>';
+var TEMPLATE_KEY='emse-programme-template';
+
+function getTemplate(){
+  try{var t=JSON.parse(localStorage.getItem(TEMPLATE_KEY));if(t&&t.length)return t;}catch(e){}
+  return JSON.parse(JSON.stringify(DEFAULT_DATA));
+}
+function saveTemplate(){localStorage.setItem(TEMPLATE_KEY,JSON.stringify(DATA));}
 
 function setLockState(locked){
-  if(locked)document.body.classList.add('locked');else document.body.classList.remove('locked');
+  if(locked){
+    document.body.classList.add('locked');
+    saveTemplate();
+  }else{
+    document.body.classList.remove('locked');
+    DATA=JSON.parse(JSON.stringify(getTemplate()));
+    document.getElementById('programName').value='';
+    document.getElementById('sections').innerHTML='';
+    buildSections();
+  }
   var btn=document.querySelector('.lock-btn');
   if(btn)btn.innerHTML=(locked?lockClosedSvg:lockOpenSvg)+(locked?'D\u00e9verrouiller':'Verrouiller');
   document.querySelectorAll('.row-label').forEach(function(el){el.contentEditable=locked?'false':'true';});
-  localStorage.setItem('emse-programme-locked',locked?'1':'0');
+  document.getElementById('lockBanner').style.display=locked?'none':'block';
 }
 function toggleLock(){setLockState(!document.body.classList.contains('locked'));}
 
-if(localStorage.getItem('emse-programme-locked')==='1')document.body.classList.add('locked');
+DATA=JSON.parse(JSON.stringify(getTemplate()));
+document.body.classList.add('locked');
 buildSections();
-if(document.body.classList.contains('locked')){var lb=document.querySelector('.lock-btn');if(lb)lb.innerHTML=lockClosedSvg+'D\u00e9verrouiller';}
+var lb=document.querySelector('.lock-btn');if(lb)lb.innerHTML=lockClosedSvg+'D\u00e9verrouiller';
 </script>
 </body>
 </html>
