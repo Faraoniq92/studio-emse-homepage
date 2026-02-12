@@ -209,6 +209,10 @@ tr.data-row.comp-only .price-input{color:var(--ink-40)}
 
 /* ─── PDF generation mode ─── */
 .generating-pdf .print-header{display:flex!important;flex-direction:column;align-items:center;gap:var(--sp-8);padding-bottom:var(--sp-24);margin-bottom:var(--sp-16);border-bottom:1.5px solid var(--cream-warm)}
+.generating-pdf .print-header svg{height:32px;width:auto}
+.generating-pdf .print-header .print-meta{display:flex;flex-direction:column;align-items:center;gap:2px}
+.generating-pdf .print-header .print-meta span:first-child{font-size:0.6rem;font-weight:var(--w-semi);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--ink-40)}
+.generating-pdf .print-header .print-meta span:last-child{font-size:var(--fs-small);font-weight:var(--w-bold);letter-spacing:var(--ls-nav);text-transform:uppercase;color:var(--ink-70)}
 .generating-pdf .toggle{display:none!important}
 .generating-pdf .price-btn{display:none!important}
 .generating-pdf .price-cell:not(.has-price){visibility:hidden}
@@ -583,12 +587,11 @@ function generatePDF(){
     h+='<tr class="recap-total-row"><td colspan="2" class="total-label">Total HT</td><td class="total-value">'+total.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' \u20AC</td></tr>';
   }
   h+='</tbody></table>';
-  var overlay=document.getElementById('modalOverlay');
-  var body=document.getElementById('recapBody');
-  body.innerHTML=h;
-  body.classList.add('generating-pdf');
-  overlay.classList.add('active');
-  document.body.style.overflow='hidden';
+  var el=document.createElement('div');
+  el.className='generating-pdf';
+  el.style.cssText='position:fixed;inset:0;background:white;z-index:9999;padding:30px 40px;overflow:auto';
+  el.innerHTML=h;
+  document.body.appendChild(el);
   setTimeout(function(){
     html2pdf().set({
       margin:[10,10,10,10],
@@ -597,11 +600,8 @@ function generatePDF(){
       html2canvas:{scale:2,useCORS:true,scrollY:0},
       jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
       pagebreak:{mode:['avoid-all','css']}
-    }).from(body).save().then(function(){
-      body.classList.remove('generating-pdf');
-      overlay.classList.remove('active');
-      document.body.style.overflow='';
-      body.innerHTML='';
+    }).from(el).save().then(function(){
+      document.body.removeChild(el);
     });
   },300);
 }
