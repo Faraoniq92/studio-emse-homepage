@@ -192,6 +192,7 @@ tr.pricing-off .price-cell>*{display:none!important}
 /* ─── Comp-only rows (greyed, excluded from subtotal) ─── */
 tr.data-row.comp-only td{color:var(--ink-40)}
 tr.data-row.comp-only .recap-tag.comp{opacity:.7}
+tr.data-row.comp-only .price-input{color:var(--ink-40)}
 
 /* ─── PDF generation mode ─── */
 .generating-pdf .print-header{display:flex!important;flex-direction:column;align-items:center;gap:var(--sp-8);padding-bottom:var(--sp-24);margin-bottom:var(--sp-16);border-bottom:1.5px solid var(--cream-warm)}
@@ -397,7 +398,7 @@ function openRecap(){
     var grouped={};items.forEach(function(i){if(!grouped[i.sectionTitle])grouped[i.sectionTitle]=[];grouped[i.sectionTitle].push(i);});
     var tl={archi:'Arch',mo:'MOA',comp:'Comp'};
     var si=0;
-    var h='<div class="print-header">'+LOGO_SVG+'<div class="print-meta"><span>Architecte d\'int\u00e9rieur</span><span>R\u00e9capitulatif des prestations</span></div></div>';
+    var h='<div class="print-header">'+LOGO_SVG+'<div class="print-meta"><span>Architecte d\'int\u00e9rieur</span></div><div class="print-meta"><span>R\u00e9capitulatif des prestations</span></div></div>';
     h+='<table class="recap-table"><thead><tr><th>Prestation</th><th class="th-attrib">Attrib.</th><th class="th-price">Prix HT (€)</th></tr></thead><tbody>';
     for(var title in grouped){
       var entries=grouped[title];
@@ -406,7 +407,8 @@ function openRecap(){
         var tags=e.types.map(function(t){return '<span class="recap-tag '+t+'">'+tl[t]+'</span>';}).join('');
         var isCompOnly=e.types.length===1&&e.types[0]==='comp';
         var rowClass='data-row'+(isCompOnly?' comp-only':'');
-        h+='<tr class="'+rowClass+'" data-section-group="'+si+'"'+(isCompOnly?' data-comp-only="1"':'')+'><td class="td-label">'+e.label+'</td><td class="td-attrib"><div class="recap-tags">'+tags+'</div></td><td class="td-price"><div class="price-cell has-price" data-section="'+si+'"><input type="text" class="price-input" placeholder="—" inputmode="decimal"/><button type="button" class="price-btn active" title="Retirer le prix">'+iconX+'</button></div></td></tr>';
+        var pricePh=isCompOnly?'(—)':'—';
+        h+='<tr class="'+rowClass+'" data-section-group="'+si+'"'+(isCompOnly?' data-comp-only="1"':'')+'><td class="td-label">'+e.label+'</td><td class="td-attrib"><div class="recap-tags">'+tags+'</div></td><td class="td-price"><div class="price-cell has-price" data-section="'+si+'"><input type="text" class="price-input" placeholder="'+pricePh+'" inputmode="decimal"'+(isCompOnly?' data-comp-price="1"':'')+'/><button type="button" class="price-btn active" title="Retirer le prix">'+iconX+'</button></div></td></tr>';
       });
       h+='<tr class="recap-subtotal-row" data-section-group="'+si+'"><td colspan="2" class="subtotal-label">Sous-total</td><td class="subtotal-value"><input type="text" class="subtotal-input" data-subtotal="'+si+'" value="\u2014" readonly/></td></tr>';
       si++;
@@ -431,7 +433,13 @@ function openRecap(){
     });
     body.querySelectorAll('.price-input').forEach(function(input){
       input.addEventListener('input',computeTotal);
-      input.addEventListener('focus',function(){this.select();});
+      input.addEventListener('focus',function(){
+        if(this.dataset.compPrice){var v=this.value.replace(/[()]/g,'').trim();this.value=v;}
+        this.select();
+      });
+      input.addEventListener('blur',function(){
+        if(this.dataset.compPrice){var v=this.value.replace(/[()]/g,'').trim();if(v)this.value='('+v+')';}
+      });
     });
     body.querySelectorAll('[data-section-toggle]').forEach(function(toggle){
       toggle.addEventListener('change',function(){
