@@ -44,10 +44,10 @@ header{display:flex;flex-direction:column;align-items:center;gap:var(--sp-24);pa
 .legend-dot{width:10px;height:10px;border-radius:3px}
 .legend-dot.archi{background:var(--archi)}.legend-dot.mo{background:var(--mo)}.legend-dot.comp{background:var(--comp)}
 
-.col-headers{display:grid;grid-template-columns:1fr 52px 52px 52px 32px;position:sticky;top:0;z-index:10;background:var(--cream);padding-bottom:var(--sp-8);border-bottom:2px solid var(--cream-warm);margin-bottom:var(--sp-4)}
+.col-headers{display:grid;grid-template-columns:1fr 52px 52px 52px 90px 32px;position:sticky;top:0;z-index:10;background:var(--cream);padding-bottom:var(--sp-8);border-bottom:2px solid var(--cream-warm);margin-bottom:var(--sp-4)}
 .col-headers span{display:flex;align-items:center;justify-content:center;padding:var(--sp-8) 0;font-size:var(--fs-tag);font-weight:var(--w-bold);text-transform:uppercase;letter-spacing:var(--ls-tag)}
 .col-headers span:first-child{justify-content:flex-start;padding-left:var(--sp-20);color:var(--ink-40)}
-.col-headers .h-archi{color:var(--archi)}.col-headers .h-mo{color:var(--mo)}.col-headers .h-comp{color:var(--comp)}
+.col-headers .h-archi{color:var(--archi)}.col-headers .h-mo{color:var(--mo)}.col-headers .h-comp{color:var(--comp)}.col-headers .h-price{color:var(--ink-40)}
 
 .section{margin-bottom:var(--sp-20);opacity:0;transform:translateY(20px);animation:revealSection .5s var(--ease) forwards}
 .section:nth-child(1){animation-delay:.03s}.section:nth-child(2){animation-delay:.06s}.section:nth-child(3){animation-delay:.09s}
@@ -65,7 +65,7 @@ header{display:flex;flex-direction:column;align-items:center;gap:var(--sp-24);pa
 .section.collapsed .section-body{display:none}
 .section-body{background:var(--white);border:1px solid var(--cream-warm);border-top:none;border-radius:0 0 var(--radius-md) var(--radius-md);overflow:hidden}
 
-.row{display:grid;grid-template-columns:1fr 52px 52px 52px 32px;align-items:center;border-bottom:1px solid var(--cream);transition:background var(--dur-fast)}
+.row{display:grid;grid-template-columns:1fr 52px 52px 52px 90px 32px;align-items:center;border-bottom:1px solid var(--cream);transition:background var(--dur-fast)}
 .row:last-child{border-bottom:none}.row:hover{background:var(--cream)}
 .row-label{padding:var(--sp-12) var(--sp-20);font-size:var(--fs-body-sm);line-height:1.4;letter-spacing:var(--ls-body);cursor:text;border-radius:var(--radius-sm);transition:background var(--dur-fast)}
 .row-label:hover{background:var(--cream-warm)}
@@ -79,6 +79,11 @@ header{display:flex;flex-direction:column;align-items:center;gap:var(--sp-24);pa
 .row-add button{border:none;background:none;font-family:var(--font);font-size:var(--fs-label);font-weight:var(--w-semi);color:var(--ink-40);cursor:pointer;padding:var(--sp-8) var(--sp-12);border-radius:var(--radius-sm);display:flex;align-items:center;gap:var(--sp-8);letter-spacing:var(--ls-nav);transition:all var(--dur-fast) var(--ease)}
 .row-add button:hover{color:var(--brand);background:var(--archi-bg)}
 .row-add button svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none}
+
+.row-price{display:flex;align-items:center;justify-content:center;padding:var(--sp-8) var(--sp-4)}
+.inline-price{width:80px;text-align:right;border:1px solid var(--cream-warm);border-radius:var(--radius-sm);padding:var(--sp-4) var(--sp-8);font-family:var(--font);font-size:var(--fs-label-sm);font-weight:var(--w-semi);color:var(--ink);background:var(--white);outline:none;transition:border-color var(--dur-fast)}
+.inline-price:focus{border-color:var(--brand);box-shadow:0 0 0 2px var(--archi-bg)}
+.inline-price::placeholder{color:var(--ink-40);font-weight:var(--w-regular)}
 
 .program-bar{display:flex;align-items:center;gap:var(--sp-12);padding:var(--sp-16) 0 var(--sp-24);margin-bottom:var(--sp-8);flex-wrap:wrap}
 .program-name{flex:1;min-width:200px;border:none;border-bottom:1.5px solid var(--cream-warm);padding:var(--sp-8) var(--sp-4);font-family:var(--font);font-size:var(--fs-body);font-weight:var(--w-semi);color:var(--ink);background:transparent;outline:none;letter-spacing:var(--ls-body);transition:border-color var(--dur-fast)}
@@ -242,8 +247,8 @@ body.locked .row-label{cursor:default}
 body.locked .row-label:hover{background:transparent}
 body.locked .row-delete{display:none}
 body.locked .row-add{display:none}
-body.locked .col-headers{grid-template-columns:1fr 52px 52px 52px}
-body.locked .row{grid-template-columns:1fr 52px 52px 52px}
+body.locked .col-headers{grid-template-columns:1fr 52px 52px 52px 90px}
+body.locked .row{grid-template-columns:1fr 52px 52px 52px 90px}
 body.locked .lock-btn{background:var(--brand);color:var(--white);border-color:var(--brand)}
 body.locked .lock-btn:hover{background:#2E0204}
 
@@ -254,8 +259,8 @@ body.locked .lock-btn:hover{background:#2E0204}
 
 @media(max-width:600px){
   header h1{font-size:1.6rem}
-  .row{grid-template-columns:1fr 42px 42px 42px 28px}
-  .col-headers{grid-template-columns:1fr 42px 42px 42px 28px}
+  .row{grid-template-columns:1fr 42px 42px 42px 70px 28px}
+  .col-headers{grid-template-columns:1fr 42px 42px 42px 70px 28px}
   .row-label{padding:10px 14px;font-size:0.82rem}
   .cb{width:24px;height:24px}
   .cb-visual svg{width:12px;height:12px}
@@ -311,14 +316,15 @@ body.locked .lock-btn:hover{background:#2E0204}
     <span class="h-archi">Arch</span>
     <span class="h-mo">MOA</span>
     <span class="h-comp">Comp</span>
+    <span class="h-price">Prix</span>
   </div>
 
   <div id="sections"></div>
 </div>
 
-<button class="fab" onclick="openRecap()">
+<button class="fab" onclick="generatePDF()">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-  Récapitulatif
+  G&eacute;n&eacute;rer PDF
   <span class="fab-badge" id="fabCount">0</span>
 </button>
 
@@ -375,6 +381,11 @@ function buildSections(){
         var visual=document.createElement('span');visual.className='cb-visual';visual.innerHTML=checkSvg;
         cb.appendChild(input);cb.appendChild(visual);cell.appendChild(cb);row.appendChild(cell);
       });
+      var priceCell=document.createElement('div');priceCell.className='row-price';
+      var priceInput=document.createElement('input');priceInput.type='text';priceInput.className='inline-price';
+      priceInput.placeholder='\u2014';priceInput.inputMode='decimal';priceInput.value=item.price||'';
+      (function(s,i){priceInput.addEventListener('input',function(){DATA[s].items[i].price=this.value;});})(si,ii);
+      priceCell.appendChild(priceInput);row.appendChild(priceCell);
       var delCell=document.createElement('div');delCell.className='row-delete';
       var delBtn=document.createElement('button');delBtn.type='button';delBtn.title='Supprimer';
       delBtn.innerHTML='<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
@@ -407,7 +418,7 @@ function getCheckedItems(){
   document.querySelectorAll('.cb input:checked').forEach(function(input){
     var si=+input.dataset.section,ii=+input.dataset.item,type=input.dataset.type;
     var entry=result.find(function(r){return r.section===si&&r.item===ii;});
-    if(!entry){entry={section:si,item:ii,label:DATA[si].items[ii].label,sectionTitle:DATA[si].num+'. '+DATA[si].title,types:[]};result.push(entry);}
+    if(!entry){entry={section:si,item:ii,label:DATA[si].items[ii].label,sectionTitle:DATA[si].num+'. '+DATA[si].title,types:[],price:DATA[si].items[ii].price||''};result.push(entry);}
     entry.types.push(type);
   });
   return result;
@@ -527,9 +538,40 @@ function computeTotal(){
 }
 
 function generatePDF(){
-  var body=document.getElementById('recapBody');
-  var name=document.getElementById('programName').value.trim()||'Récapitulatif';
-  body.classList.add('generating-pdf');
+  var items=getCheckedItems();
+  if(!items.length){alert('Aucune prestation coch\u00e9e.');return;}
+  var name=document.getElementById('programName').value.trim()||'Programme de Mission';
+  var grouped={};items.forEach(function(i){if(!grouped[i.sectionTitle])grouped[i.sectionTitle]=[];grouped[i.sectionTitle].push(i);});
+  var tl={archi:'Arch',mo:'MOA',comp:'Comp'};
+  var total=0,hasPrice=false;
+  var h='<div class="print-header">'+LOGO_SVG+'<div class="print-meta"><span>Architecte d\'int\u00e9rieur</span></div><div class="print-meta"><span>'+name.replace(/</g,'&lt;')+'</span></div></div>';
+  h+='<table class="recap-table"><thead><tr><th>Prestation</th><th class="th-attrib">Attrib.</th><th class="th-price">Prix HT (\u20AC)</th></tr></thead><tbody>';
+  for(var title in grouped){
+    var entries=grouped[title],secTotal=0;
+    h+='<tr class="recap-section-row"><td colspan="3">'+title+'</td></tr>';
+    entries.forEach(function(e){
+      var tags=e.types.map(function(t){return '<span class="recap-tag '+t+'">'+tl[t]+'</span>';}).join('');
+      var isCompOnly=e.types.length===1&&e.types[0]==='comp';
+      var raw=(e.price||'').replace(/[() \s]/g,'').replace(',','.');
+      var val=parseFloat(raw)||0;
+      var display='';
+      if(e.price&&e.price.trim()){display=isCompOnly?'('+e.price.trim()+')':e.price.trim();if(!isCompOnly){secTotal+=val;}hasPrice=true;}
+      h+='<tr class="data-row'+(isCompOnly?' comp-only':'')+'"><td class="td-label">'+e.label+'</td><td class="td-attrib"><div class="recap-tags">'+tags+'</div></td><td class="td-price">'+(display?display+' \u20AC':'')+'</td></tr>';
+    });
+    if(secTotal>0){
+      h+='<tr class="recap-subtotal-row"><td colspan="2" class="subtotal-label">Sous-total</td><td class="subtotal-value">'+secTotal.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' \u20AC</td></tr>';
+    }
+    total+=secTotal;
+  }
+  if(hasPrice){
+    h+='<tr class="recap-total-row"><td colspan="2" class="total-label">Total HT</td><td class="total-value">'+total.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' \u20AC</td></tr>';
+  }
+  h+='</tbody></table>';
+  var container=document.createElement('div');
+  container.className='generating-pdf';
+  container.style.cssText='position:absolute;left:-9999px;top:0;width:700px;background:white;padding:20px';
+  container.innerHTML=h;
+  document.body.appendChild(container);
   html2pdf().set({
     margin:[10,10,10,10],
     filename:name+'.pdf',
@@ -537,8 +579,8 @@ function generatePDF(){
     html2canvas:{scale:2,useCORS:true,scrollY:0},
     jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
     pagebreak:{mode:['avoid-all','css']}
-  }).from(body).save().then(function(){
-    body.classList.remove('generating-pdf');
+  }).from(container).save().then(function(){
+    document.body.removeChild(container);
   });
 }
 
