@@ -190,10 +190,27 @@ header{display:flex;flex-direction:column;align-items:center;gap:var(--sp-24);pa
 .toggle input:checked+.toggle-track::before{transform:translateX(15px)}
 .toggle-text{font-size:var(--fs-tag);font-weight:var(--w-bold);letter-spacing:var(--ls-tag);text-transform:uppercase;color:var(--brand);opacity:.4;transition:opacity var(--dur-fast)}
 .toggle input:checked~.toggle-text{opacity:1}
-.subtotal-input{width:100%;max-width:120px;text-align:right;border:1px solid var(--cream-warm);border-radius:var(--radius-sm);padding:var(--sp-8) var(--sp-12);font-family:var(--font);font-size:var(--fs-small);font-weight:var(--w-bold);color:var(--ink-70);background:var(--cream);outline:none;cursor:default}
+.subtotal-input{width:100%;max-width:120px;text-align:right;border:1px solid var(--cream-warm);border-radius:var(--radius-sm);padding:var(--sp-8) var(--sp-12);font-family:var(--font);font-size:var(--fs-small);font-weight:var(--w-bold);color:var(--ink-70);background:var(--cream);outline:none;cursor:text}
 tr.pricing-off .price-cell>*{display:none!important}
 .subtotal-input.editable{background:var(--white);border-color:var(--brand);cursor:text;color:var(--ink)}
 .subtotal-input.editable:focus{box-shadow:0 0 0 3px var(--archi-bg)}
+.subtotal-wrapper{display:flex;align-items:center;gap:6px;justify-content:flex-end}
+.subtotal-reset{width:22px;height:22px;border:none;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-sm);opacity:0;transition:all var(--dur-fast);flex-shrink:0}
+.subtotal-wrapper:hover .subtotal-reset.visible{opacity:.5}
+.subtotal-reset:hover{opacity:1!important;background:var(--archi-bg)}
+.subtotal-reset svg{width:11px;height:11px;stroke:var(--brand);stroke-width:2;fill:none}
+.subtotal-input.manual-override{background:var(--white)!important;border-color:var(--brand)!important;color:var(--ink)!important}
+.subtotal-input.manual-override:focus{box-shadow:0 0 0 3px var(--archi-bg)}
+.subtotal-input:hover{border-color:var(--ink-40)}
+.subtotal-input:focus{border-color:var(--brand);box-shadow:0 0 0 3px var(--archi-bg)}
+
+/* ─── Section subtotal (main page) ─── */
+.section-subtotal{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-12) var(--sp-20);background:var(--cream);border-top:1.5px solid var(--cream-warm)}
+.section-subtotal-label{font-size:var(--fs-label);font-weight:var(--w-bold);text-transform:uppercase;letter-spacing:var(--ls-caps);color:var(--ink-40)}
+.subtotal-section-input{width:110px;text-align:right;border:1px solid var(--cream-warm);border-radius:var(--radius-sm);padding:var(--sp-4) var(--sp-8);font-family:var(--font);font-size:var(--fs-body-sm);font-weight:var(--w-bold);color:var(--ink-70);background:var(--white);outline:none;cursor:text;transition:border-color var(--dur-fast),box-shadow var(--dur-fast)}
+.subtotal-section-input:hover{border-color:var(--ink-40)}
+.subtotal-section-input:focus{border-color:var(--brand);box-shadow:0 0 0 3px var(--archi-bg)}
+.subtotal-section-input.manual-override{border-color:var(--brand);color:var(--ink)}
 
 .modal-footer{padding:var(--sp-16) var(--sp-32);border-top:var(--border-divider);display:flex;gap:var(--sp-12);justify-content:flex-end}
 .btn{font-family:var(--font);font-weight:var(--w-semi);font-size:var(--fs-label);letter-spacing:var(--ls-nav);text-transform:uppercase;padding:var(--sp-12) var(--sp-20);border-radius:var(--radius-sm);cursor:pointer;transition:all var(--dur-normal) var(--ease);border:none}
@@ -217,7 +234,8 @@ tr.data-row.comp-only .price-input{color:var(--ink-40)}
 .generating-pdf .price-btn{display:none!important}
 .generating-pdf .price-cell:not(.has-price){visibility:hidden}
 .generating-pdf .price-input{border:none!important;box-shadow:none!important;padding:0!important;font-weight:700!important;background:transparent!important}
-.generating-pdf .subtotal-input{border:none!important;background:transparent!important;padding:0!important;font-weight:700!important}
+.generating-pdf .subtotal-input{border:none!important;background:transparent!important;padding:0!important;font-weight:700!important;box-shadow:none!important}
+.generating-pdf .subtotal-reset{display:none!important}
 .generating-pdf .modal-header{display:none!important}
 
 /* ─── PRINT ─── */
@@ -240,7 +258,8 @@ tr.data-row.comp-only .price-input{color:var(--ink-40)}
   .price-cell:not(.has-price){visibility:hidden}
   .price-input{border:none!important;box-shadow:none!important;padding:0!important;font-weight:700!important;background:transparent!important}
   .toggle{display:none!important}
-  .subtotal-input{border:none!important;background:transparent!important;padding:0!important;font-weight:700!important}
+  .subtotal-input{border:none!important;background:transparent!important;padding:0!important;font-weight:700!important;box-shadow:none!important}
+  .subtotal-reset{display:none!important}
   tr.data-row.pricing-off:not(.has-subtotal){display:none!important}
   .program-actions{display:none!important}
   .program-name{border:none!important}
@@ -367,6 +386,9 @@ var iconX='<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="roun
 var iconPlus='<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';
 var DEFAULT_DATA=JSON.parse(JSON.stringify(DATA));
 var STORAGE_KEY='emse-programme-saves';
+var manualSubtotals={};
+var mainManualSubtotals={};
+var iconReset='<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>';
 var saveBtnSvg='<svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>';
 
 function buildSections(){
@@ -381,6 +403,7 @@ function buildSections(){
       DATA[idx].disabled=!this.checked;
       section.classList.toggle('sec-disabled',!this.checked);
       updateCount();
+      updateSectionSubtotals();
     };})(si));
     header.onclick=function(e){if(e.target.closest('.section-on-off'))return;section.classList.toggle('collapsed');};
     var body=document.createElement('div');body.className='section-body';
@@ -403,7 +426,7 @@ function buildSections(){
       var priceCell=document.createElement('div');priceCell.className='row-price';
       var priceInput=document.createElement('input');priceInput.type='text';priceInput.className='inline-price';
       priceInput.placeholder='\u2014';priceInput.inputMode='decimal';priceInput.value=item.price||'';
-      (function(s,i){priceInput.addEventListener('input',function(){DATA[s].items[i].price=this.value;});})(si,ii);
+      (function(s,i){priceInput.addEventListener('input',function(){DATA[s].items[i].price=this.value;updateSectionSubtotals();});})(si,ii);
       priceCell.appendChild(priceInput);row.appendChild(priceCell);
       var delCell=document.createElement('div');delCell.className='row-delete';
       var delBtn=document.createElement('button');delBtn.type='button';delBtn.title='Supprimer';
@@ -425,9 +448,61 @@ function buildSections(){
       buildSections();
     });})(si);
     addRow.appendChild(addBtn);body.appendChild(addRow);
+    var subtotalDiv=document.createElement('div');subtotalDiv.className='section-subtotal';
+    subtotalDiv.innerHTML='<span class="section-subtotal-label">Sous-total</span><div class="subtotal-wrapper"><input type="text" class="subtotal-section-input" data-section-idx="'+si+'" value="\u2014" placeholder="Montant HT"/><button type="button" class="subtotal-reset" data-section-reset="'+si+'" title="Recalculer automatiquement">'+iconReset+'</button></div>';
+    body.appendChild(subtotalDiv);
+    (function(secIdx,stDiv){
+      var stInput=stDiv.querySelector('.subtotal-section-input');
+      var stReset=stDiv.querySelector('.subtotal-reset');
+      if(mainManualSubtotals[secIdx]){
+        var mv=parseFloat(mainManualSubtotals[secIdx])||0;
+        if(mv>0){stInput.value=mv.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' \u20AC';stInput.classList.add('manual-override');stReset.classList.add('visible');}
+      }
+      stInput.addEventListener('focus',function(){
+        var raw=this.value.replace(/[^\d,.\-]/g,'').replace(',','.');
+        this.value=(raw===''||raw==='0')?'':raw;
+        this.select();
+      });
+      stInput.addEventListener('blur',function(){
+        var s=this.dataset.sectionIdx;
+        if(mainManualSubtotals[s]){
+          var v=parseFloat(this.value.replace(/\s/g,'').replace(',','.'))||0;
+          if(v>0){this.value=v.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' \u20AC';mainManualSubtotals[s]=v.toString();}
+          else{this.value='\u2014';delete mainManualSubtotals[s];this.classList.remove('manual-override');stReset.classList.remove('visible');updateSectionSubtotals();}
+        }else{updateSectionSubtotals();}
+      });
+      stInput.addEventListener('input',function(){
+        var s=this.dataset.sectionIdx;
+        mainManualSubtotals[s]=this.value;
+        this.classList.add('manual-override');
+        stReset.classList.add('visible');
+      });
+      stReset.addEventListener('click',function(){
+        var s=this.dataset.sectionReset;
+        delete mainManualSubtotals[s];
+        stInput.classList.remove('manual-override');
+        this.classList.remove('visible');
+        updateSectionSubtotals();
+      });
+    })(si,subtotalDiv);
     section.appendChild(header);section.appendChild(body);c.appendChild(section);
   });
   updateCount();
+  updateSectionSubtotals();
+}
+
+function updateSectionSubtotals(){
+  document.querySelectorAll('.subtotal-section-input[data-section-idx]').forEach(function(el){
+    var s=+el.dataset.sectionIdx;
+    if(mainManualSubtotals[s])return;
+    if(DATA[s]&&DATA[s].disabled){el.value='\u2014';return;}
+    var sum=0;
+    if(DATA[s])DATA[s].items.forEach(function(item){
+      var raw=(item.price||'').replace(/[() \s]/g,'').replace(',','.');
+      sum+=parseFloat(raw)||0;
+    });
+    el.value=sum>0?sum.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' \u20AC':'\u2014';
+  });
 }
 
 function updateCount(){var n=0;document.querySelectorAll('.cb input:checked').forEach(function(input){var si=+input.dataset.section;if(!DATA[si].disabled)n++;});document.getElementById('fabCount').textContent=n;}
@@ -563,7 +638,7 @@ function buildRecapHTML(){
   var name=document.getElementById('programName').value.trim()||'Programme de Mission';
   var grouped={};items.forEach(function(i){if(!grouped[i.sectionTitle])grouped[i.sectionTitle]=[];grouped[i.sectionTitle].push(i);});
   var tl={archi:'Arch',mo:'MOA',comp:'Comp'};
-  var total=0,hasPrice=false;
+  var total=0,hasPrice=false,secIdx=0;
   var h='<div class="print-header">'+LOGO_SVG+'<div class="print-meta"><span>Architecte d\'int\u00e9rieur</span></div><div class="print-meta"><span>'+name+'</span></div></div>';
   h+='<table class="recap-table"><thead><tr><th>Prestation</th><th class="th-attrib">Attrib.</th><th class="th-price">Prix HT (\u20AC)</th></tr></thead><tbody>';
   for(var title in grouped){
@@ -576,16 +651,15 @@ function buildRecapHTML(){
       var val=parseFloat(raw)||0;
       var display='';
       if(e.price&&e.price.trim()){display=isCompOnly?'('+e.price.trim()+')':e.price.trim();if(!isCompOnly){secTotal+=val;}hasPrice=true;}
-      h+='<tr class="data-row'+(isCompOnly?' comp-only':'')+'"><td class="td-label">'+e.label+'</td><td class="td-attrib"><div class="recap-tags">'+tags+'</div></td><td class="td-price">'+(display?display+' \u20AC':'')+'</td></tr>';
+      h+='<tr class="data-row'+(isCompOnly?' comp-only':'')+'" data-section-group="'+secIdx+'"><td class="td-label">'+e.label+'</td><td class="td-attrib"><div class="recap-tags">'+tags+'</div></td><td class="td-price">'+(display?display+' \u20AC':'')+'</td></tr>';
     });
-    if(secTotal>0){
-      h+='<tr class="recap-subtotal-row"><td colspan="2" class="subtotal-label">Sous-total</td><td class="subtotal-value">'+secTotal.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' \u20AC</td></tr>';
-    }
+    var autoVal=secTotal>0?secTotal.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' \u20AC':'\u2014';
+    h+='<tr class="recap-subtotal-row" data-section-group="'+secIdx+'"><td colspan="2" class="subtotal-label">Sous-total</td><td class="subtotal-value"><div class="subtotal-wrapper"><input type="text" class="subtotal-input" data-subtotal="'+secIdx+'" data-auto="'+secTotal+'" value="'+autoVal+'" placeholder="Montant HT"/>'+
+    '<button type="button" class="subtotal-reset" data-subtotal-reset="'+secIdx+'" title="Recalculer automatiquement">'+iconReset+'</button></div></td></tr>';
     total+=secTotal;
+    secIdx++;
   }
-  if(hasPrice){
-    h+='<tr class="recap-total-row"><td colspan="2" class="total-label">Total HT</td><td class="total-value">'+total.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' \u20AC</td></tr>';
-  }
+  h+='<tr class="recap-total-row"><td colspan="2" class="total-label">Total HT</td><td class="total-value" id="recapTotal">'+(total>0||hasPrice?total.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' \u20AC':'0,00 \u20AC')+'</td></tr>';
   h+='</tbody></table>';
   return h;
 }
@@ -593,9 +667,75 @@ function buildRecapHTML(){
 function previewPDF(){
   var h=buildRecapHTML();
   if(!h){alert('Aucune prestation coch\u00e9e.');return;}
+  manualSubtotals={};
   document.getElementById('recapBody').innerHTML=h;
+  initSubtotalEditing();
   document.getElementById('modalOverlay').classList.add('active');
   document.body.style.overflow='hidden';
+}
+
+function initSubtotalEditing(){
+  var body=document.getElementById('recapBody');
+  body.querySelectorAll('.subtotal-input[data-subtotal]').forEach(function(input){
+    input.addEventListener('focus',function(){
+      if(!manualSubtotals[this.dataset.subtotal]){
+        var raw=this.value.replace(/[^\d,.\-]/g,'').replace(',','.');
+        this.value=(raw===''||raw==='0')?'':raw;
+      }else{
+        var raw=this.value.replace(/[^\d,.\-]/g,'').replace(',','.');
+        this.value=raw;
+      }
+      this.select();
+    });
+    input.addEventListener('blur',function(){
+      var s=this.dataset.subtotal;
+      if(manualSubtotals[s]){
+        var v=parseFloat(this.value.replace(/\s/g,'').replace(',','.'))||0;
+        if(v>0)this.value=v.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' \u20AC';
+        else{this.value='\u2014';delete manualSubtotals[s];this.classList.remove('manual-override');var rb=body.querySelector('.subtotal-reset[data-subtotal-reset="'+s+'"]');if(rb)rb.classList.remove('visible');recomputePreviewTotal();}
+      }else{
+        var auto=parseFloat(this.dataset.auto)||0;
+        this.value=auto>0?auto.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' \u20AC':'\u2014';
+      }
+    });
+    input.addEventListener('input',function(){
+      var s=this.dataset.subtotal;
+      manualSubtotals[s]=true;
+      this.classList.add('manual-override');
+      var resetBtn=body.querySelector('.subtotal-reset[data-subtotal-reset="'+s+'"]');
+      if(resetBtn)resetBtn.classList.add('visible');
+      recomputePreviewTotal();
+    });
+  });
+  body.querySelectorAll('.subtotal-reset').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var s=this.dataset.subtotalReset;
+      delete manualSubtotals[s];
+      var input=body.querySelector('.subtotal-input[data-subtotal="'+s+'"]');
+      if(input){
+        input.classList.remove('manual-override');
+        var auto=parseFloat(input.dataset.auto)||0;
+        input.value=auto>0?auto.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' \u20AC':'\u2014';
+      }
+      this.classList.remove('visible');
+      recomputePreviewTotal();
+    });
+  });
+}
+
+function recomputePreviewTotal(){
+  var total=0;
+  document.querySelectorAll('#recapBody .subtotal-input[data-subtotal]').forEach(function(el){
+    var s=el.dataset.subtotal;
+    if(manualSubtotals[s]){
+      var v=parseFloat(el.value.replace(/[^\d,.\-]/g,'').replace(',','.'))||0;
+      total+=v;
+    }else{
+      total+=parseFloat(el.dataset.auto)||0;
+    }
+  });
+  var totalEl=document.getElementById('recapTotal');
+  if(totalEl)totalEl.textContent=total.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' \u20AC';
 }
 
 function generatePDF(){
