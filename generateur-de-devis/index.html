@@ -54,10 +54,10 @@ header{display:flex;flex-direction:column;align-items:center;gap:var(--sp-24);pa
 .section:nth-child(4){animation-delay:.12s}.section:nth-child(5){animation-delay:.15s}.section:nth-child(6){animation-delay:.18s}
 .section:nth-child(7){animation-delay:.21s}.section:nth-child(8){animation-delay:.24s}.section:nth-child(9){animation-delay:.27s}
 @keyframes revealSection{to{opacity:1;transform:translateY(0)}}
-.section-header{display:flex;align-items:center;gap:var(--sp-12);padding:var(--sp-12) var(--sp-20);background:var(--brand);color:var(--white);border-radius:var(--radius-md) var(--radius-md) 0 0;cursor:pointer;user-select:none;transition:background var(--dur-normal) var(--ease)}
+.section-header{display:flex;align-items:center;justify-content:center;gap:var(--sp-12);padding:var(--sp-12) var(--sp-20);background:var(--brand);color:var(--white);border-radius:var(--radius-md) var(--radius-md) 0 0;cursor:pointer;user-select:none;transition:background var(--dur-normal) var(--ease)}
 .section-header:hover{background:#2E0204}
 .section-number{font-size:1.1rem;font-weight:var(--w-bold);opacity:.4;min-width:24px}
-.section-title{font-weight:var(--w-bold);font-size:var(--fs-body-sm);letter-spacing:var(--ls-body);flex:1}
+.section-title{font-weight:var(--w-bold);font-size:var(--fs-body-sm);letter-spacing:var(--ls-body);text-transform:uppercase}
 .section-count{font-size:var(--fs-tag);font-weight:var(--w-medium);opacity:.4;letter-spacing:var(--ls-nav);text-transform:uppercase}
 .section-toggle{width:20px;height:20px;display:flex;align-items:center;justify-content:center;transition:transform var(--dur-normal) var(--ease)}
 .section-toggle svg{width:14px;height:14px;stroke:var(--white);opacity:.5}
@@ -189,8 +189,12 @@ tr.pricing-off .price-cell>*{display:none!important}
 .btn-primary{background:var(--brand);color:var(--white)}
 .btn-primary:hover{background:#2E0204}
 
+/* ─── Comp-only rows (greyed, excluded from subtotal) ─── */
+tr.data-row.comp-only td{color:var(--ink-40)}
+tr.data-row.comp-only .recap-tag.comp{opacity:.7}
+
 /* ─── PDF generation mode ─── */
-.generating-pdf .print-header{display:flex!important}
+.generating-pdf .print-header{display:flex!important;flex-direction:column;align-items:center;gap:var(--sp-8);padding-bottom:var(--sp-24);margin-bottom:var(--sp-16);border-bottom:1.5px solid var(--cream-warm)}
 .generating-pdf .toggle{display:none!important}
 .generating-pdf .price-btn{display:none!important}
 .generating-pdf .price-cell:not(.has-price){visibility:hidden}
@@ -209,9 +213,9 @@ tr.pricing-off .price-cell>*{display:none!important}
   .modal-footer{display:none!important}
   .modal-close{display:none!important}
   .modal-header{display:none!important}
-  .print-header{display:flex!important;align-items:center;gap:var(--sp-16);padding-bottom:var(--sp-16);margin-bottom:var(--sp-8);border-bottom:2px solid var(--ink)}
-  .print-header svg{height:28px;width:auto}
-  .print-header .print-meta{display:flex;flex-direction:column;gap:2px}
+  .print-header{display:flex!important;flex-direction:column;align-items:center;gap:var(--sp-8);padding-bottom:var(--sp-24);margin-bottom:var(--sp-16);border-bottom:1.5px solid var(--cream-warm)}
+  .print-header svg{height:32px;width:auto}
+  .print-header .print-meta{display:flex;flex-direction:column;align-items:center;gap:2px}
   .print-header .print-meta span:first-child{font-size:0.6rem;font-weight:var(--w-semi);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--ink-40)}
   .print-header .print-meta span:last-child{font-size:var(--fs-small);font-weight:var(--w-bold);letter-spacing:var(--ls-nav);text-transform:uppercase;color:var(--ink-70)}
   .price-btn{display:none!important}
@@ -281,7 +285,7 @@ tr.pricing-off .price-cell>*{display:none!important}
   <div class="col-headers">
     <span>Prestation</span>
     <span class="h-archi">Arch</span>
-    <span class="h-mo">MO</span>
+    <span class="h-mo">MOA</span>
     <span class="h-comp">Comp</span>
   </div>
 
@@ -391,16 +395,18 @@ function openRecap(){
     body.innerHTML='<div class="recap-empty">Aucune prestation cochée pour le moment.</div>';
   }else{
     var grouped={};items.forEach(function(i){if(!grouped[i.sectionTitle])grouped[i.sectionTitle]=[];grouped[i.sectionTitle].push(i);});
-    var tl={archi:'Arch',mo:'MO',comp:'Comp'};
+    var tl={archi:'Arch',mo:'MOA',comp:'Comp'};
     var si=0;
-    var h='<div class="print-header">'+LOGO_SVG+'<div class="print-meta"><span>Architecte d\'intérieur</span><span>Récapitulatif des prestations</span></div></div>';
+    var h='<div class="print-header">'+LOGO_SVG+'<div class="print-meta"><span>Architecte d\'int\u00e9rieur</span><span>R\u00e9capitulatif des prestations</span></div></div>';
     h+='<table class="recap-table"><thead><tr><th>Prestation</th><th class="th-attrib">Attrib.</th><th class="th-price">Prix HT (€)</th></tr></thead><tbody>';
     for(var title in grouped){
       var entries=grouped[title];
       h+='<tr class="recap-section-row"><td colspan="2">'+title+'</td><td class="section-price-toggle"><label class="toggle"><input type="checkbox" checked data-section-toggle="'+si+'"/><span class="toggle-track"></span><span class="toggle-text">Prix</span></label></td></tr>';
       entries.forEach(function(e){
         var tags=e.types.map(function(t){return '<span class="recap-tag '+t+'">'+tl[t]+'</span>';}).join('');
-        h+='<tr class="data-row" data-section-group="'+si+'"><td class="td-label">'+e.label+'</td><td class="td-attrib"><div class="recap-tags">'+tags+'</div></td><td class="td-price"><div class="price-cell has-price" data-section="'+si+'"><input type="text" class="price-input" placeholder="—" inputmode="decimal"/><button type="button" class="price-btn active" title="Retirer le prix">'+iconX+'</button></div></td></tr>';
+        var isCompOnly=e.types.length===1&&e.types[0]==='comp';
+        var rowClass='data-row'+(isCompOnly?' comp-only':'');
+        h+='<tr class="'+rowClass+'" data-section-group="'+si+'"'+(isCompOnly?' data-comp-only="1"':'')+'><td class="td-label">'+e.label+'</td><td class="td-attrib"><div class="recap-tags">'+tags+'</div></td><td class="td-price"><div class="price-cell has-price" data-section="'+si+'"><input type="text" class="price-input" placeholder="—" inputmode="decimal"/><button type="button" class="price-btn active" title="Retirer le prix">'+iconX+'</button></div></td></tr>';
       });
       h+='<tr class="recap-subtotal-row" data-section-group="'+si+'"><td colspan="2" class="subtotal-label">Sous-total</td><td class="subtotal-value"><input type="text" class="subtotal-input" data-subtotal="'+si+'" value="\u2014" readonly/></td></tr>';
       si++;
@@ -462,6 +468,8 @@ function computeTotal(){
   document.querySelectorAll('.price-cell.has-price .price-input').forEach(function(input){
     var s=input.closest('.price-cell').dataset.section;
     if(off[s])return;
+    var row=input.closest('tr');
+    if(row&&row.dataset.compOnly)return;
     var v=parseFloat(input.value.replace(/\s/g,'').replace(',','.'))||0;
     total+=v;
     subs[s]=(subs[s]||0)+v;
