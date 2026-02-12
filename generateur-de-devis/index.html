@@ -63,8 +63,8 @@ header{display:flex;flex-direction:column;align-items:center;gap:var(--sp-24);pa
 .section-toggle svg{width:14px;height:14px;stroke:var(--white);opacity:.5}
 .section.collapsed .section-toggle{transform:rotate(-90deg)}
 .section.collapsed .section-body{display:none}
-.section.sec-disabled{opacity:.4;pointer-events:none}
-.section.sec-disabled .section-header{pointer-events:auto}
+.section.sec-disabled .section-body{display:none}
+.section.sec-disabled .section-header{opacity:.45}
 .section-on-off{margin-left:auto;display:flex;align-items:center}
 .section-on-off input{position:absolute;opacity:0;width:0;height:0}
 .section-on-off .toggle-track{position:relative;width:28px;height:15px;background:rgba(255,255,255,.25);border-radius:15px;transition:background var(--dur-normal) var(--ease);flex-shrink:0;cursor:pointer}
@@ -560,7 +560,7 @@ function generatePDF(){
   var grouped={};items.forEach(function(i){if(!grouped[i.sectionTitle])grouped[i.sectionTitle]=[];grouped[i.sectionTitle].push(i);});
   var tl={archi:'Arch',mo:'MOA',comp:'Comp'};
   var total=0,hasPrice=false;
-  var h='<div class="print-header">'+LOGO_SVG+'<div class="print-meta"><span>Architecte d\'int\u00e9rieur</span></div><div class="print-meta"><span>'+name.replace(/</g,'&lt;')+'</span></div></div>';
+  var h='<div class="print-header">'+LOGO_SVG+'<div class="print-meta"><span>Architecte d\'int\u00e9rieur</span></div><div class="print-meta"><span>'+name.replace(/\x3c/g,'&lt;')+'</span></div></div>';
   h+='<table class="recap-table"><thead><tr><th>Prestation</th><th class="th-attrib">Attrib.</th><th class="th-price">Prix HT (\u20AC)</th></tr></thead><tbody>';
   for(var title in grouped){
     var entries=grouped[title],secTotal=0;
@@ -585,7 +585,7 @@ function generatePDF(){
   h+='</tbody></table>';
   var container=document.createElement('div');
   container.className='generating-pdf';
-  container.style.cssText='position:absolute;left:-9999px;top:0;width:700px;background:white;padding:20px';
+  container.style.cssText='position:fixed;left:0;top:0;width:700px;background:white;padding:20px;z-index:9999';
   container.innerHTML=h;
   document.body.appendChild(container);
   html2pdf().set({
